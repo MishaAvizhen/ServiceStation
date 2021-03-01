@@ -27,7 +27,7 @@ public class ConsoleMenu {
         System.out.println("1- Find all user \n" +
                 "2- Find all repair request \n" + "3- Find all repair record \n" +
                 "4- Find user by username \n" + "5- Create appointment \n" +
-                "6- Find all appointment \n" + "5- Create appointment \n" +
+                "6- Find all appointment \n" + "7-  \n" +
                 "0- Exit \n");
         do {
             System.out.println("Enter number: ");
