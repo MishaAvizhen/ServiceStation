@@ -7,7 +7,7 @@ import java.io.*;
 import java.util.*;
 
 public abstract class InMemoryCommonDao<E extends BaseEntity> implements GenericDao<E>, BackUpable {
-    private static Long nextId = 1L;
+    private Long nextId = 1L;
     protected Map<Long, E> inMemoryMap = new HashMap<>();
     private static String pathToBackupFolder = "C:\\Users\\Александр\\Desktop\\AvizhenSto\\dao\\docs\\";
 

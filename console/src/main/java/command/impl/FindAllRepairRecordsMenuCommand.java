@@ -1,8 +1,6 @@
 package command.impl;
 
 import command.MenuCommand;
-import dao.RepairRecordDao;
-import dao.impl.InMemoryRepairRecordDao;
 import entity.RepairRecord;
 import service.RepairRecordService;
 import service.impl.RepairRecordServiceImpl;
@@ -15,7 +13,7 @@ public class FindAllRepairRecordsMenuCommand implements MenuCommand {
     }
     @Override
     public void execute() {
-        List<RepairRecord> all = repairRecordService.FindAllRepairRecords();
+        List<RepairRecord> all = repairRecordService.findAllRepairRecords();
         if (all.size()!=0) {
             System.out.println(all);
         } else {

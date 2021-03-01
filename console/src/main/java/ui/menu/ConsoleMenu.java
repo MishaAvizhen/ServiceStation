@@ -17,7 +17,10 @@ public class ConsoleMenu {
         actionNumberToMenuCommandMap.put(3, new FindAllRepairRecordsMenuCommand());
         actionNumberToMenuCommandMap.put(4, new FindUserByUsernameMenuCommand());
         actionNumberToMenuCommandMap.put(5, new CreateAppointmentMenuCommand());
-        actionNumberToMenuCommandMap.put(6, new FindAllAppointmentCommand());
+        actionNumberToMenuCommandMap.put(6, new FindAllAppointmentMenuCommand());
+        actionNumberToMenuCommandMap.put(7, new CreateUserMenuCommand());
+        actionNumberToMenuCommandMap.put(8, new CreateRepairRequestMenuCommand());
+        actionNumberToMenuCommandMap.put(9, new CreateRepairRecordMenuCommand());
     }
 
     public void initMenuConsole() {
@@ -27,7 +30,8 @@ public class ConsoleMenu {
         System.out.println("1- Find all user \n" +
                 "2- Find all repair request \n" + "3- Find all repair record \n" +
                 "4- Find user by username \n" + "5- Create appointment \n" +
-                "6- Find all appointment \n" + "7-  \n" +
+                "6- Find all appointment \n" + "7- Create user  \n" +
+                "8- Create repair request \n" + "9- Create repair record(For admin or Master)  \n" +
                 "0- Exit \n");
         do {
             System.out.println("Enter number: ");

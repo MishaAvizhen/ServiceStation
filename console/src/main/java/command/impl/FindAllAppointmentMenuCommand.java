@@ -7,7 +7,7 @@ import service.impl.AppointmentServiceImpl;
 
 import java.util.List;
 
-public class FindAllAppointmentCommand implements MenuCommand {
+public class FindAllAppointmentMenuCommand implements MenuCommand {
     private AppointmentService appointmentService = AppointmentServiceImpl.getInstance();
 
     @Override

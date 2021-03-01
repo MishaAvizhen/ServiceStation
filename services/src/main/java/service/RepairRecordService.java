@@ -2,13 +2,15 @@ package service;
 
 
 import entity.RepairRecord;
+import entity.RepairRequest;
+import service.dto.RepairRecordRegistrationDto;
 
 import java.util.List;
 
 public interface RepairRecordService {
 
-    List<RepairRecord> getListRepairRecordsOfUser(Long userId);
-    List<RepairRecord> FindAllRepairRecords();
-    Long getFullDetailPrice();
-    Long getFullWorkPrice();
+
+    List<RepairRecord> findAllRepairRecords();
+    void createRepairRecord(RepairRecordRegistrationDto repairRecordRegistrationDto);
+
 }

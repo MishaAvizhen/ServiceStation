@@ -2,19 +2,28 @@ package service.impl;
 
 
 import dao.RepairRecordDao;
+import dao.RepairRequestDao;
+import dao.UserDao;
 import dao.impl.InMemoryRepairRecordDao;
+import dao.impl.InMemoryRepairRequestDao;
+import dao.impl.InMemoryUserDao;
 import entity.RepairRecord;
+import entity.RepairRequest;
+import entity.User;
+import entity.util.RepairRequestStatus;
 import service.RepairRecordService;
+import service.UserService;
+import service.dto.RepairRecordRegistrationDto;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class RepairRecordServiceImpl implements RepairRecordService {
+    private UserService userService = UserServiceImpl.getInstance();
     private RepairRecordDao repairRecordDao = InMemoryRepairRecordDao.getInstance();
+    private RepairRequestDao repairRequestDao = InMemoryRepairRequestDao.getInstance();
 
     private static RepairRecordServiceImpl repairRecordService;
-    private static Long fullWorkPrice = 0L;
-    private static Long fullDetailPrice = 0L;
 
     private RepairRecordServiceImpl() {
     }
@@ -27,38 +36,21 @@ public class RepairRecordServiceImpl implements RepairRecordService {
     }
 
     @Override
-    public List<RepairRecord> getListRepairRecordsOfUser(Long userId) {
-        List<RepairRecord> resultList = new ArrayList<>();
-        List<RepairRecord> repairRecordList = repairRecordDao.findAll();
-        for (RepairRecord record : repairRecordList) {
-            if (record.getRepairRequest().getUser().getId().equals(userId)) {
-                resultList.add(record);
-            }
-        }
-        return resultList;
-    }
-
-    @Override
-    public List<RepairRecord> FindAllRepairRecords() {
+    public List<RepairRecord> findAllRepairRecords() {
         return repairRecordDao.findAll();
-
     }
 
     @Override
-    public Long getFullDetailPrice() {
-        List<RepairRecord> repairRecordList = repairRecordDao.findAll();
-        for (RepairRecord record : repairRecordList) {
-            fullDetailPrice += record.getDetailPrice();
-        }
-        return fullDetailPrice;
-    }
+    public void createRepairRecord(RepairRecordRegistrationDto repairRecordRegistrationDto) {
+        RepairRequest repairRequestDaoById = repairRequestDao.findById(repairRecordRegistrationDto.getRepairRequestId());
+        RepairRecord repairRecord = new RepairRecord();
+        repairRecord.setRepairRequest(repairRequestDaoById);
+        repairRecord.setOtherNotes(repairRecordRegistrationDto.getOtherNotes());
+        repairRecord.setRepairRecordDescription(repairRecordRegistrationDto.getRepairRecordDescription());
+        repairRecord.setDetailPrice(repairRecordRegistrationDto.getDetailPrice());
+        repairRecord.setWorkPrice(repairRecordRegistrationDto.getWorkPrice());
+        repairRecordDao.save(repairRecord);
 
-    @Override
-    public Long getFullWorkPrice() {
-        List<RepairRecord> repairRecordList = repairRecordDao.findAll();
-        for (RepairRecord record : repairRecordList) {
-            fullWorkPrice += record.getWorkPrice();
-        }
-        return fullWorkPrice;
+
     }
 }

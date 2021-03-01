@@ -1,10 +1,6 @@
 package command.impl;
 
 import command.MenuCommand;
-import dao.AppointmentDao;
-import dao.UserDao;
-import dao.impl.InMemoryAppointmentDao;
-import dao.impl.InMemoryUserDao;
 import entity.User;
 import service.AppointmentService;
 import service.AppointmentSlotService;
@@ -18,7 +14,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
 
-public class CreateAppointmentMenuCommand implements MenuCommand {
+import static command.impl.CommonMethods.getDate;
+
+public class CreateAppointmentMenuCommand implements MenuCommand{
     private AppointmentSlotService appointmentSlotService = new AppointmentSlotServiceImpl();
     private AppointmentService appointmentService = AppointmentServiceImpl.getInstance();
     private UserService userService = UserServiceImpl.getInstance();
@@ -56,17 +54,6 @@ public class CreateAppointmentMenuCommand implements MenuCommand {
                 " was created");
     }
 
-    private Date getDate(int dayIndex) {
-        if (dayIndex == 1) {
-            return new Date();
-        } else if (dayIndex == 2) {
-            Date today = new Date();
 
-            return new Date(today.getTime() + (1000 * 60 * 60 * 24));
-        } else {
-            System.out.println("Incorrect Date");
-        }
-        return null;
-    }
 
 }
