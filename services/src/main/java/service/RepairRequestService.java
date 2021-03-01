@@ -10,6 +10,4 @@ public interface RepairRequestService {
     List<RepairRequest> getListOfActiveRepairRequests();
 
     List<RepairRequest> findAllRepairRequests();
-
-
 }
