@@ -1,7 +1,6 @@
 package dao.impl;
 
 import dao.InMemoryCommonDao;
-import dao.RepairRecordDao;
 import dao.RepairRequestDao;
 import entity.RepairRequest;
 
