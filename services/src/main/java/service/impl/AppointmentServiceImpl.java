@@ -5,7 +5,6 @@ import dao.UserDao;
 import dao.impl.InMemoryAppointmentDao;
 import dao.impl.InMemoryUserDao;
 import entity.Appointment;
-import entity.User;
 import entity.util.SlotStatus;
 import service.AppointmentService;
 import service.dto.AppointmentSlotDto;
@@ -13,7 +12,6 @@ import service.dto.AppointmentSlotDto;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -22,6 +20,7 @@ public class AppointmentServiceImpl implements AppointmentService {
     private AppointmentDao appointmentDao = InMemoryAppointmentDao.getInstance();
 
     private static AppointmentServiceImpl appointmentService;
+
     private AppointmentServiceImpl() {
     }
 

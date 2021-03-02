@@ -16,7 +16,7 @@ import java.util.Scanner;
 
 import static command.impl.CommonMethods.getDate;
 
-public class CreateAppointmentMenuCommand implements MenuCommand{
+public class CreateAppointmentMenuCommand implements MenuCommand {
     private AppointmentSlotService appointmentSlotService = new AppointmentSlotServiceImpl();
     private AppointmentService appointmentService = AppointmentServiceImpl.getInstance();
     private UserService userService = UserServiceImpl.getInstance();
@@ -50,10 +50,9 @@ public class CreateAppointmentMenuCommand implements MenuCommand{
         int slotIndex = scanner.nextInt();
         AppointmentSlotDto appointmentSlotDto = appointmentSlotsByDate.get(slotIndex);
         appointmentService.createAppointment(appointmentSlotDto, userByUsername.getId());
-        System.out.println("Appointment to time:" + appointmentSlotDto.getStartDate()+ " - " + appointmentSlotDto.getEndDate()+
+        System.out.println("Appointment to time:" + appointmentSlotDto.getStartDate() + " - " + appointmentSlotDto.getEndDate() +
                 " was created");
     }
-
 
 
 }

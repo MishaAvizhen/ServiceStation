@@ -7,16 +7,17 @@ import service.dto.UserRegistrationDto;
 
 import java.util.List;
 
-public interface UserService  {
+public interface UserService {
 
     List<RepairRecord> getUserRepairRecordList(Long userId);
+
     User findUserByUsername(String username);
+
     List<User> findAllUsers();
+
     void createUser(UserRegistrationDto userRegistrationDto);
 
     void deleteUserById(Long userId);
-
-
 
 
 }

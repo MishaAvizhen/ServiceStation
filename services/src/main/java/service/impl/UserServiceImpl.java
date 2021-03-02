@@ -53,8 +53,7 @@ public class UserServiceImpl implements UserService {
         for (User user : userDao.findAll()) {
             if (user == null) {
                 System.out.println("User not found");
-            }
-           else if(username.equals(user.getUsername())) {
+            } else if (username.equals(user.getUsername())) {
                 return user;
             }
         }

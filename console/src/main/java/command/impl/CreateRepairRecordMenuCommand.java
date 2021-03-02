@@ -1,7 +1,6 @@
 package command.impl;
 
 import command.MenuCommand;
-import entity.RepairRecord;
 import entity.RepairRequest;
 import service.RepairRecordService;
 import service.RepairRequestService;

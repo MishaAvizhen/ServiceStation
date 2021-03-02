@@ -1,9 +1,7 @@
 package service.impl;
 
 import dao.RepairRequestDao;
-import dao.UserDao;
 import dao.impl.InMemoryRepairRequestDao;
-import dao.impl.InMemoryUserDao;
 import entity.RepairRequest;
 import entity.User;
 import entity.util.RepairRequestStatus;
@@ -37,7 +35,7 @@ public class RepairRequestServiceImpl implements RepairRequestService {
         List<RepairRequest> resultList = new ArrayList<>();
         List<RepairRequest> allRepairRequests = repairRequestDao.findAll();
         for (RepairRequest request : allRepairRequests) {
-            if (request.getUser().getUsername().equals(username)&&
+            if (request.getUser().getUsername().equals(username) &&
                     request.getRepairRequestStatus().equals(RepairRequestStatus.IN_PROGRESS_STATUS)) {
                 resultList.add(request);
             }
@@ -56,6 +54,7 @@ public class RepairRequestServiceImpl implements RepairRequestService {
         }
         return resultList;
     }
+
     @Override
     public List<RepairRequest> findAllRepairRequests() {
         return repairRequestDao.findAll();
