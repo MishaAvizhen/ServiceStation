@@ -3,19 +3,15 @@ package service.impl;
 
 import dao.RepairRecordDao;
 import dao.RepairRequestDao;
-import dao.UserDao;
 import dao.impl.InMemoryRepairRecordDao;
 import dao.impl.InMemoryRepairRequestDao;
-import dao.impl.InMemoryUserDao;
 import entity.RepairRecord;
 import entity.RepairRequest;
-import entity.User;
 import entity.util.RepairRequestStatus;
 import service.RepairRecordService;
 import service.UserService;
 import service.dto.RepairRecordRegistrationDto;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class RepairRecordServiceImpl implements RepairRecordService {
@@ -49,8 +45,22 @@ public class RepairRecordServiceImpl implements RepairRecordService {
         repairRecord.setRepairRecordDescription(repairRecordRegistrationDto.getRepairRecordDescription());
         repairRecord.setDetailPrice(repairRecordRegistrationDto.getDetailPrice());
         repairRecord.setWorkPrice(repairRecordRegistrationDto.getWorkPrice());
+        repairRequestDaoById.setRepairRequestStatus(RepairRequestStatus.PROCESSED_STATUS);
         repairRecordDao.save(repairRecord);
 
 
+    }
+
+    @Override
+    public void deleteRepairRecordByUsernameAndRepairRecordDescription(String username, String repairRecordDescription) {
+        List<RepairRecord> allRepairRecords = repairRecordService.findAllRepairRecords();
+        for (RepairRecord allRepairRecord : allRepairRecords) {
+            Long id = allRepairRecord.getId();
+            if (allRepairRecord.getRepairRequest().getUser().getUsername().equals(username) &&
+                    allRepairRecord.getRepairRecordDescription().equals(repairRecordDescription)) {
+                repairRecordDao.deleteById(id);
+
+            }
+        }
     }
 }

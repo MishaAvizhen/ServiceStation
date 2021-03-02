@@ -1,7 +1,6 @@
 package command.impl;
 
 import command.MenuCommand;
-import entity.User;
 import service.UserService;
 import service.dto.UserRegistrationDto;
 import service.impl.UserServiceImpl;
@@ -10,6 +9,7 @@ import java.util.Scanner;
 
 public class CreateUserMenuCommand implements MenuCommand {
     private UserService userService = UserServiceImpl.getInstance();
+
     @Override
     public void execute() {
         Scanner scanner = new Scanner(System.in);

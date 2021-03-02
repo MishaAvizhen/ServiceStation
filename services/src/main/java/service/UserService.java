@@ -12,8 +12,10 @@ public interface UserService  {
     List<RepairRecord> getUserRepairRecordList(Long userId);
     User findUserByUsername(String username);
     List<User> findAllUsers();
-
     void createUser(UserRegistrationDto userRegistrationDto);
+
+    void deleteUserById(Long userId);
+
 
 
 

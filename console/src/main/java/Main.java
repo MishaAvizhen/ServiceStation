@@ -21,11 +21,15 @@ import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
+
         BackUpablesManager backUpablesManager = new BackUpablesManager();
         backUpablesManager.readFromFile();
-        ConsoleMenu consoleMenu = new ConsoleMenu();
-        consoleMenu.initMenuConsole();
-        backUpablesManager.writeToFile();
+        try {
+            ConsoleMenu consoleMenu = new ConsoleMenu();
+            consoleMenu.initMenuConsole();
+        } finally {
+            backUpablesManager.writeToFile();
+        }
 
     }
 }

@@ -45,7 +45,17 @@ public class RepairRequestServiceImpl implements RepairRequestService {
         return resultList;
     }
 
-
+    @Override
+    public List<RepairRequest> getListOfAllActiveRepairRequests() {
+        List<RepairRequest> resultList = new ArrayList<>();
+        List<RepairRequest> allRepairRequests = repairRequestDao.findAll();
+        for (RepairRequest request : allRepairRequests) {
+            if (request.getRepairRequestStatus().equals(RepairRequestStatus.IN_PROGRESS_STATUS)) {
+                resultList.add(request);
+            }
+        }
+        return resultList;
+    }
     @Override
     public List<RepairRequest> findAllRepairRequests() {
         return repairRequestDao.findAll();
@@ -62,4 +72,18 @@ public class RepairRequestServiceImpl implements RepairRequestService {
         repairRequest.setUser(userByUsername);
         repairRequestDao.save(repairRequest);
     }
+
+    @Override
+    public void deleteRepairRequestByUsernameAndRepairRequestDescription(String username, String repairRequestDescription) {
+        List<RepairRequest> allRepairRequests = repairRequestService.findAllRepairRequests();
+        for (RepairRequest request : allRepairRequests) {
+            Long id = request.getId();
+            if (request.getUser().getUsername().equals(username) &&
+                    request.getRepairRequestDescription().equals(repairRequestDescription)) {
+                repairRequestDao.deleteById(id);
+            }
+        }
+    }
+
+
 }
