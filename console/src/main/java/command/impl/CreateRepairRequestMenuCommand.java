@@ -28,11 +28,11 @@ public class CreateRepairRequestMenuCommand implements MenuCommand {
         int dayIndex = scanner.nextInt();
         Date date = getDate(dayIndex);
         System.out.println("Enter car remark: ");
-        String carRemark = scanner.nextLine();
+        String carRemark = scanner.next();
         System.out.println("Repair request description: ");
-        String repairRequestDescription = scanner.nextLine();
+        String repairRequestDescription = scanner.next();
         System.out.println("Enter username: ");
-        String username = scanner.nextLine();
+        String username = scanner.next();
         RepairRequestRegistrationDto repairRequestRegistrationDto = new RepairRequestRegistrationDto.Builder()
                 .setDateOfRequest(date)
                 .setRepairRequestDescription(repairRequestDescription)

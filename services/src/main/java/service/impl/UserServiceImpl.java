@@ -51,7 +51,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findUserByUsername(String username) {
         for (User user : userDao.findAll()) {
-            if (username.equals(user.getUsername())) {
+            if (user == null) {
+                System.out.println("User not found");
+            }
+           else if(username.equals(user.getUsername())) {
                 return user;
             }
         }

@@ -14,7 +14,14 @@ public class RepairRequestRegistrationDto {
 
     private RepairRequestRegistrationDto(Builder builder) {
 
+        this.dateOfRequest = builder.dateOfRequest;
+        this.repairRequestStatus = builder.repairRequestStatus;
+        this.carRemark = builder.carRemark;
+        this.repairRequestDescription = builder.repairRequestDescription;
+        this.username = builder.username;
     }
+
+
 
     public Date getDateOfRequest() {
         return dateOfRequest;

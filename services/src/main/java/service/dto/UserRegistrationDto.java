@@ -10,11 +10,11 @@ public class UserRegistrationDto {
     private Role role;
 
     private UserRegistrationDto(Builder builder) {
-        this.username = username;
-        this.password = password;
-        this.phoneNumber = phoneNumber;
-        this.email = email;
-        this.role = role;
+        this.username = builder.username;
+        this.password = builder.password;
+        this.phoneNumber = builder.phoneNumber;
+        this.email = builder.email;
+        this.role = builder.role;
     }
 
     public String getUsername() {

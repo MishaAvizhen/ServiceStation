@@ -29,7 +29,7 @@ public class CreateUserMenuCommand implements MenuCommand {
                 .build();
 
         userService.createUser(userRegistrationDto);
-        System.out.println("User" + username + " was created");
+        System.out.println("User " + username + " was created");
 
     }
 }

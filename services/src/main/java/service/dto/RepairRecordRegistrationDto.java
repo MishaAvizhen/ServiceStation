@@ -11,8 +11,14 @@ public class RepairRecordRegistrationDto {
     private Long repairRequestId;
 
     private RepairRecordRegistrationDto(Builder builder) {
-
+        this.repairRequestId = builder.repairRequestId;
+        this.otherNotes = builder.otherNotes;
+        this.workPrice = builder.workPrice;
+        this.detailPrice = builder.detailPrice;
+        this.repairRecordDescription = builder.repairRecordDescription;
     }
+
+
 
     public String getRepairRecordDescription() {
         return repairRecordDescription;
