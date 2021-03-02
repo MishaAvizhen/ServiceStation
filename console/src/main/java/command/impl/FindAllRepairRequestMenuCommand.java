@@ -1,10 +1,7 @@
 package command.impl;
 
 import command.MenuCommand;
-import dao.RepairRequestDao;
-import dao.impl.InMemoryRepairRequestDao;
 import entity.RepairRequest;
-import entity.User;
 import service.RepairRequestService;
 import service.impl.RepairRequestServiceImpl;
 

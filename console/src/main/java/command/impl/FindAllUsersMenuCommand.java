@@ -2,8 +2,6 @@ package command.impl;
 
 
 import command.MenuCommand;
-import dao.UserDao;
-import dao.impl.InMemoryUserDao;
 import entity.User;
 import service.UserService;
 import service.impl.UserServiceImpl;
@@ -15,10 +13,11 @@ public class FindAllUsersMenuCommand implements MenuCommand {
 
     public FindAllUsersMenuCommand() {
     }
+
     @Override
     public void execute() {
         List<User> all = userService.findAllUsers();
-        if (all.size()!=0) {
+        if (all.size() != 0) {
             System.out.println(all);
         } else {
             System.out.println("User not found");
