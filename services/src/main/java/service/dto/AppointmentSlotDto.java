@@ -3,7 +3,6 @@ package service.dto;
 import entity.User;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 
 public class AppointmentSlotDto {
     private User master;

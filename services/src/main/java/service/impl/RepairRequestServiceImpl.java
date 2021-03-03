@@ -3,7 +3,7 @@ package service.impl;
 import dao.RepairRequestDao;
 import dao.impl.InMemoryRepairRequestDao;
 import entity.RepairRequest;
-import entity.util.RepairRequestStatus;
+import entity.constants.RepairRequestStatus;
 import service.RepairRequestService;
 
 import java.util.ArrayList;

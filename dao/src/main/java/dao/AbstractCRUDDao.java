@@ -8,14 +8,14 @@ import java.util.*;
 
 public abstract class AbstractCrudDao<E extends BaseEntity> implements GenericDao<E>, BackUpable {
     private Long nextId = 1L;
-    protected Map<Long, E> inMemoryMap = new HashMap<>();
+    protected Map<Long, E> storeMap = new HashMap<>();
     private static String pathToBackupFolder = "C:\\Users\\Александр\\Desktop\\AvizhenSto\\dao\\docs\\";
 
     @Override
     public void writeToFile() {
         try (FileOutputStream fileOutputStream = new FileOutputStream(getBackUpFile());
              ObjectOutputStream objectOutputStreamRepairRecordDb = new ObjectOutputStream(fileOutputStream)) {
-            objectOutputStreamRepairRecordDb.writeObject(inMemoryMap);
+            objectOutputStreamRepairRecordDb.writeObject(storeMap);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -26,13 +26,12 @@ public abstract class AbstractCrudDao<E extends BaseEntity> implements GenericDa
 
         try (FileInputStream fileInputStream = new FileInputStream(getBackUpFile());
              ObjectInputStream objectInputStreamRepairRecordDb = new ObjectInputStream(fileInputStream);) {
-            inMemoryMap = (Map<Long, E>) objectInputStreamRepairRecordDb.readObject();
-            Long maxId = Collections.max(inMemoryMap.keySet());
+            storeMap = (Map<Long, E>) objectInputStreamRepairRecordDb.readObject();
+            Long maxId = Collections.max(storeMap.keySet());
             nextId = maxId + 1;
         } catch (EOFException eof) {
             eof.printStackTrace();
             System.out.println("it's ok");
-            inMemoryMap = new HashMap<>();
         } catch (ClassNotFoundException | IOException e) {
             e.printStackTrace();
         }
@@ -40,7 +39,7 @@ public abstract class AbstractCrudDao<E extends BaseEntity> implements GenericDa
 
     @Override
     public E update(E newValue) {
-        inMemoryMap.put(newValue.getId(), newValue);
+        storeMap.put(newValue.getId(), newValue);
         return newValue;
     }
 
@@ -48,7 +47,7 @@ public abstract class AbstractCrudDao<E extends BaseEntity> implements GenericDa
     public E save(E entity) {
         Long nextId = getNextId();
         entity.setId(nextId);
-        inMemoryMap.put(nextId, entity);
+        storeMap.put(nextId, entity);
         return entity;
     }
 
@@ -56,18 +55,18 @@ public abstract class AbstractCrudDao<E extends BaseEntity> implements GenericDa
     @Override
     public List<E> findAll() {
         List<E> result = new ArrayList<>();
-        result.addAll(inMemoryMap.values());
+        result.addAll(storeMap.values());
         return result;
     }
 
     @Override
     public E findById(Long id) {
-        return inMemoryMap.get(id);
+        return storeMap.get(id);
     }
 
     @Override
     public void deleteById(Long id) {
-        inMemoryMap.remove(id);
+        storeMap.remove(id);
     }
 
     private File getBackUpFile() throws IOException {

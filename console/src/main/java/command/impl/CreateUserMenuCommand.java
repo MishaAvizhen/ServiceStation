@@ -1,14 +1,15 @@
 package command.impl;
 
 import command.MenuCommand;
-import service.converters.ConverterEntityDtoService;
-import service.converters.impl.ConverterEntityDtoImpl;
+import entity.constants.Role;
+import service.converters.UserConverterService;
+import service.converters.impl.UserConverterImpl;
 import service.dto.UserRegistrationDto;
 
 import java.util.Scanner;
 
 public class CreateUserMenuCommand implements MenuCommand {
-    private ConverterEntityDtoService converterEntityDto = ConverterEntityDtoImpl.getInstance();
+    private UserConverterService userConverterService = UserConverterImpl.getInstance();
 
     @Override
     public void execute() {
@@ -21,14 +22,17 @@ public class CreateUserMenuCommand implements MenuCommand {
         String email = scanner.next();
         System.out.println("Enter password: ");
         String password = scanner.next();
+
         UserRegistrationDto userRegistrationDto = new UserRegistrationDto.Builder()
+
                 .setUsername(username)
                 .setPhoneNumber(phoneNumber)
                 .setEmail(email)
                 .setPassword(password)
+                .setRole(Role.ADMIN_ROLE)
                 .build();
 
-        converterEntityDto.createUser(userRegistrationDto);
+        userConverterService.createUser(userRegistrationDto);
         System.out.println("User " + username + " was created");
 
     }

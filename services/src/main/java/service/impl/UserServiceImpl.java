@@ -7,7 +7,7 @@ import dao.impl.InMemoryRepairRecordDao;
 import dao.impl.InMemoryUserDao;
 import entity.RepairRecord;
 import entity.User;
-import entity.util.RepairRequestStatus;
+import entity.constants.RepairRequestStatus;
 import service.UserService;
 
 import java.util.ArrayList;

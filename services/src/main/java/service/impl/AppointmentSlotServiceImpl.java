@@ -6,7 +6,7 @@ import dao.impl.InMemoryAppointmentDao;
 import dao.impl.InMemoryUserDao;
 import entity.Appointment;
 import entity.User;
-import entity.util.Role;
+import entity.constants.Role;
 import org.apache.commons.lang3.time.DateUtils;
 import service.AppointmentSlotService;
 import service.dto.AppointmentSlotDto;
@@ -19,8 +19,8 @@ import java.util.*;
 public class AppointmentSlotServiceImpl implements AppointmentSlotService {
     private UserDao userDao = InMemoryUserDao.getInstance();
     private AppointmentDao appointmentDao = InMemoryAppointmentDao.getInstance();
-    private int startWorkHour = 8;
-    private int endWorkHour = 20;
+    private final int startWorkHour = 8;
+    private final int endWorkHour = 20;
 
 
     @Override

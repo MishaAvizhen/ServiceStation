@@ -1,7 +1,6 @@
 package service.dto;
 
-import entity.User;
-import entity.util.RepairRequestStatus;
+import entity.constants.RepairRequestStatus;
 
 import java.util.Date;
 
@@ -20,7 +19,6 @@ public class RepairRequestRegistrationDto {
         this.repairRequestDescription = builder.repairRequestDescription;
         this.username = builder.username;
     }
-
 
 
     public Date getDateOfRequest() {

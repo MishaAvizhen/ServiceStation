@@ -1,7 +1,5 @@
 package service.dto;
 
-import entity.RepairRequest;
-
 public class RepairRecordRegistrationDto {
 
     private String repairRecordDescription;
@@ -17,7 +15,6 @@ public class RepairRecordRegistrationDto {
         this.detailPrice = builder.detailPrice;
         this.repairRecordDescription = builder.repairRecordDescription;
     }
-
 
 
     public String getRepairRecordDescription() {
@@ -51,34 +48,34 @@ public class RepairRecordRegistrationDto {
         }
 
 
-    public Builder setRepairRecordDescription(String repairRecordDescription) {
-        this.repairRecordDescription = repairRecordDescription;
-        return this;
-    }
+        public Builder setRepairRecordDescription(String repairRecordDescription) {
+            this.repairRecordDescription = repairRecordDescription;
+            return this;
+        }
 
-    public Builder setDetailPrice(Long detailPrice) {
-        this.detailPrice = detailPrice;
-        return this;
-    }
+        public Builder setDetailPrice(Long detailPrice) {
+            this.detailPrice = detailPrice;
+            return this;
+        }
 
-    public Builder setWorkPrice(Long workPrice) {
-        this.workPrice = workPrice;
-        return this;
-    }
+        public Builder setWorkPrice(Long workPrice) {
+            this.workPrice = workPrice;
+            return this;
+        }
 
-    public Builder setOtherNotes(String otherNotes) {
-        this.otherNotes = otherNotes;
-        return this;
-    }
+        public Builder setOtherNotes(String otherNotes) {
+            this.otherNotes = otherNotes;
+            return this;
+        }
 
-    public Builder setRepairRequest(Long repairRequestId) {
-        this.repairRequestId = repairRequestId;
-        return this;
-    }
+        public Builder setRepairRequest(Long repairRequestId) {
+            this.repairRequestId = repairRequestId;
+            return this;
+        }
 
-    public RepairRecordRegistrationDto build() {
-        return new RepairRecordRegistrationDto(this);
+        public RepairRecordRegistrationDto build() {
+            return new RepairRecordRegistrationDto(this);
 
+        }
     }
-}
 }

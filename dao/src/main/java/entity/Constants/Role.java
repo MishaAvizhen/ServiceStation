@@ -1,4 +1,4 @@
-package entity.util;
+package entity.constants;
 
 public enum Role {
     USER_ROLE,

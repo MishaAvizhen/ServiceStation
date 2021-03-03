@@ -1,8 +1,7 @@
 package entity;
 
-import entity.util.RepairRequestStatus;
+import entity.constants.RepairRequestStatus;
 
-import java.io.Serializable;
 import java.util.Date;
 
 public class RepairRequest extends BaseEntity {

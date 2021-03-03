@@ -1,8 +1,7 @@
 package entity;
 
 
-import entity.User;
-import entity.util.SlotStatus;
+import entity.constants.SlotStatus;
 
 import java.util.Date;
 

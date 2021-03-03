@@ -1,9 +1,7 @@
 package entity;
 
 
-import entity.util.Role;
-
-import java.io.Serializable;
+import entity.constants.Role;
 
 public class User extends BaseEntity {
 
