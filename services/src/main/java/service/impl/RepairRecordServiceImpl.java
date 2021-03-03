@@ -6,11 +6,8 @@ import dao.RepairRequestDao;
 import dao.impl.InMemoryRepairRecordDao;
 import dao.impl.InMemoryRepairRequestDao;
 import entity.RepairRecord;
-import entity.RepairRequest;
-import entity.util.RepairRequestStatus;
 import service.RepairRecordService;
 import service.UserService;
-import service.dto.RepairRecordRegistrationDto;
 
 import java.util.List;
 
@@ -36,20 +33,6 @@ public class RepairRecordServiceImpl implements RepairRecordService {
         return repairRecordDao.findAll();
     }
 
-    @Override
-    public void createRepairRecord(RepairRecordRegistrationDto repairRecordRegistrationDto) {
-        RepairRequest repairRequestDaoById = repairRequestDao.findById(repairRecordRegistrationDto.getRepairRequestId());
-        RepairRecord repairRecord = new RepairRecord();
-        repairRecord.setRepairRequest(repairRequestDaoById);
-        repairRecord.setOtherNotes(repairRecordRegistrationDto.getOtherNotes());
-        repairRecord.setRepairRecordDescription(repairRecordRegistrationDto.getRepairRecordDescription());
-        repairRecord.setDetailPrice(repairRecordRegistrationDto.getDetailPrice());
-        repairRecord.setWorkPrice(repairRecordRegistrationDto.getWorkPrice());
-        repairRequestDaoById.setRepairRequestStatus(RepairRequestStatus.PROCESSED_STATUS);
-        repairRecordDao.save(repairRecord);
-
-
-    }
 
     @Override
     public void deleteRepairRecordByUsernameAndRepairRecordDescription(String username, String repairRecordDescription) {

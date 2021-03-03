@@ -15,8 +15,6 @@ public interface UserService {
 
     List<User> findAllUsers();
 
-    void createUser(UserRegistrationDto userRegistrationDto);
-
     void deleteUserById(Long userId);
 
 

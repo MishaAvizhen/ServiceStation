@@ -1,18 +1,17 @@
 package command.impl;
 
 import command.MenuCommand;
-import entity.RepairRequest;
 import entity.User;
 import entity.util.RepairRequestStatus;
 import service.AppointmentService;
 import service.AppointmentSlotService;
-import service.RepairRequestService;
 import service.UserService;
+import service.converters.ConverterEntityDtoService;
+import service.converters.impl.ConverterEntityDtoImpl;
 import service.dto.AppointmentSlotDto;
 import service.dto.RepairRequestRegistrationDto;
 import service.impl.AppointmentServiceImpl;
 import service.impl.AppointmentSlotServiceImpl;
-import service.impl.RepairRequestServiceImpl;
 import service.impl.UserServiceImpl;
 
 import java.util.Date;
@@ -24,9 +23,8 @@ import static command.impl.CommonMethods.getDate;
 public class CreateRepairRequestMenuCommand implements MenuCommand {
 
     private AppointmentSlotService appointmentSlotService = new AppointmentSlotServiceImpl();
-    private AppointmentService appointmentService = AppointmentServiceImpl.getInstance();
     private UserService userService = UserServiceImpl.getInstance();
-    private RepairRequestService repairRequestService = RepairRequestServiceImpl.getInstance();
+    private ConverterEntityDtoService converterEntityDto = ConverterEntityDtoImpl.getInstance();
 
     @Override
     public void execute() {
@@ -53,7 +51,7 @@ public class CreateRepairRequestMenuCommand implements MenuCommand {
         }
         int slotIndex = scanner.nextInt();
         AppointmentSlotDto appointmentSlotDto = appointmentSlotsByDate.get(slotIndex);
-        appointmentService.createAppointment(appointmentSlotDto, userByUsername.getId());
+        converterEntityDto.createAppointment(appointmentSlotDto, userByUsername.getId());
         System.out.println("Enter car remark: ");
         String carRemark = scanner.next();
         System.out.println("Repair request description: ");
@@ -66,7 +64,7 @@ public class CreateRepairRequestMenuCommand implements MenuCommand {
                 .setCarRemark(carRemark)
                 .setUsername(username)
                 .build();
-        repairRequestService.createRepairRequest(repairRequestRegistrationDto);
+        converterEntityDto.createRepairRequest(repairRequestRegistrationDto);
 
         System.out.println("Repair request for " + username + " was created");
         System.out.println("Appointment time:" + appointmentSlotDto.getStartDate()+ " - " + appointmentSlotDto.getEndDate());

@@ -8,9 +8,7 @@ import dao.impl.InMemoryUserDao;
 import entity.RepairRecord;
 import entity.User;
 import entity.util.RepairRequestStatus;
-import entity.util.Role;
 import service.UserService;
-import service.dto.UserRegistrationDto;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -65,17 +63,6 @@ public class UserServiceImpl implements UserService {
         return userDao.findAll();
     }
 
-    @Override
-    public void createUser(UserRegistrationDto userRegistrationDto) {
-        User user = new User();
-        user.setUsername(userRegistrationDto.getUsername());
-        user.setPhoneNumber(userRegistrationDto.getPhoneNumber());
-        user.setEmail(userRegistrationDto.getEmail());
-        user.setRole(Role.USER_ROLE);
-        user.setPassword(userRegistrationDto.getPassword());
-        userDao.save(user);
-
-    }
 
     @Override
     public void deleteUserById(Long userId) {

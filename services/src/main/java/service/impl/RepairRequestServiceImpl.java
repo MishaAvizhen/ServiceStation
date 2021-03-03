@@ -3,17 +3,14 @@ package service.impl;
 import dao.RepairRequestDao;
 import dao.impl.InMemoryRepairRequestDao;
 import entity.RepairRequest;
-import entity.User;
 import entity.util.RepairRequestStatus;
 import service.RepairRequestService;
-import service.UserService;
-import service.dto.RepairRequestRegistrationDto;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class RepairRequestServiceImpl implements RepairRequestService {
-    private UserService userService = UserServiceImpl.getInstance();
+
     private RepairRequestDao repairRequestDao = InMemoryRepairRequestDao.getInstance();
 
 
@@ -60,17 +57,6 @@ public class RepairRequestServiceImpl implements RepairRequestService {
         return repairRequestDao.findAll();
     }
 
-    @Override
-    public void createRepairRequest(RepairRequestRegistrationDto repairRequestRegistrationDto) {
-        User userByUsername = userService.findUserByUsername(repairRequestRegistrationDto.getUsername());
-        RepairRequest repairRequest = new RepairRequest();
-        repairRequest.setDateOfRequest(repairRequestRegistrationDto.getDateOfRequest());
-        repairRequest.setCarRemark(repairRequestRegistrationDto.getCarRemark());
-        repairRequest.setRepairRequestStatus(RepairRequestStatus.IN_PROGRESS_STATUS);
-        repairRequest.setRepairRequestDescription(repairRequestRegistrationDto.getRepairRequestDescription());
-        repairRequest.setUser(userByUsername);
-        repairRequestDao.save(repairRequest);
-    }
 
     @Override
     public void deleteRepairRequestByUsernameAndRepairRequestDescription(String username, String repairRequestDescription) {
