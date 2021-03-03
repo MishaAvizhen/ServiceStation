@@ -1,10 +1,10 @@
 package dao.impl;
 
-import dao.InMemoryCommonDao;
+import dao.AbstractCrudDao;
 import dao.RepairRequestDao;
 import entity.RepairRequest;
 
-public class InMemoryRepairRequestDao extends InMemoryCommonDao<RepairRequest> implements RepairRequestDao {
+public class InMemoryRepairRequestDao extends AbstractCrudDao<RepairRequest> implements RepairRequestDao {
     private static InMemoryRepairRequestDao inMemoryRepairRequestDao;
 
     private InMemoryRepairRequestDao() {
