@@ -17,5 +17,8 @@ public interface UserService {
 
     void deleteUserById(Long userId);
 
+    Long getSumWorkPriceAndDetailPrice(Long userId);
+
+
 
 }

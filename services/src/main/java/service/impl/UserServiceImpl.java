@@ -71,5 +71,19 @@ public class UserServiceImpl implements UserService {
 
     }
 
+    @Override
+    public Long getSumWorkPriceAndDetailPrice(Long userId) {
+        User userDaoById = userDao.findById(userId);
+        String username = userDaoById.getUsername();
+        Long sumPrice = 0L;
+        List<RepairRecord> repairRecordList = repairRecordDao.findAll();
+        for (RepairRecord record : repairRecordList) {
+            if (record.getRepairRequest().getUser().getUsername().equals(username)) {
+                sumPrice += record.getDetailPrice() + record.getWorkPrice() ;
+
+            }
+        }
+        return sumPrice;
+    }
 
 }
