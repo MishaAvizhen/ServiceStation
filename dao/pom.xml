@@ -9,8 +9,28 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
+    <properties>
+        <mysql.connector.version>8.0.22</mysql.connector.version>
+
+    </properties>
+
     <artifactId>dao</artifactId>
     <packaging>jar</packaging>
     <name>dao</name>
+    <dependencies>
+
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>${mysql.connector.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.mybatis</groupId>
+            <artifactId>mybatis</artifactId>
+            <version>3.4.5</version>
+        </dependency>
+
+    </dependencies>
+
 
 </project>

@@ -1,40 +1,26 @@
 package db;
 
-import com.mysql.cj.jdbc.*;
-import org.apache.ibatis.jdbc.ScriptRunner;
+import dao.common.DaoPropertyReader;
+import entity.User;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.Reader;
-import java.sql.*;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class JdbcInit {
-    public void initSql() {
-        String url = "jdbc:mysql://localhost:3306/avizhen_nc_sto?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
-        String username = "root";
-        String password = "root";
-        String sql = "SELECT * FROM repair_request";
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+    private JdbcTemplate jdbcTemplate = new JdbcTemplate();
+    private DaoPropertyReader daoPropertyReader = new DaoPropertyReader();
+    private static final String pathToInitSql = "C:\\Users\\Александр\\Desktop\\AvizhenSto\\dao\\src\\main\\resources\\sql\\initAvizhenSto.sql";
+    private static final String pathToGenerateTestDataSql = "C:\\Users\\Александр\\Desktop\\AvizhenSto\\dao\\src\\main\\resources\\sql\\generateTestDataAvizhenSto.sql";
+
+
+    public void initDataBase() {
+        if (daoPropertyReader.shouldRunInitSql()) {
+            jdbcTemplate.executeScript(pathToInitSql);
         }
-        try (Connection connection = DriverManager.getConnection(url, username, password);
-             Statement statement = connection.createStatement();
-             ResultSet resultSet = statement.executeQuery(sql)) {
-            ScriptRunner sr = new ScriptRunner(connection);
-            Reader reader = new BufferedReader(new FileReader("C:\\Users\\Александр\\Desktop\\AvizhenSto\\dao\\src\\main\\resources\\sql\\avizhenSto.sql"));
-            sr.runScript(reader);
-
-//
-//            while (resultSet.next()) {
-//                System.out.println("\t id:" + resultSet.getInt("id") +
-//                        "\t car:" + resultSet.getString("car_remark"));
-//            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (daoPropertyReader.shouldRunGenerateTestDataSql()) {
+            jdbcTemplate.executeScript(pathToGenerateTestDataSql);
         }
-
     }
 }
