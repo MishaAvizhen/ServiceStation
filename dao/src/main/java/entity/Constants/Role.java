@@ -3,12 +3,12 @@ package entity.constants;
 public enum Role {
     USER_ROLE(1L),
     ADMIN_ROLE(2L),
-    GUEST_ROLE(4L),
-    MASTER_ROLE(3L);
+    MASTER_ROLE(3L),
+    GUEST_ROLE(4L);
 
     private Long roleId;
 
-    Role(Long roleId) {
+     Role(Long roleId) {
         this.roleId = roleId;
     }
 
