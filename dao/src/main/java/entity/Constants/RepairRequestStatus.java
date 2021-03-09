@@ -16,7 +16,7 @@ public enum RepairRequestStatus {
         return statusName;
     }
 
-    public static RepairRequestStatus defineRepairRequestStatusById(String inputStatusName) {
+    public static RepairRequestStatus defineRepairRequestStatusByName(String inputStatusName) {
         for (RepairRequestStatus repairRequestStatus : values()) {
             if (inputStatusName.equals(repairRequestStatus.statusName)) {
                 return repairRequestStatus;

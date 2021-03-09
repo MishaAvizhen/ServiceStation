@@ -1,7 +1,9 @@
 package dao.impl.db;
 
 import dao.AppointmentDao;
+import dao.UserDao;
 import db.JdbcTemplate;
+import db.ResultSetExtractor;
 import entity.Appointment;
 import entity.constants.SlotStatus;
 
@@ -12,7 +14,7 @@ import java.util.List;
 
 public class DbAppointmentDao implements AppointmentDao {
     private JdbcTemplate jdbcTemplate = new JdbcTemplate();
-    private DbUserDao dbUserDao = DbUserDao.getInstance();
+    private UserDao dbUserDao = DbUserDao.getInstance();
     private static DbAppointmentDao dbAppointmentDao;
 
     private DbAppointmentDao() {
@@ -58,45 +60,49 @@ public class DbAppointmentDao implements AppointmentDao {
         String sqlQuery = "SELECT appointment.*, users.id " +
                 " FROM appointment, users " +
                 " WHERE appointment.id= " + id;
-        return jdbcTemplate.executeSelect(sqlQuery, resultSet -> {
-            if (resultSet.next()) {
-                return buildAppointmentByResultSet(resultSet);
+        return jdbcTemplate.executeSelect(sqlQuery, new ResultSetExtractor<Appointment>() {
+            @Override
+            public Appointment extractFromResultSet(ResultSet resultSet) throws SQLException {
+                if (resultSet.next()) {
+                    return buildAppointmentByResultSet(resultSet);
+                }
+                return null;
+
             }
-            return null;
         });
     }
 
-    @Override
-    public void deleteById(Long id) {
-        String sqlQuery = "DELETE FROM appointment WHERE id = " + id;
-        jdbcTemplate.executeUpdate(sqlQuery);
-    }
+        @Override
+        public void deleteById (Long id){
+            String sqlQuery = "DELETE FROM appointment WHERE id = " + id;
+            jdbcTemplate.executeUpdate(sqlQuery);
+        }
 
-    @Override
-    public Appointment update(Appointment entity) {
-        String sqlQuery = "UPDATE appointment " +
-                "SET slot_status = '" + entity.getSlotStatus() +
-                "', start_date = '" + entity.getStartDate() +
-                "', end_date = '" + entity.getEndDate() +
-                "', notes = '" + entity.getNotes() +
-                "', client_id = '" + entity.getClient().getId() +
-                "', master_id = '" + entity.getMaster().getId() +
-                "' WHERE id = " + entity.getId();
-        jdbcTemplate.executeUpdate(sqlQuery);
-        return entity;
-    }
+        @Override
+        public Appointment update (Appointment entity){
+            String sqlQuery = "UPDATE appointment " +
+                    "SET slot_status = '" + entity.getSlotStatus() +
+                    "', start_date = '" + entity.getStartDate() +
+                    "', end_date = '" + entity.getEndDate() +
+                    "', notes = '" + entity.getNotes() +
+                    "', client_id = '" + entity.getClient().getId() +
+                    "', master_id = '" + entity.getMaster().getId() +
+                    "' WHERE id = " + entity.getId();
+            jdbcTemplate.executeUpdate(sqlQuery);
+            return entity;
+        }
 
-    @Override
-    public Appointment save(Appointment entity) {
-        String insertAppointmentSqlQuery = "INSERT INTO `appointment` " +
-                "VALUES (null, '" + entity.getSlotStatus() + "', '"
-                + entity.getStartDate() + "', '"
-                + entity.getEndDate() + "', '"
-                + entity.getNotes() + "', '"
-                + entity.getClient().getId() + "', '"
-                + entity.getMaster().getId() + "')";
-        Long id = jdbcTemplate.executeInsertAndReturnGeneratedId(insertAppointmentSqlQuery);
-        entity.setId(id);
-        return entity;
+        @Override
+        public Appointment save (Appointment entity){
+            String insertAppointmentSqlQuery = "INSERT INTO `appointment` " +
+                    "VALUES (null, '" + entity.getSlotStatus() + "', '"
+                    + entity.getStartDate() + "', '"
+                    + entity.getEndDate() + "', '"
+                    + entity.getNotes() + "', '"
+                    + entity.getClient().getId() + "', '"
+                    + entity.getMaster().getId() + "')";
+            Long id = jdbcTemplate.executeInsertAndReturnGeneratedId(insertAppointmentSqlQuery);
+            entity.setId(id);
+            return entity;
+        }
     }
-}

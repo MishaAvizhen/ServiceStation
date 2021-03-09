@@ -1,6 +1,7 @@
 package dao.impl.db;
 
 import dao.RepairRecordDao;
+import dao.RepairRequestDao;
 import db.JdbcTemplate;
 import entity.RepairRecord;
 
@@ -11,7 +12,7 @@ import java.util.List;
 
 public class DbRepairRecordDao implements RepairRecordDao {
     JdbcTemplate jdbcTemplate = new JdbcTemplate();
-    DbRepairRequestDao dbRepairRequestDao = DbRepairRequestDao.getInstance();
+    private RepairRequestDao dbRepairRequestDao = DbRepairRequestDao.getInstance();
     private static DbRepairRecordDao repairRecordDao;
 
     private DbRepairRecordDao() {

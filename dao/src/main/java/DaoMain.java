@@ -1,3 +1,4 @@
+import dao.AppointmentDao;
 import dao.UserDao;
 import dao.impl.db.DbAppointmentDao;
 import dao.impl.db.DbRepairRecordDao;
@@ -17,11 +18,10 @@ import java.util.List;
 public class DaoMain {
 
     public static void main(String[] args) {
-        DbAppointmentDao dbAppointmentDao = DbAppointmentDao.getInstance();
-        Appointment byId = dbAppointmentDao.findById(4L);
-        byId.setSlotStatus(SlotStatus.FREE_STATUS);
+        AppointmentDao dbAppointmentDao = DbAppointmentDao.getInstance();
+        Appointment byId = dbAppointmentDao.findById(1L);
+        System.out.println(byId);
 
-        dbAppointmentDao.deleteById(2L);
 
 
     }
