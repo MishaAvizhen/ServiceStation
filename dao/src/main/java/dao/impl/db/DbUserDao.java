@@ -2,7 +2,6 @@ package dao.impl.db;
 
 import dao.UserDao;
 import db.JdbcTemplate;
-import db.ResultSetExtractor;
 import entity.User;
 import entity.constants.Role;
 
@@ -40,6 +39,7 @@ public class DbUserDao implements UserDao {
             return userList;
         });
     }
+
     @Override
     public User findById(Long id) {
         String sqlQuery = "SELECT users.*, user_roles.role_id \n" +
@@ -54,6 +54,7 @@ public class DbUserDao implements UserDao {
             return null;
         });
     }
+
     private User buildUserByResultSet(ResultSet resultSet) throws SQLException {
         User user = new User();
         user.setId(resultSet.getLong("id"));

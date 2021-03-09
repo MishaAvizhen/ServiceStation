@@ -24,16 +24,18 @@ DROP TABLE IF EXISTS `appointment`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `appointment` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `client_name` varchar(255) DEFAULT NULL,
-  `master_name` varchar(255) DEFAULT NULL,
   `slot_status` varchar(255) DEFAULT NULL,
   `start_date` datetime DEFAULT NULL,
   `end_date` datetime DEFAULT NULL,
   `notes` varchar(255) DEFAULT NULL,
-  `user_id` int(11) DEFAULT NULL,
+  `client_id` int(11) DEFAULT NULL,
+  `master_id` int(11) DEFAULT NULL,
+
   PRIMARY KEY (`id`),
   KEY `user_id_app_fk_idx` (`user_id`),
-  CONSTRAINT `user_id_app_fk` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `client_id_app_fk` FOREIGN KEY (`client_id`) REFERENCES `users` (`id`)
+  CONSTRAINT `master_id_app_fk` FOREIGN KEY (`master_id`) REFERENCES `users` (`id`)
+  ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 

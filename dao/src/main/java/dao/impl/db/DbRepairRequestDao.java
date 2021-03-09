@@ -3,7 +3,6 @@ package dao.impl.db;
 import dao.RepairRequestDao;
 import db.JdbcTemplate;
 import entity.RepairRequest;
-import entity.User;
 import entity.constants.RepairRequestStatus;
 
 import java.sql.ResultSet;
@@ -48,7 +47,7 @@ public class DbRepairRequestDao implements RepairRequestDao {
         request.setId(resultSet.getLong("id"));
         request.setCarRemark(resultSet.getString("car_remark"));
         request.setDateOfRequest(resultSet.getDate("date_of_repair"));
-        request.setRepairRequestStatus(RepairRequestStatus.defineRepairRequestStatusById(resultSet.getString("status")));
+        request.setRepairRequestStatus(RepairRequestStatus.defineRepairRequestStatusByName(resultSet.getString("status")));
         request.setRepairRequestDescription(resultSet.getString("repair_request_description"));
         request.setUser(dbUserDao.findById(resultSet.getLong("user_id")));
         return request;
@@ -95,8 +94,8 @@ public class DbRepairRequestDao implements RepairRequestDao {
                 "VALUES (null, '" + entity.getDateOfRequest() + "', '"
                 + entity.getRepairRequestStatus() + "', '"
                 + entity.getCarRemark() + "', '"
-                + entity.getRepairRequestDescription() +"', '"
-                + entity.getUser().getId()+"')";
+                + entity.getRepairRequestDescription() + "', '"
+                + entity.getUser().getId() + "')";
         Long id = jdbcTemplate.executeInsertAndReturnGeneratedId(insertRepairRequestSqlQuery);
         entity.setId(id);
         return entity;

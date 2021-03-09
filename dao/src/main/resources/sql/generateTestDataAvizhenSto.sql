@@ -22,7 +22,7 @@
 
 LOCK TABLES `appointment` WRITE;
 /*!40000 ALTER TABLE `appointment` DISABLE KEYS */;
-INSERT INTO `appointment` VALUES (1,'user','master',' BUSY_STATUS','2021-02-17 10:00:00','2021-02-17 11:00:00','app_notes',9);
+INSERT INTO `appointment` VALUES (1,'BUSY_STATUS','2021-02-17 10:00:00','2021-02-17 11:00:00','app_notes',9,10);
 /*!40000 ALTER TABLE `appointment` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -33,17 +33,6 @@ UNLOCK TABLES;
 DROP TABLE IF EXISTS `repair_record`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `repair_record` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `repair_record_description` varchar(255) DEFAULT NULL,
-  `detail_price` int(11) DEFAULT NULL,
-  `work_price` int(11) DEFAULT NULL,
-  `other_notes` varchar(255) DEFAULT NULL,
-  `repair_request_id` int(11) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `id_idx` (`repair_request_id`),
-  CONSTRAINT `repair_request_id_fk` FOREIGN KEY (`repair_request_id`) REFERENCES `repair_request` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -63,17 +52,7 @@ UNLOCK TABLES;
 DROP TABLE IF EXISTS `repair_request`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `repair_request` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `date_of_repair` datetime NOT NULL,
-  `status` varchar(255) NOT NULL,
-  `car_remark` varchar(255) DEFAULT NULL,
-  `repair_request_description` varchar(255) DEFAULT NULL,
-  `user_id` int(11) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `user_id_idx` (`user_id`),
-  CONSTRAINT `user_id_fk` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -117,16 +96,6 @@ UNLOCK TABLES;
 DROP TABLE IF EXISTS `user_roles`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `user_roles` (
-  `user_id` int(11) NOT NULL,
-  `role_id` int(11) NOT NULL,
-  KEY `role_id_fk_idx` (`role_id`),
-  KEY `user_id_fk_idx` (`user_id`),
-  KEY `user_roles_role_id_fk_idx` (`role_id`),
-  KEY `user_roles_user_id_fk_idx` (`user_id`),
-  CONSTRAINT `user_roles_role_id_fk` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE,
-  CONSTRAINT `user_roles_user_id_fk` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -146,14 +115,6 @@ UNLOCK TABLES;
 DROP TABLE IF EXISTS `users`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `users` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `username` varchar(255) NOT NULL,
-  `phone_number` varchar(45) DEFAULT NULL,
-  `email` varchar(45) DEFAULT NULL,
-  `password` varchar(255) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
