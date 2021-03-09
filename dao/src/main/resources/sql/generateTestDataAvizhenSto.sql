@@ -68,7 +68,7 @@ CREATE TABLE `repair_request` (
   `date_of_repair` datetime NOT NULL,
   `status` varchar(255) NOT NULL,
   `car_remark` varchar(255) DEFAULT NULL,
-  `,` varchar(255) DEFAULT NULL,
+  `repair_request_description` varchar(255) DEFAULT NULL,
   `user_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `user_id_idx` (`user_id`),
@@ -82,7 +82,7 @@ CREATE TABLE `repair_request` (
 
 LOCK TABLES `repair_request` WRITE;
 /*!40000 ALTER TABLE `repair_request` DISABLE KEYS */;
-INSERT INTO `repair_request` VALUES (2,'2021-02-17 00:00:00','processed','opel','req descr1',9),(3,'2021-02-17 00:00:00','processed','bmw','req descr2',9);
+INSERT INTO `repair_request` VALUES (2,'2021-02-17 00:00:00','PROCESSED_STATUS','opel','req descr1',9),(3,'2021-02-17 00:00:00','IN_PROGRESS_STATUS','bmw','req descr2',9);
 /*!40000 ALTER TABLE `repair_request` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -106,7 +106,7 @@ CREATE TABLE `roles` (
 
 LOCK TABLES `roles` WRITE;
 /*!40000 ALTER TABLE `roles` DISABLE KEYS */;
-INSERT INTO `roles` VALUES (1,'ROLE_USER'),(2,'ROLE_ADMIN'),(3,'ROLE_MASTER');
+INSERT INTO `roles` VALUES (1,'ROLE_USER'),(2,'ROLE_ADMIN'),(3,'ROLE_MASTER'), (4,'GUEST_ROLE');
 /*!40000 ALTER TABLE `roles` ENABLE KEYS */;
 UNLOCK TABLES;
 

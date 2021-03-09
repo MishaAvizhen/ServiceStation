@@ -81,7 +81,7 @@ CREATE TABLE `repair_request` (
   `date_of_repair` datetime NOT NULL,
   `status` varchar(255) NOT NULL,
   `car_remark` varchar(255) DEFAULT NULL,
-  `,` varchar(255) DEFAULT NULL,
+  `repair_request_description` varchar(255) DEFAULT NULL,
   `user_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `user_id_idx` (`user_id`),

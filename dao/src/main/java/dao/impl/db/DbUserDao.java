@@ -40,18 +40,6 @@ public class DbUserDao implements UserDao {
             return userList;
         });
     }
-
-    private User buildUserByResultSet(ResultSet resultSet) throws SQLException {
-        User user = new User();
-        user.setId(resultSet.getLong("id"));
-        user.setUsername(resultSet.getString("username"));
-        user.setPhoneNumber(resultSet.getString("phone_number"));
-        user.setEmail(resultSet.getString("email"));
-        user.setPassword(resultSet.getString("password"));
-        user.setRole(Role.defineRoleByRoleId(resultSet.getLong("role_id")));
-        return user;
-    }
-
     @Override
     public User findById(Long id) {
         String sqlQuery = "SELECT users.*, user_roles.role_id \n" +
@@ -66,6 +54,17 @@ public class DbUserDao implements UserDao {
             return null;
         });
     }
+    private User buildUserByResultSet(ResultSet resultSet) throws SQLException {
+        User user = new User();
+        user.setId(resultSet.getLong("id"));
+        user.setUsername(resultSet.getString("username"));
+        user.setPhoneNumber(resultSet.getString("phone_number"));
+        user.setEmail(resultSet.getString("email"));
+        user.setPassword(resultSet.getString("password"));
+        user.setRole(Role.defineRoleByRoleId(resultSet.getLong("role_id")));
+        return user;
+    }
+
 
     @Override
     public void deleteById(Long id) {

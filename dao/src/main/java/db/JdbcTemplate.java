@@ -75,8 +75,6 @@ public class JdbcTemplate {
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
-
-
         try (Connection connection = DriverManager.getConnection(daoPropertyReader.getUrl(), daoPropertyReader.getUsername(),
                 daoPropertyReader.getPassword());
              PreparedStatement preparedStatement = connection.prepareStatement(sqlQuery, Statement.RETURN_GENERATED_KEYS)) {
