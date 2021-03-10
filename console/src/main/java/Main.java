@@ -10,6 +10,9 @@ public class Main {
 
         BackUpablesManager backUpablesManager = new BackUpablesManager();
         backUpablesManager.readFromFile();
+        JdbcInit jdbcInit = new JdbcInit();
+        jdbcInit.initDataBase();
+
         try {
             ConsoleMenu consoleMenu = new ConsoleMenu();
             consoleMenu.initMenuConsole();

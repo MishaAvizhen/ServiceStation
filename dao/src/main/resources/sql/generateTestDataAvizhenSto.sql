@@ -123,7 +123,10 @@ DROP TABLE IF EXISTS `users`;
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'admin','+375291111111','admin@mail.ru','$2a$11$uSXS6rLJ91WjgOHhEGDx..VGs7MkKZV68Lv5r1uwFu7HgtRn3dcXG'),(9,'user','+375299772894','user@mail.ru','$2a$11$BtVtxM/hLpsDU6iALTk48eWq.mHZATw4acpWpoBv..5lQvZER8cdG'),(10,'master','+375299999999','master@mail.ru','$2a$11$uSXS6rLJ91WjgOHhEGDx..VGs7MkKZV68Lv5r1uwFu7HgtRn3dcXG');
+INSERT INTO `users`
+VALUES (1,'admin','+375291111111','admin@mail.ru','$2a$11$uSXS6rLJ91WjgOHhEGDx..VGs7MkKZV68Lv5r1uwFu7HgtRn3dcXG'),
+(9,'user','+375299772894','user@mail.ru','$2a$11$BtVtxM/hLpsDU6iALTk48eWq.mHZATw4acpWpoBv..5lQvZER8cdG'),
+(10,'master','+375299999999','master@mail.ru','$2a$11$uSXS6rLJ91WjgOHhEGDx..VGs7MkKZV68Lv5r1uwFu7HgtRn3dcXG');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;

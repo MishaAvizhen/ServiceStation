@@ -18,9 +18,9 @@ import java.util.List;
 public class DaoMain {
 
     public static void main(String[] args) {
-        AppointmentDao dbAppointmentDao = DbAppointmentDao.getInstance();
-        Appointment byId = dbAppointmentDao.findById(1L);
-        System.out.println(byId);
+        UserDao userDao = DbUserDao.getInstance();
+        List<User> all = userDao.findAll();
+        System.out.println(all);
 
 
 
