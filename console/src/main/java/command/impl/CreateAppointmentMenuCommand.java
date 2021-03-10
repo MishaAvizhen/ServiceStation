@@ -5,8 +5,6 @@ import entity.User;
 import service.AppointmentService;
 import service.AppointmentSlotService;
 import service.UserService;
-import service.converters.AppointmentConverterService;
-import service.converters.impl.AppointmentConverterImpl;
 import service.dto.AppointmentSlotDto;
 import service.impl.AppointmentServiceImpl;
 import service.impl.AppointmentSlotServiceImpl;
@@ -21,7 +19,7 @@ import static command.impl.CommonMethods.getDate;
 public class CreateAppointmentMenuCommand implements MenuCommand {
     private AppointmentSlotService appointmentSlotService = new AppointmentSlotServiceImpl();
     private UserService userService = UserServiceImpl.getInstance();
-    private AppointmentConverterService appointmentConverterService = AppointmentConverterImpl.getInstance();
+    private AppointmentService appointmentService = AppointmentServiceImpl.getInstance();
 
     public CreateAppointmentMenuCommand() {
     }
@@ -51,7 +49,7 @@ public class CreateAppointmentMenuCommand implements MenuCommand {
         }
         int slotIndex = scanner.nextInt();
         AppointmentSlotDto appointmentSlotDto = appointmentSlotsByDate.get(slotIndex);
-        appointmentConverterService.createAppointment(appointmentSlotDto, userByUsername.getId());
+        appointmentService.createAppointment(appointmentSlotDto, userByUsername.getId());
         System.out.println("Appointment to time:" + appointmentSlotDto.getStartDate() + " - " + appointmentSlotDto.getEndDate() +
                 " was created");
     }

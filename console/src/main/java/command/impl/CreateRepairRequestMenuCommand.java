@@ -1,17 +1,18 @@
 package command.impl;
 
 import command.MenuCommand;
+import entity.Appointment;
 import entity.User;
 import entity.constants.RepairRequestStatus;
+import service.AppointmentService;
 import service.AppointmentSlotService;
+import service.RepairRequestService;
 import service.UserService;
-import service.converters.AppointmentConverterService;
-import service.converters.RepairRequestConverterService;
-import service.converters.impl.AppointmentConverterImpl;
-import service.converters.impl.RepairRequestConverterImpl;
 import service.dto.AppointmentSlotDto;
 import service.dto.RepairRequestRegistrationDto;
+import service.impl.AppointmentServiceImpl;
 import service.impl.AppointmentSlotServiceImpl;
+import service.impl.RepairRequestServiceImpl;
 import service.impl.UserServiceImpl;
 
 import java.util.Date;
@@ -24,8 +25,8 @@ public class CreateRepairRequestMenuCommand implements MenuCommand {
 
     private AppointmentSlotService appointmentSlotService = new AppointmentSlotServiceImpl();
     private UserService userService = UserServiceImpl.getInstance();
-    private RepairRequestConverterService repairRequestConverterService = RepairRequestConverterImpl.getInstance();
-    private AppointmentConverterService appointmentConverterService = AppointmentConverterImpl.getInstance();
+    private RepairRequestService repairRequestService = RepairRequestServiceImpl.getInstance();
+    private AppointmentService appointmentConverterService = AppointmentServiceImpl.getInstance();
 
     @Override
     public void execute() {
@@ -52,7 +53,6 @@ public class CreateRepairRequestMenuCommand implements MenuCommand {
         }
         int slotIndex = scanner.nextInt();
         AppointmentSlotDto appointmentSlotDto = appointmentSlotsByDate.get(slotIndex);
-        appointmentConverterService.createAppointment(appointmentSlotDto, userByUsername.getId());
         System.out.println("Enter car remark: ");
         String carRemark = scanner.next();
         System.out.println("Repair request description: ");
@@ -65,7 +65,7 @@ public class CreateRepairRequestMenuCommand implements MenuCommand {
                 .setCarRemark(carRemark)
                 .setUsername(username)
                 .build();
-        repairRequestConverterService.createRepairRequest(repairRequestRegistrationDto);
+        repairRequestService.registerRepairRequest(repairRequestRegistrationDto);
 
         System.out.println("Repair request for " + username + " was created");
         System.out.println("Appointment time:" + appointmentSlotDto.getStartDate() + " - " + appointmentSlotDto.getEndDate());

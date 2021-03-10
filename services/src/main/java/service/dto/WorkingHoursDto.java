@@ -2,11 +2,11 @@ package service.dto;
 
 import java.util.Date;
 
-public class WorkStartAndEndHoursDto {
+public class WorkingHoursDto {
    private int startWorkHour;
    private int endWorkHour;
 
-    public WorkStartAndEndHoursDto(int startWorkHour, int endWorkHour) {
+    public WorkingHoursDto(int startWorkHour, int endWorkHour) {
         this.startWorkHour = startWorkHour;
         this.endWorkHour = endWorkHour;
     }

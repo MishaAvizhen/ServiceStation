@@ -28,6 +28,9 @@ public class ConsoleMenu {
         actionNumberToMenuCommandMap.put(11, new DeleteRepairRequestMenuCommand());
         actionNumberToMenuCommandMap.put(12, new DeleteRepairRecordMenuCommand());
         actionNumberToMenuCommandMap.put(13, new GetSumPriceMenuCommand());
+        actionNumberToMenuCommandMap.put(14, new UpdateUserMenuCommand());
+        actionNumberToMenuCommandMap.put(15, new UpdateRepairRequestMenuCommand());
+        actionNumberToMenuCommandMap.put(16, new UpdateRepairRecordMenuCommand());
     }
 
     public void initMenuConsole() {
@@ -41,6 +44,8 @@ public class ConsoleMenu {
                 "8- Create repair request \n" + "9- Create repair record(For admin or Master)  \n" +
                 "10- Delete user by username \n" + "11- Delete repair request  \n" +
                 "12- Delete repair record \n" + "13- Get price for repair record  \n" +
+                "14- Update user \n" + "15- Update repair request  \n" +
+                "16- Update repair record \n" + "17- ----  \n" +
                 "0- Exit \n");
         do {
             System.out.println("Enter number: ");

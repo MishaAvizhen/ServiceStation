@@ -1,23 +1,22 @@
 package service.impl;
 
 import dao.AppointmentDao;
-import dao.UserDao;
 import dao.impl.InMemoryAppointmentDao;
-import dao.impl.InMemoryUserDao;
 import entity.Appointment;
 import entity.User;
 import entity.constants.Role;
 import org.apache.commons.lang3.time.DateUtils;
 import service.AppointmentSlotService;
+import service.UserService;
 import service.dto.AppointmentSlotDto;
-import service.dto.WorkStartAndEndHoursDto;
+import service.dto.WorkingHoursDto;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.*;
 
 public class AppointmentSlotServiceImpl implements AppointmentSlotService {
-    private UserDao userDao = InMemoryUserDao.getInstance();
+    private UserService userService = UserServiceImpl.getInstance();
     private AppointmentDao appointmentDao = InMemoryAppointmentDao.getInstance();
     private final int startWorkHour = 8;
     private final int endWorkHour = 20;
@@ -26,7 +25,7 @@ public class AppointmentSlotServiceImpl implements AppointmentSlotService {
     @Override
     public List<AppointmentSlotDto> getAvailableAppointmentSlotsByDate(Date date) {
         Date dateWOHours = trancateDateToDays(date);
-        WorkStartAndEndHoursDto workHoursByDate = getWorkHoursByDate(dateWOHours);
+        WorkingHoursDto workHoursByDate = getWorkHoursByDate(dateWOHours);
         Date startWorkDate = DateUtils.addHours(dateWOHours, workHoursByDate.getStartWorkHour());
         Date endWorkDate = DateUtils.addHours(dateWOHours, workHoursByDate.getEndWorkHour());
         LocalDateTime convertedStartWorkDay = convertDateToLocalDateTime(startWorkDate);
@@ -78,8 +77,8 @@ public class AppointmentSlotServiceImpl implements AppointmentSlotService {
 
     private List<User> findAllMasters() {
         List<User> result = new ArrayList<>();
-        List<User> userDaoAll = userDao.findAll();
-        for (User user : userDaoAll) {
+        List<User> userServiceAllUsers = userService.findAllUsers();
+        for (User user : userServiceAllUsers) {
             if (user.getRole().equals(Role.MASTER_ROLE)) {
                 result.add(user);
             }
@@ -105,9 +104,9 @@ public class AppointmentSlotServiceImpl implements AppointmentSlotService {
         return DateUtils.truncate(dateTime, Calendar.DATE);
     }
 
-    private WorkStartAndEndHoursDto getWorkHoursByDate(Date date) {
+    private WorkingHoursDto getWorkHoursByDate(Date date) {
 
-        return new WorkStartAndEndHoursDto(startWorkHour, endWorkHour);
+        return new WorkingHoursDto(startWorkHour, endWorkHour);
 
 
     }

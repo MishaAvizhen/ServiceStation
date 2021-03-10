@@ -2,10 +2,11 @@ package command.impl;
 
 import command.MenuCommand;
 import entity.RepairRequest;
+import service.RepairRecordService;
 import service.RepairRequestService;
-import service.converters.RepairRecordConverterService;
-import service.converters.impl.RepairRecordConverterImpl;
+import service.converters.impl.RepairRecordConverter;
 import service.dto.RepairRecordRegistrationDto;
+import service.impl.RepairRecordServiceImpl;
 import service.impl.RepairRequestServiceImpl;
 
 import java.util.List;
@@ -13,7 +14,7 @@ import java.util.Scanner;
 
 public class CreateRepairRecordMenuCommand implements MenuCommand {
     private RepairRequestService repairRequestService = RepairRequestServiceImpl.getInstance();
-    private RepairRecordConverterService repairRecordConverterService = RepairRecordConverterImpl.getInstance();
+    private RepairRecordService repairRecordService = RepairRecordServiceImpl.getInstance();
 
     @Override
     public void execute() {
@@ -48,7 +49,7 @@ public class CreateRepairRecordMenuCommand implements MenuCommand {
                 .setWorkPrice(workPrice)
                 .setOtherNotes(otherNotes)
                 .build();
-        repairRecordConverterService.createRepairRecord(repairRecordRegistrationDto);
+        repairRecordService.registerRepairRecord(repairRecordRegistrationDto);
         System.out.println("Repair record for " + username + " was created");
 
     }

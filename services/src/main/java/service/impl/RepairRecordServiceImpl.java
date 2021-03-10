@@ -6,13 +6,14 @@ import dao.RepairRequestDao;
 import dao.impl.InMemoryRepairRecordDao;
 import dao.impl.InMemoryRepairRequestDao;
 import entity.RepairRecord;
+import entity.constants.RepairRequestStatus;
 import service.RepairRecordService;
-import service.UserService;
+import service.converters.impl.RepairRecordConverter;
+import service.dto.RepairRecordRegistrationDto;
 
 import java.util.List;
 
 public class RepairRecordServiceImpl implements RepairRecordService {
-    private UserService userService = UserServiceImpl.getInstance();
     private RepairRecordDao repairRecordDao = InMemoryRepairRecordDao.getInstance();
     private RepairRequestDao repairRequestDao = InMemoryRepairRequestDao.getInstance();
 
@@ -45,5 +46,33 @@ public class RepairRecordServiceImpl implements RepairRecordService {
 
             }
         }
+    }
+
+    @Override
+    public void registerRepairRecord(RepairRecordRegistrationDto repairRecordRegistrationDto) {
+        RepairRecordConverter repairRecordConverter = new RepairRecordConverter();
+        RepairRecord repairRecord = repairRecordConverter.convertToEntity(repairRecordRegistrationDto);
+        repairRecordDao.save(repairRecord);
+        repairRecord.getRepairRequest().setRepairRequestStatus(RepairRequestStatus.PROCESSED_STATUS);
+        repairRequestDao.save(repairRecord.getRepairRequest());
+    }
+
+    @Override
+    public void updateRepairRecord(RepairRecordRegistrationDto repairRecordRegistrationDto, RepairRecord repairRecordToUpdate) {
+        RepairRecordConverter repairRecordConverter = new RepairRecordConverter();
+        RepairRecord repairRecord = repairRecordConverter.convertToExistingEntity(repairRecordRegistrationDto, repairRecordToUpdate);
+        repairRecordDao.update(repairRecord);
+    }
+
+    @Override
+    public RepairRecord findRepairRecordByUsernameAndRepairRecordDescription(String username, String repairRecordDescription) {
+        List<RepairRecord> allRepairRecords = repairRecordService.findAllRepairRecords();
+        for (RepairRecord allRepairRecord : allRepairRecords) {
+            if (allRepairRecord.getRepairRequest().getUser().getUsername().equals(username)
+                    && allRepairRecord.getRepairRecordDescription().equals(repairRecordDescription)) {
+                return allRepairRecord;
+            }
+        }
+        return null;
     }
 }

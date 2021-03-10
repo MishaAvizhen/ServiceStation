@@ -9,6 +9,8 @@ import entity.RepairRecord;
 import entity.User;
 import entity.constants.RepairRequestStatus;
 import service.UserService;
+import service.converters.impl.UserConverter;
+import service.dto.UserRegistrationDto;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -59,6 +61,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User findUserById(Long userId) {
+        User userDaoById = userDao.findById(userId);
+        if (userDaoById == null) {
+            System.out.println("User not found");
+        } else {
+            return userDaoById;
+        }
+        return null;
+    }
+
+    @Override
     public List<User> findAllUsers() {
         return userDao.findAll();
     }
@@ -79,11 +92,27 @@ public class UserServiceImpl implements UserService {
         List<RepairRecord> repairRecordList = repairRecordDao.findAll();
         for (RepairRecord record : repairRecordList) {
             if (record.getRepairRequest().getUser().getUsername().equals(username)) {
-                sumPrice += record.getDetailPrice() + record.getWorkPrice() ;
+                sumPrice += record.getDetailPrice() + record.getWorkPrice();
 
             }
         }
         return sumPrice;
+    }
+
+    @Override
+    public void registerUser(UserRegistrationDto userRegistrationDto) {
+        UserConverter userConverter = new UserConverter();
+        User user = userConverter.convertToEntity(userRegistrationDto);
+        userDao.save(user);
+
+    }
+
+    @Override
+    public void updateUser(UserRegistrationDto userRegistrationDto, User userToUpdate) {
+        UserConverter userConverter = new UserConverter();
+        User updatedUser = userConverter.convertToExistingEntity(userRegistrationDto, userToUpdate);
+        userDao.update(updatedUser);
+
     }
 
 }

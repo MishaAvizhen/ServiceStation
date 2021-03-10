@@ -13,12 +13,17 @@ public interface UserService {
 
     User findUserByUsername(String username);
 
+    User findUserById(Long userId);
+
     List<User> findAllUsers();
 
     void deleteUserById(Long userId);
 
     Long getSumWorkPriceAndDetailPrice(Long userId);
 
+    void registerUser(UserRegistrationDto userRegistrationDto);
+
+    void updateUser(UserRegistrationDto userRegistrationDto, User userToUpdate);
 
 
 }

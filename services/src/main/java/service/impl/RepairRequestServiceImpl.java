@@ -1,16 +1,21 @@
 package service.impl;
 
 import dao.RepairRequestDao;
+import dao.UserDao;
 import dao.impl.InMemoryRepairRequestDao;
+import dao.impl.InMemoryUserDao;
 import entity.RepairRequest;
 import entity.constants.RepairRequestStatus;
 import service.RepairRequestService;
+import service.UserService;
+import service.converters.impl.RepairRequestConverter;
+import service.dto.RepairRequestRegistrationDto;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class RepairRequestServiceImpl implements RepairRequestService {
-
+    private UserService userService = UserServiceImpl.getInstance();
     private RepairRequestDao repairRequestDao = InMemoryRepairRequestDao.getInstance();
 
 
@@ -57,6 +62,17 @@ public class RepairRequestServiceImpl implements RepairRequestService {
         return repairRequestDao.findAll();
     }
 
+    @Override
+    public RepairRequest findRepairRequestByUsernameAndCarRemark(String username, String carRemark) {
+        List<RepairRequest> allRepairRequests = repairRequestService.findAllRepairRequests();
+        for (RepairRequest allRepairRequest : allRepairRequests) {
+            if (allRepairRequest.getUser().getUsername().equals(username) && allRepairRequest.getCarRemark().equals(carRemark)) {
+                return allRepairRequest;
+            }
+        }
+        return null;
+    }
+
 
     @Override
     public void deleteRepairRequestByUsernameAndRepairRequestDescription(String username, String repairRequestDescription) {
@@ -68,6 +84,21 @@ public class RepairRequestServiceImpl implements RepairRequestService {
                 repairRequestDao.deleteById(id);
             }
         }
+    }
+
+    @Override
+    public void registerRepairRequest(RepairRequestRegistrationDto repairRequestRegistrationDto) {
+        RepairRequestConverter repairRequestConverter = new RepairRequestConverter();
+        RepairRequest repairRequest = repairRequestConverter.convertToEntity(repairRequestRegistrationDto);
+        repairRequestDao.save(repairRequest);
+
+    }
+
+    @Override
+    public void updateRepairRequest(RepairRequestRegistrationDto repairRequestRegistrationDto, RepairRequest repairRequestToUpdate) {
+        RepairRequestConverter repairRequestConverter = new RepairRequestConverter();
+        RepairRequest repairRequest = repairRequestConverter.convertToExistingEntity(repairRequestRegistrationDto, repairRequestToUpdate);
+        repairRequestDao.update(repairRequest);
     }
 
 

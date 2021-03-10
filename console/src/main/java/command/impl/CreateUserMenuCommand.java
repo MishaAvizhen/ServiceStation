@@ -2,15 +2,15 @@ package command.impl;
 
 import command.MenuCommand;
 import entity.constants.Role;
-import service.converters.UserConverterService;
-import service.converters.impl.UserConverterImpl;
+import service.UserService;
 import service.dto.UserRegistrationDto;
+import service.impl.UserServiceImpl;
 
 import java.util.Scanner;
 
 public class CreateUserMenuCommand implements MenuCommand {
-    private UserConverterService userConverterService = UserConverterImpl.getInstance();
 
+    private UserService userService = UserServiceImpl.getInstance();
     @Override
     public void execute() {
         Scanner scanner = new Scanner(System.in);
@@ -24,15 +24,14 @@ public class CreateUserMenuCommand implements MenuCommand {
         String password = scanner.next();
 
         UserRegistrationDto userRegistrationDto = new UserRegistrationDto.Builder()
-
                 .setUsername(username)
                 .setPhoneNumber(phoneNumber)
                 .setEmail(email)
                 .setPassword(password)
-                .setRole(Role.ADMIN_ROLE)
+                .setRole(Role.USER_ROLE)
                 .build();
 
-        userConverterService.createUser(userRegistrationDto);
+        userService.registerUser(userRegistrationDto);
         System.out.println("User " + username + " was created");
 
     }
