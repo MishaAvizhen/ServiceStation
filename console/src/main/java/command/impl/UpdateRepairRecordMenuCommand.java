@@ -16,7 +16,7 @@ public class UpdateRepairRecordMenuCommand implements MenuCommand {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Enter username: ");
         String username = scanner.next();
-        System.out.println("Enter repair record description to update: ");
+        System.out.println("Enter repair record description: ");
         String repairRecordDescription = scanner.next();
         RepairRecord recordDescriptionToUpdate = repairRecordService.findRepairRecordByUsernameAndRepairRecordDescription(username, repairRecordDescription);
         if (recordDescriptionToUpdate != null) {
