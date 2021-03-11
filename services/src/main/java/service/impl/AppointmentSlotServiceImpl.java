@@ -1,7 +1,7 @@
 package service.impl;
 
 import dao.AppointmentDao;
-import dao.impl.InMemoryAppointmentDao;
+import dao.BeanManager;
 import entity.Appointment;
 import entity.User;
 import entity.constants.Role;
@@ -17,7 +17,7 @@ import java.util.*;
 
 public class AppointmentSlotServiceImpl implements AppointmentSlotService {
     private UserService userService = UserServiceImpl.getInstance();
-    private AppointmentDao appointmentDao = InMemoryAppointmentDao.getInstance();
+    private AppointmentDao appointmentDao = BeanManager.getInstance().getAppointment();
     private final int startWorkHour = 8;
     private final int endWorkHour = 20;
 

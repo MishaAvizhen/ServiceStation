@@ -1,10 +1,9 @@
 package service.impl;
 
 
+import dao.BeanManager;
 import dao.RepairRecordDao;
 import dao.RepairRequestDao;
-import dao.impl.InMemoryRepairRecordDao;
-import dao.impl.InMemoryRepairRequestDao;
 import entity.RepairRecord;
 import entity.constants.RepairRequestStatus;
 import service.RepairRecordService;
@@ -14,8 +13,8 @@ import service.dto.RepairRecordRegistrationDto;
 import java.util.List;
 
 public class RepairRecordServiceImpl implements RepairRecordService {
-    private RepairRecordDao repairRecordDao = InMemoryRepairRecordDao.getInstance();
-    private RepairRequestDao repairRequestDao = InMemoryRepairRequestDao.getInstance();
+    private RepairRecordDao repairRecordDao = BeanManager.getInstance().getRepairRecord();
+    private RepairRequestDao repairRequestDao = BeanManager.getInstance().getRepairRequest();
 
     private static RepairRecordServiceImpl repairRecordService;
 

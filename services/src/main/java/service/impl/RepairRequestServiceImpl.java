@@ -1,5 +1,6 @@
 package service.impl;
 
+import dao.BeanManager;
 import dao.RepairRequestDao;
 import dao.UserDao;
 import dao.impl.InMemoryRepairRequestDao;
@@ -15,8 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RepairRequestServiceImpl implements RepairRequestService {
-    private UserService userService = UserServiceImpl.getInstance();
-    private RepairRequestDao repairRequestDao = InMemoryRepairRequestDao.getInstance();
+    private RepairRequestDao repairRequestDao = BeanManager.getInstance().getRepairRequest();
 
 
     private static RepairRequestServiceImpl repairRequestService;

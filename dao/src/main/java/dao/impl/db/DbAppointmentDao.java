@@ -9,7 +9,10 @@ import entity.constants.SlotStatus;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class DbAppointmentDao implements AppointmentDao {
@@ -32,7 +35,7 @@ public class DbAppointmentDao implements AppointmentDao {
     public List<Appointment> findAll() {
         String sqlQuery = "SELECT appointment.*, users.id " +
                 " FROM appointment, users " +
-                " WHERE appointment.user_id = users.id";
+                " WHERE appointment.client_id = users.id";
         return jdbcTemplate.executeSelect(sqlQuery, resultSet -> {
             List<Appointment> appointmentList = new ArrayList<>();
             while (resultSet.next()) {
@@ -47,8 +50,8 @@ public class DbAppointmentDao implements AppointmentDao {
         Appointment appointment = new Appointment();
         appointment.setId(resultSet.getLong("id"));
         appointment.setSlotStatus(SlotStatus.defineSlotStatusByName(resultSet.getString("slot_status")));
-        appointment.setStartDate(resultSet.getDate("start_date"));
-        appointment.setEndDate(resultSet.getDate("end_date"));
+        appointment.setStartDate(resultSet.getTimestamp("start_date", Calendar.getInstance()));
+        appointment.setEndDate(resultSet.getTimestamp("end_date", Calendar.getInstance()));
         appointment.setNotes(resultSet.getString("notes"));
         appointment.setClient(dbUserDao.findById(resultSet.getLong("client_id")));
         appointment.setMaster(dbUserDao.findById(resultSet.getLong("master_id")));
@@ -72,37 +75,38 @@ public class DbAppointmentDao implements AppointmentDao {
         });
     }
 
-        @Override
-        public void deleteById (Long id){
-            String sqlQuery = "DELETE FROM appointment WHERE id = " + id;
-            jdbcTemplate.executeUpdate(sqlQuery);
-        }
-
-        @Override
-        public Appointment update (Appointment entity){
-            String sqlQuery = "UPDATE appointment " +
-                    "SET slot_status = '" + entity.getSlotStatus() +
-                    "', start_date = '" + entity.getStartDate() +
-                    "', end_date = '" + entity.getEndDate() +
-                    "', notes = '" + entity.getNotes() +
-                    "', client_id = '" + entity.getClient().getId() +
-                    "', master_id = '" + entity.getMaster().getId() +
-                    "' WHERE id = " + entity.getId();
-            jdbcTemplate.executeUpdate(sqlQuery);
-            return entity;
-        }
-
-        @Override
-        public Appointment save (Appointment entity){
-            String insertAppointmentSqlQuery = "INSERT INTO `appointment` " +
-                    "VALUES (null, '" + entity.getSlotStatus() + "', '"
-                    + entity.getStartDate() + "', '"
-                    + entity.getEndDate() + "', '"
-                    + entity.getNotes() + "', '"
-                    + entity.getClient().getId() + "', '"
-                    + entity.getMaster().getId() + "')";
-            Long id = jdbcTemplate.executeInsertAndReturnGeneratedId(insertAppointmentSqlQuery);
-            entity.setId(id);
-            return entity;
-        }
+    @Override
+    public void deleteById(Long id) {
+        String sqlQuery = "DELETE FROM appointment WHERE id = " + id;
+        jdbcTemplate.executeUpdate(sqlQuery);
     }
+
+    @Override
+    public Appointment update(Appointment entity) {
+        String sqlQuery = "UPDATE appointment " +
+                "SET slot_status = '" + entity.getSlotStatus() +
+                "', start_date = '" + entity.getStartDate() +
+                "', end_date = '" + entity.getEndDate() +
+                "', notes = '" + entity.getNotes() +
+                "', client_id = '" + entity.getClient().getId() +
+                "', master_id = '" + entity.getMaster().getId() +
+                "' WHERE id = " + entity.getId();
+        jdbcTemplate.executeUpdate(sqlQuery);
+        return entity;
+    }
+
+    @Override
+    public Appointment save(Appointment entity) {
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        String insertAppointmentSqlQuery = "INSERT INTO `appointment` " +
+                "VALUES (null, '" + entity.getSlotStatus() + "', '"
+                + dateFormat.format(entity.getStartDate()) + "', '"
+                + dateFormat.format(entity.getEndDate()) + "', '"
+                + entity.getNotes() + "', '"
+                + entity.getClient().getId() + "', '"
+                + entity.getMaster().getId() + "')";
+        Long id = jdbcTemplate.executeInsertAndReturnGeneratedId(insertAppointmentSqlQuery);
+        entity.setId(id);
+        return entity;
+    }
+}

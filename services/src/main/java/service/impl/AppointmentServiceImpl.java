@@ -1,6 +1,7 @@
 package service.impl;
 
 import dao.AppointmentDao;
+import dao.BeanManager;
 import dao.UserDao;
 import dao.impl.InMemoryAppointmentDao;
 import dao.impl.InMemoryUserDao;
@@ -16,8 +17,8 @@ import java.util.Date;
 import java.util.List;
 
 public class AppointmentServiceImpl implements AppointmentService {
-    private AppointmentDao appointmentDao = InMemoryAppointmentDao.getInstance();
-    private UserDao userDao = InMemoryUserDao.getInstance();
+    private AppointmentDao appointmentDao = BeanManager.getInstance().getAppointment();
+    private UserDao userDao = BeanManager.getInstance().getUserDao();
 
     private static AppointmentServiceImpl appointmentService;
 

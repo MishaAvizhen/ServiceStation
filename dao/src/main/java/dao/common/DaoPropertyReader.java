@@ -44,5 +44,9 @@ public class DaoPropertyReader {
     public boolean shouldRunGenerateTestDataSql() {
         return Boolean.parseBoolean(getPropertyValue("run.generate.test.data.sql"));
     }
+    public boolean useFileMemory() {
+        return Boolean.parseBoolean(getPropertyValue("use.memory.file"));
+    }
+
 }
 
