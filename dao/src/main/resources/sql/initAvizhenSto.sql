@@ -30,13 +30,12 @@ CREATE TABLE `appointment` (
   `notes` varchar(255) DEFAULT NULL,
   `client_id` int(11) DEFAULT NULL,
   `master_id` int(11) DEFAULT NULL,
-
   PRIMARY KEY (`id`),
-  KEY `user_id_app_fk_idx` (`user_id`),
-  CONSTRAINT `client_id_app_fk` FOREIGN KEY (`client_id`) REFERENCES `users` (`id`)
-  CONSTRAINT `master_id_app_fk` FOREIGN KEY (`master_id`) REFERENCES `users` (`id`)
-  ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  KEY `client_id_app_fk` (`client_id`),
+  KEY `master_id_app_fk` (`master_id`),
+  CONSTRAINT `client_id_app_fk` FOREIGN KEY (`client_id`) REFERENCES `users` (`id`),
+  CONSTRAINT `master_id_app_fk` FOREIGN KEY (`master_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -45,6 +44,8 @@ CREATE TABLE `appointment` (
 
 LOCK TABLES `appointment` WRITE;
 /*!40000 ALTER TABLE `appointment` DISABLE KEYS */;
+INSERT INTO `appointment` VALUES
+ (1,'BUSY_STATUS','2021-03-17 10:00:00','2021-03-17 11:00:00','app_notes',3,2);
 /*!40000 ALTER TABLE `appointment` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -65,12 +66,20 @@ CREATE TABLE `repair_record` (
   PRIMARY KEY (`id`),
   KEY `id_idx` (`repair_request_id`),
   CONSTRAINT `repair_request_id_fk` FOREIGN KEY (`repair_request_id`) REFERENCES `repair_request` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `repair_record`
 --
+
+LOCK TABLES `repair_record` WRITE;
+/*!40000 ALTER TABLE `repair_record` DISABLE KEYS */;
+INSERT INTO `repair_record` VALUES
+(1,'filter',100,120,'record_notes',1);
+/*!40000 ALTER TABLE `repair_record` ENABLE KEYS */;
+UNLOCK TABLES;
+
 --
 -- Table structure for table `repair_request`
 --
@@ -88,12 +97,20 @@ CREATE TABLE `repair_request` (
   PRIMARY KEY (`id`),
   KEY `user_id_idx` (`user_id`),
   CONSTRAINT `user_id_fk` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `repair_request`
 --
+
+LOCK TABLES `repair_request` WRITE;
+/*!40000 ALTER TABLE `repair_request` DISABLE KEYS */;
+INSERT INTO `repair_request` VALUES
+ (1,'2021-02-17 00:00:00','IN_PROGRESS_STATUS','bmw','request_descr',3);
+/*!40000 ALTER TABLE `repair_request` ENABLE KEYS */;
+UNLOCK TABLES;
+
 --
 -- Table structure for table `roles`
 --
@@ -105,7 +122,7 @@ CREATE TABLE `roles` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(100) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -114,7 +131,11 @@ CREATE TABLE `roles` (
 
 LOCK TABLES `roles` WRITE;
 /*!40000 ALTER TABLE `roles` DISABLE KEYS */;
-INSERT INTO `roles` VALUES (1,'ROLE_USER'),(2,'ROLE_ADMIN'),(3,'ROLE_MASTER'),(4,'ROLE_USER');
+INSERT INTO `roles` VALUES
+(1,'ROLE_USER'),
+(2,'ROLE_ADMIN'),
+(3,'ROLE_MASTER'),
+(4,'GUEST_ROLE');
 /*!40000 ALTER TABLE `roles` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -132,8 +153,8 @@ CREATE TABLE `user_roles` (
   KEY `user_id_fk_idx` (`user_id`),
   KEY `user_roles_role_id_fk_idx` (`role_id`),
   KEY `user_roles_user_id_fk_idx` (`user_id`),
-  CONSTRAINT `user_roles_role_id_fk` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE,
-  CONSTRAINT `user_roles_user_id_fk` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `user_roles_role_id_fk_new` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `user_roles_user_id_fk_new` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -143,7 +164,7 @@ CREATE TABLE `user_roles` (
 
 LOCK TABLES `user_roles` WRITE;
 /*!40000 ALTER TABLE `user_roles` DISABLE KEYS */;
-INSERT INTO `user_roles` VALUES (1,2);
+INSERT INTO `user_roles` VALUES (1,2),(2,3),(3,1);
 /*!40000 ALTER TABLE `user_roles` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -161,7 +182,7 @@ CREATE TABLE `users` (
   `email` varchar(45) DEFAULT NULL,
   `password` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -170,7 +191,10 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'admin','admin','admin@mail.ru','$2a$11$uSXS6rLJ91WjgOHhEGDx..VGs7MkKZV68Lv5r1uwFu7HgtRn3dcXG');
+INSERT INTO `users` VALUES
+(1,'admin','+375291111111','admin@mail.ru','1'),
+(2,'master','+375292222222','master@mail.ru','1'),
+(3,'user','+375293333333','user@mail.ru','1');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -183,4 +207,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-03-05 12:07:41
+-- Dump completed on 2021-03-11 10:28:35

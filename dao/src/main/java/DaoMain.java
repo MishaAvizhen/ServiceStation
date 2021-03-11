@@ -1,4 +1,5 @@
 import dao.AppointmentDao;
+import dao.RepairRecordDao;
 import dao.UserDao;
 import dao.impl.db.DbAppointmentDao;
 import dao.impl.db.DbRepairRecordDao;
@@ -18,11 +19,9 @@ import java.util.List;
 public class DaoMain {
 
     public static void main(String[] args) {
-        UserDao userDao = DbUserDao.getInstance();
-        List<User> all = userDao.findAll();
+        RepairRecordDao repairRecordDao = DbRepairRecordDao.getInstance();
+        List<RepairRecord> all = repairRecordDao.findAll();
         System.out.println(all);
-
-
 
     }
 }
