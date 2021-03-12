@@ -1,14 +1,16 @@
 package service.converters.impl;
 
-import dao.RepairRequestDao;
-import dao.impl.InMemoryRepairRequestDao;
 import entity.RepairRecord;
 import entity.RepairRequest;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import repository.RepairRequestRepository;
 import service.converters.Converter;
 import service.dto.RepairRecordRegistrationDto;
-
+@Service
 public class RepairRecordConverter implements Converter<RepairRecord, RepairRecordRegistrationDto> {
-    private RepairRequestDao repairRequestDao = InMemoryRepairRequestDao.getInstance();
+    @Autowired
+    private RepairRequestRepository repairRequestRepository;
 
     public RepairRecordConverter() {
     }
@@ -23,7 +25,7 @@ public class RepairRecordConverter implements Converter<RepairRecord, RepairReco
 
     @Override
     public RepairRecord convertToExistingEntity(RepairRecordRegistrationDto dto, RepairRecord entity) {
-        RepairRequest repairRequestById = repairRequestDao.findById(dto.getRepairRequestId());
+        RepairRequest repairRequestById = repairRequestRepository.findOne(dto.getRepairRequestId());
         entity.setRepairRequest(repairRequestById);
         entity.setOtherNotes(dto.getOtherNotes());
         entity.setRepairRecordDescription(dto.getRepairRecordDescription());

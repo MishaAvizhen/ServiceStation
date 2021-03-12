@@ -1,47 +1,41 @@
 package service.impl;
 
 
-import dao.BeanManager;
-import dao.RepairRecordDao;
-import dao.RepairRequestDao;
 import entity.RepairRecord;
 import entity.constants.RepairRequestStatus;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import repository.RepairRecordRepository;
+import repository.RepairRequestRepository;
 import service.RepairRecordService;
 import service.converters.impl.RepairRecordConverter;
 import service.dto.RepairRecordRegistrationDto;
 
 import java.util.List;
+@Service
 
 public class RepairRecordServiceImpl implements RepairRecordService {
-    private RepairRecordDao repairRecordDao = BeanManager.getInstance().getRepairRecord();
-    private RepairRequestDao repairRequestDao = BeanManager.getInstance().getRepairRequest();
+    @Autowired
+    private RepairRecordRepository repairRecordRepository;
+    @Autowired
+    private RepairRequestRepository repairRequestRepository;
 
-    private static RepairRecordServiceImpl repairRecordService;
-
-    private RepairRecordServiceImpl() {
-    }
-
-    public static RepairRecordServiceImpl getInstance() {
-        if (repairRecordService == null) {
-            repairRecordService = new RepairRecordServiceImpl();
-        }
-        return repairRecordService;
-    }
 
     @Override
     public List<RepairRecord> findAllRepairRecords() {
-        return repairRecordDao.findAll();
+        return repairRecordRepository.findAll();
     }
 
 
     @Override
     public void deleteRepairRecordByUsernameAndRepairRecordDescription(String username, String repairRecordDescription) {
-        List<RepairRecord> allRepairRecords = repairRecordService.findAllRepairRecords();
+        List<RepairRecord> allRepairRecords = repairRecordRepository.findAll();
         for (RepairRecord allRepairRecord : allRepairRecords) {
             Long id = allRepairRecord.getId();
             if (allRepairRecord.getRepairRequest().getUser().getUsername().equals(username) &&
                     allRepairRecord.getRepairRecordDescription().equals(repairRecordDescription)) {
-                repairRecordDao.deleteById(id);
+                repairRecordRepository.delete(id);
 
             }
         }
@@ -51,21 +45,21 @@ public class RepairRecordServiceImpl implements RepairRecordService {
     public void registerRepairRecord(RepairRecordRegistrationDto repairRecordRegistrationDto) {
         RepairRecordConverter repairRecordConverter = new RepairRecordConverter();
         RepairRecord repairRecord = repairRecordConverter.convertToEntity(repairRecordRegistrationDto);
-        repairRecordDao.save(repairRecord);
+        repairRecordRepository.save(repairRecord);
         repairRecord.getRepairRequest().setRepairRequestStatus(RepairRequestStatus.PROCESSED_STATUS);
-        repairRequestDao.save(repairRecord.getRepairRequest());
+        repairRequestRepository.save(repairRecord.getRepairRequest());
     }
 
     @Override
     public void updateRepairRecord(RepairRecordRegistrationDto repairRecordRegistrationDto, RepairRecord repairRecordToUpdate) {
         RepairRecordConverter repairRecordConverter = new RepairRecordConverter();
         RepairRecord repairRecord = repairRecordConverter.convertToExistingEntity(repairRecordRegistrationDto, repairRecordToUpdate);
-        repairRecordDao.update(repairRecord);
+        repairRecordRepository.saveAndFlush(repairRecord);
     }
 
     @Override
     public RepairRecord findRepairRecordByUsernameAndRepairRecordDescription(String username, String repairRecordDescription) {
-        List<RepairRecord> allRepairRecords = repairRecordService.findAllRepairRecords();
+        List<RepairRecord> allRepairRecords = repairRecordRepository.findAll();
         for (RepairRecord allRepairRecord : allRepairRecords) {
             if (allRepairRecord.getRepairRequest().getUser().getUsername().equals(username)
                     && allRepairRecord.getRepairRecordDescription().equals(repairRecordDescription)) {

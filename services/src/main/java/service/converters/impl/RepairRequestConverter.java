@@ -2,13 +2,16 @@ package service.converters.impl;
 
 import entity.RepairRequest;
 import entity.User;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import service.UserService;
 import service.converters.Converter;
 import service.dto.RepairRequestRegistrationDto;
 import service.impl.UserServiceImpl;
-
+@Service
 public class RepairRequestConverter implements Converter<RepairRequest, RepairRequestRegistrationDto> {
-    private UserService userService = UserServiceImpl.getInstance();
+    @Autowired
+    private UserService userService;
 
     public RepairRequestConverter() {
     }

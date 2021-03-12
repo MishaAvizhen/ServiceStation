@@ -1,41 +1,28 @@
 package service.impl;
 
-import dao.BeanManager;
-import dao.RepairRequestDao;
-import dao.UserDao;
-import dao.impl.InMemoryRepairRequestDao;
-import dao.impl.InMemoryUserDao;
 import entity.RepairRequest;
 import entity.constants.RepairRequestStatus;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import repository.RepairRequestRepository;
 import service.RepairRequestService;
-import service.UserService;
 import service.converters.impl.RepairRequestConverter;
 import service.dto.RepairRequestRegistrationDto;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Service
+
 public class RepairRequestServiceImpl implements RepairRequestService {
-    private RepairRequestDao repairRequestDao = BeanManager.getInstance().getRepairRequest();
-
-
-    private static RepairRequestServiceImpl repairRequestService;
-
-    private RepairRequestServiceImpl() {
-    }
-
-    public static RepairRequestServiceImpl getInstance() {
-        if (repairRequestService == null) {
-            repairRequestService = new RepairRequestServiceImpl();
-
-        }
-        return repairRequestService;
-    }
+    @Autowired
+    private RepairRequestRepository repairRequestRepository;
 
     @Override
     public List<RepairRequest> getListOfActiveRepairRequestsOfUser(String username) {
         List<RepairRequest> resultList = new ArrayList<>();
-        List<RepairRequest> allRepairRequests = repairRequestDao.findAll();
+        List<RepairRequest> allRepairRequests = repairRequestRepository.findAll();
         for (RepairRequest request : allRepairRequests) {
             if (request.getUser().getUsername().equals(username) &&
                     request.getRepairRequestStatus().equals(RepairRequestStatus.IN_PROGRESS_STATUS)) {
@@ -48,7 +35,7 @@ public class RepairRequestServiceImpl implements RepairRequestService {
     @Override
     public List<RepairRequest> getListOfAllActiveRepairRequests() {
         List<RepairRequest> resultList = new ArrayList<>();
-        List<RepairRequest> allRepairRequests = repairRequestDao.findAll();
+        List<RepairRequest> allRepairRequests = repairRequestRepository.findAll();
         for (RepairRequest request : allRepairRequests) {
             if (request.getRepairRequestStatus().equals(RepairRequestStatus.IN_PROGRESS_STATUS)) {
                 resultList.add(request);
@@ -59,12 +46,12 @@ public class RepairRequestServiceImpl implements RepairRequestService {
 
     @Override
     public List<RepairRequest> findAllRepairRequests() {
-        return repairRequestDao.findAll();
+        return repairRequestRepository.findAll();
     }
 
     @Override
     public RepairRequest findRepairRequestByUsernameAndCarRemark(String username, String carRemark) {
-        List<RepairRequest> allRepairRequests = repairRequestService.findAllRepairRequests();
+        List<RepairRequest> allRepairRequests = repairRequestRepository.findAll();
         for (RepairRequest allRepairRequest : allRepairRequests) {
             if (allRepairRequest.getUser().getUsername().equals(username) && allRepairRequest.getCarRemark().equals(carRemark)) {
                 return allRepairRequest;
@@ -76,12 +63,12 @@ public class RepairRequestServiceImpl implements RepairRequestService {
 
     @Override
     public void deleteRepairRequestByUsernameAndRepairRequestDescription(String username, String repairRequestDescription) {
-        List<RepairRequest> allRepairRequests = repairRequestService.findAllRepairRequests();
+        List<RepairRequest> allRepairRequests = repairRequestRepository.findAll();
         for (RepairRequest request : allRepairRequests) {
             Long id = request.getId();
             if (request.getUser().getUsername().equals(username) &&
                     request.getRepairRequestDescription().equals(repairRequestDescription)) {
-                repairRequestDao.deleteById(id);
+                repairRequestRepository.delete(id);
             }
         }
     }
@@ -90,7 +77,7 @@ public class RepairRequestServiceImpl implements RepairRequestService {
     public void registerRepairRequest(RepairRequestRegistrationDto repairRequestRegistrationDto) {
         RepairRequestConverter repairRequestConverter = new RepairRequestConverter();
         RepairRequest repairRequest = repairRequestConverter.convertToEntity(repairRequestRegistrationDto);
-        repairRequestDao.save(repairRequest);
+        repairRequestRepository.save(repairRequest);
 
     }
 
@@ -98,7 +85,7 @@ public class RepairRequestServiceImpl implements RepairRequestService {
     public void updateRepairRequest(RepairRequestRegistrationDto repairRequestRegistrationDto, RepairRequest repairRequestToUpdate) {
         RepairRequestConverter repairRequestConverter = new RepairRequestConverter();
         RepairRequest repairRequest = repairRequestConverter.convertToExistingEntity(repairRequestRegistrationDto, repairRequestToUpdate);
-        repairRequestDao.update(repairRequest);
+        repairRequestRepository.saveAndFlush(repairRequest);
     }
 
 
