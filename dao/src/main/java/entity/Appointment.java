@@ -3,14 +3,26 @@ package entity;
 
 import entity.constants.SlotStatus;
 
+import javax.persistence.*;
 import java.util.Date;
 
+@Entity
+@Table(name = " appointment")
 public class Appointment extends BaseEntity {
+    @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.MERGE})
+    @JoinColumn(name = "client_id")
     private User client;
+    @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.MERGE})
+    @JoinColumn(name = "master_id")
     private User master;
+    @Column(name = "slot_status")
+    @Enumerated(EnumType.STRING)
     private SlotStatus slotStatus;
+    @Column(name = "start_date")
     private Date startDate;
+    @Column(name = "end_date")
     private Date endDate;
+    @Column(name = "notes")
     private String notes;
 
     public Appointment() {
@@ -29,48 +41,54 @@ public class Appointment extends BaseEntity {
         return client;
     }
 
-    public void setClient(User client) {
+    public Appointment setClient(User client) {
         this.client = client;
+        return this;
     }
 
     public User getMaster() {
         return master;
     }
 
-    public void setMaster(User master) {
+    public Appointment setMaster(User master) {
         this.master = master;
+        return this;
     }
 
     public SlotStatus getSlotStatus() {
         return slotStatus;
     }
 
-    public void setSlotStatus(SlotStatus slotStatus) {
+    public Appointment setSlotStatus(SlotStatus slotStatus) {
         this.slotStatus = slotStatus;
+        return this;
     }
 
     public Date getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(Date startDate) {
+    public Appointment setStartDate(Date startDate) {
         this.startDate = startDate;
+        return this;
     }
 
     public Date getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(Date endDate) {
+    public Appointment setEndDate(Date endDate) {
         this.endDate = endDate;
+        return this;
     }
 
     public String getNotes() {
         return notes;
     }
 
-    public void setNotes(String notes) {
+    public Appointment setNotes(String notes) {
         this.notes = notes;
+        return this;
     }
 
     @Override

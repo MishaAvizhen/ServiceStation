@@ -1,27 +1,37 @@
-import dao.AppointmentDao;
-import dao.RepairRecordDao;
-import dao.UserDao;
-import dao.impl.db.DbAppointmentDao;
-import dao.impl.db.DbRepairRecordDao;
-import dao.impl.db.DbRepairRequestDao;
-import dao.impl.db.DbUserDao;
-import db.JdbcInit;
-import db.JdbcTemplate;
-import entity.Appointment;
-import entity.RepairRecord;
-import entity.RepairRequest;
-import entity.User;
-import entity.constants.RepairRequestStatus;
-import entity.constants.SlotStatus;
-
-import java.util.List;
+import config.DaoConfig;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import repository.AppointmentRepository;
+import repository.RepairRecordRepository;
+import repository.RepairRequestRepository;
+import repository.UserRepository;
 
 public class DaoMain {
 
     public static void main(String[] args) {
-        RepairRecordDao repairRecordDao = DbRepairRecordDao.getInstance();
-        List<RepairRecord> all = repairRecordDao.findAll();
-        System.out.println(all);
+        ApplicationContext context =
+                new AnnotationConfigApplicationContext(DaoConfig.class);
+        UserRepository userRepository = context.getBean(UserRepository.class);
+        RepairRequestRepository repairRequestRepository = (RepairRequestRepository) context.getBean("boom");
+        RepairRecordRepository repairRecordRepository = context.getBean(RepairRecordRepository.class, "record");
+        AppointmentRepository appointmentRepository = context.getBean(AppointmentRepository.class);
+
+        System.out.println(userRepository.findByUsername("sasha"));
+        System.out.println("-----");
+        System.out.println(repairRequestRepository.findAll());
+
+        System.out.println("-----");
+        System.out.println(repairRecordRepository.findAll());
+
+        System.out.println("-----");
+        System.out.println(appointmentRepository.findAll());
+
+
+//        String[] beanDefinitionNames = context.getBeanDefinitionNames();
+//        for (String beanDefinitionName : beanDefinitionNames) {
+//            System.out.println(beanDefinitionName);
+//        }
+
 
     }
 }
