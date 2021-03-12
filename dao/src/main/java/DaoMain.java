@@ -12,8 +12,8 @@ public class DaoMain {
         ApplicationContext context =
                 new AnnotationConfigApplicationContext(DaoConfig.class);
         UserRepository userRepository = context.getBean(UserRepository.class);
-        RepairRequestRepository repairRequestRepository = (RepairRequestRepository) context.getBean("boom");
-        RepairRecordRepository repairRecordRepository = context.getBean(RepairRecordRepository.class, "record");
+        RepairRequestRepository repairRequestRepository = context.getBean(RepairRequestRepository.class);
+        RepairRecordRepository repairRecordRepository = context.getBean(RepairRecordRepository.class);
         AppointmentRepository appointmentRepository = context.getBean(AppointmentRepository.class);
 
         System.out.println(userRepository.findByUsername("sasha"));
