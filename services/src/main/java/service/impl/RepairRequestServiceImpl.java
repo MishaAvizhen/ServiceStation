@@ -4,7 +4,6 @@ import entity.RepairRequest;
 import entity.constants.RepairRequestStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import repository.RepairRequestRepository;
 import service.RepairRequestService;
 import service.converters.impl.RepairRequestConverter;
@@ -14,10 +13,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-
 public class RepairRequestServiceImpl implements RepairRequestService {
     @Autowired
     private RepairRequestRepository repairRequestRepository;
+
+    @Autowired
+    private RepairRequestConverter repairRequestConverter;
 
     @Override
     public List<RepairRequest> getListOfActiveRepairRequestsOfUser(String username) {
@@ -75,7 +76,6 @@ public class RepairRequestServiceImpl implements RepairRequestService {
 
     @Override
     public void registerRepairRequest(RepairRequestRegistrationDto repairRequestRegistrationDto) {
-        RepairRequestConverter repairRequestConverter = new RepairRequestConverter();
         RepairRequest repairRequest = repairRequestConverter.convertToEntity(repairRequestRegistrationDto);
         repairRequestRepository.save(repairRequest);
 
@@ -83,9 +83,8 @@ public class RepairRequestServiceImpl implements RepairRequestService {
 
     @Override
     public void updateRepairRequest(RepairRequestRegistrationDto repairRequestRegistrationDto, RepairRequest repairRequestToUpdate) {
-        RepairRequestConverter repairRequestConverter = new RepairRequestConverter();
         RepairRequest repairRequest = repairRequestConverter.convertToExistingEntity(repairRequestRegistrationDto, repairRequestToUpdate);
-        repairRequestRepository.saveAndFlush(repairRequest);
+        repairRequestRepository.save(repairRequest);
     }
 
 

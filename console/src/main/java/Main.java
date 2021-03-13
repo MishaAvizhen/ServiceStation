@@ -1,24 +1,24 @@
-import dao.common.impl.BackUpablesManager;
-import db.JdbcInit;
-import db.JdbcTemplate;
+import config.ConsoleConfig;
+import config.DaoConfig;
+import config.ServiceConfig;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import repository.UserRepository;
 import ui.menu.ConsoleMenu;
-
-import java.sql.SQLException;
 
 public class Main {
     public static void main(String[] args) {
 
-        BackUpablesManager backUpablesManager = new BackUpablesManager();
-        backUpablesManager.readFromFile();
-        try {
-            ConsoleMenu consoleMenu = new ConsoleMenu();
-            consoleMenu.initMenuConsole();
-        } finally {
-            backUpablesManager.writeToFile();
+        ApplicationContext context =
+                new AnnotationConfigApplicationContext(DaoConfig.class, ServiceConfig.class, ConsoleConfig.class);
+        ConsoleMenu bean = context.getBean(ConsoleMenu.class);
+
+        bean.initMenuConsole();
+
+        String[] beanDefinitionNames = context.getBeanDefinitionNames();
+        for (String beanDefinitionName : beanDefinitionNames) {
+            System.out.println(beanDefinitionName);
         }
-
-
-
 
     }
 }

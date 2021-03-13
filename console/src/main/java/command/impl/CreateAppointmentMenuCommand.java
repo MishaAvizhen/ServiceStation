@@ -2,13 +2,12 @@ package command.impl;
 
 import command.MenuCommand;
 import entity.User;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import service.AppointmentService;
 import service.AppointmentSlotService;
 import service.UserService;
 import service.dto.AppointmentSlotDto;
-import service.impl.AppointmentServiceImpl;
-import service.impl.AppointmentSlotServiceImpl;
-import service.impl.UserServiceImpl;
 
 import java.util.Date;
 import java.util.List;
@@ -16,10 +15,14 @@ import java.util.Scanner;
 
 import static command.impl.CommonMethods.getDate;
 
+@Component
 public class CreateAppointmentMenuCommand implements MenuCommand {
-    private AppointmentSlotService appointmentSlotService = new AppointmentSlotServiceImpl();
-    private UserService userService = UserServiceImpl.getInstance();
-    private AppointmentService appointmentService = AppointmentServiceImpl.getInstance();
+    @Autowired
+    private AppointmentSlotService appointmentSlotService;
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private AppointmentService appointmentService;
 
     public CreateAppointmentMenuCommand() {
     }
@@ -52,6 +55,11 @@ public class CreateAppointmentMenuCommand implements MenuCommand {
         appointmentService.createAppointment(appointmentSlotDto, userByUsername.getId());
         System.out.println("Appointment to time:" + appointmentSlotDto.getStartDate() + " - " + appointmentSlotDto.getEndDate() +
                 " was created");
+    }
+
+    @Override
+    public int getHandledMenuNumber() {
+        return 5;
     }
 
 

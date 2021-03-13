@@ -2,15 +2,18 @@ package command.impl;
 
 import command.MenuCommand;
 import entity.User;
-import entity.constants.Role;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import service.UserService;
 import service.dto.UserRegistrationDto;
-import service.impl.UserServiceImpl;
 
 import java.util.Scanner;
 
+@Component
 public class UpdateUserMenuCommand implements MenuCommand {
-    private UserService userService = UserServiceImpl.getInstance();
+    @Autowired
+    private UserService userService;
+
     @Override
     public void execute() {
         System.out.println("Enter username:");
@@ -40,5 +43,10 @@ public class UpdateUserMenuCommand implements MenuCommand {
             System.out.println("For username " + username + " user not found!");
         }
 
+    }
+
+    @Override
+    public int getHandledMenuNumber() {
+        return 14;
     }
 }

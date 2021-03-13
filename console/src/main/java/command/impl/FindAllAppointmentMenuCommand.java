@@ -2,13 +2,16 @@ package command.impl;
 
 import command.MenuCommand;
 import entity.Appointment;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import service.AppointmentService;
-import service.impl.AppointmentServiceImpl;
 
 import java.util.List;
 
+@Component
 public class FindAllAppointmentMenuCommand implements MenuCommand {
-    private AppointmentService appointmentService = AppointmentServiceImpl.getInstance();
+    @Autowired
+    private AppointmentService appointmentService;
 
     @Override
     public void execute() {
@@ -19,5 +22,10 @@ public class FindAllAppointmentMenuCommand implements MenuCommand {
             System.out.println("Appointment not found");
 
         }
+    }
+
+    @Override
+    public int getHandledMenuNumber() {
+        return 6;
     }
 }

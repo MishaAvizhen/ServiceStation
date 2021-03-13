@@ -2,10 +2,13 @@ import config.ServiceConfig;
 import entity.Appointment;
 import entity.RepairRecord;
 import entity.RepairRequest;
+import entity.constants.RepairRequestStatus;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import service.*;
+import service.dto.RepairRequestRegistrationDto;
 
+import java.util.Date;
 import java.util.List;
 
 public class ServicesMain {

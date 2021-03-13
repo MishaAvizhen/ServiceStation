@@ -20,6 +20,8 @@ public class RepairRecordServiceImpl implements RepairRecordService {
     private RepairRecordRepository repairRecordRepository;
     @Autowired
     private RepairRequestRepository repairRequestRepository;
+    @Autowired
+    private RepairRecordConverter repairRecordConverter;
 
 
     @Override
@@ -43,7 +45,6 @@ public class RepairRecordServiceImpl implements RepairRecordService {
 
     @Override
     public void registerRepairRecord(RepairRecordRegistrationDto repairRecordRegistrationDto) {
-        RepairRecordConverter repairRecordConverter = new RepairRecordConverter();
         RepairRecord repairRecord = repairRecordConverter.convertToEntity(repairRecordRegistrationDto);
         repairRecordRepository.save(repairRecord);
         repairRecord.getRepairRequest().setRepairRequestStatus(RepairRequestStatus.PROCESSED_STATUS);
@@ -52,7 +53,6 @@ public class RepairRecordServiceImpl implements RepairRecordService {
 
     @Override
     public void updateRepairRecord(RepairRecordRegistrationDto repairRecordRegistrationDto, RepairRecord repairRecordToUpdate) {
-        RepairRecordConverter repairRecordConverter = new RepairRecordConverter();
         RepairRecord repairRecord = repairRecordConverter.convertToExistingEntity(repairRecordRegistrationDto, repairRecordToUpdate);
         repairRecordRepository.saveAndFlush(repairRecord);
     }

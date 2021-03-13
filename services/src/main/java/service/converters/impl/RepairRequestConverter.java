@@ -7,20 +7,21 @@ import org.springframework.stereotype.Service;
 import service.UserService;
 import service.converters.Converter;
 import service.dto.RepairRequestRegistrationDto;
-import service.impl.UserServiceImpl;
+
 @Service
 public class RepairRequestConverter implements Converter<RepairRequest, RepairRequestRegistrationDto> {
-    @Autowired
+
     private UserService userService;
 
-    public RepairRequestConverter() {
+    @Autowired
+    public RepairRequestConverter(UserService userService) {
+        this.userService = userService;
     }
 
     @Override
     public RepairRequest convertToEntity(RepairRequestRegistrationDto dto) {
         RepairRequest repairRequest = new RepairRequest();
         return convertToExistingEntity(dto, repairRequest);
-
     }
 
     @Override

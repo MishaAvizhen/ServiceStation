@@ -7,12 +7,15 @@ import org.springframework.stereotype.Service;
 import repository.RepairRequestRepository;
 import service.converters.Converter;
 import service.dto.RepairRecordRegistrationDto;
+
 @Service
 public class RepairRecordConverter implements Converter<RepairRecord, RepairRecordRegistrationDto> {
-    @Autowired
+
     private RepairRequestRepository repairRequestRepository;
 
-    public RepairRecordConverter() {
+    @Autowired
+    public RepairRecordConverter(RepairRequestRepository repairRequestRepository) {
+        this.repairRequestRepository = repairRequestRepository;
     }
 
     @Override

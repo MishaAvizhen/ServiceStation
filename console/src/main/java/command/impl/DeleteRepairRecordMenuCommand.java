@@ -1,13 +1,16 @@
 package command.impl;
 
 import command.MenuCommand;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import service.RepairRecordService;
-import service.impl.RepairRecordServiceImpl;
 
 import java.util.Scanner;
 
+@Component
 public class DeleteRepairRecordMenuCommand implements MenuCommand {
-    private RepairRecordService repairRecordService = RepairRecordServiceImpl.getInstance();
+    @Autowired
+    private RepairRecordService repairRecordService;
 
     @Override
     public void execute() {
@@ -19,5 +22,10 @@ public class DeleteRepairRecordMenuCommand implements MenuCommand {
         repairRecordService.deleteRepairRecordByUsernameAndRepairRecordDescription(username, description);
         System.out.println(" Repair record for " + username + " was deleted");
 
+    }
+
+    @Override
+    public int getHandledMenuNumber() {
+        return 12;
     }
 }

@@ -2,13 +2,16 @@ package command.impl;
 
 import command.MenuCommand;
 import entity.User;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import service.UserService;
-import service.impl.UserServiceImpl;
 
 import java.util.Scanner;
 
+@Component
 public class GetSumPriceMenuCommand implements MenuCommand {
-    private UserService userService = UserServiceImpl.getInstance();
+    @Autowired
+    private UserService userService;
 
     @Override
     public void execute() {
@@ -22,5 +25,10 @@ public class GetSumPriceMenuCommand implements MenuCommand {
             System.out.println(" Sum price for " + username + ": " + sumWorkPriceAndDetailPrice + " BYN");
 
         }
+    }
+
+    @Override
+    public int getHandledMenuNumber() {
+        return 13;
     }
 }

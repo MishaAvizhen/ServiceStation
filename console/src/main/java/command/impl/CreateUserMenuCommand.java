@@ -2,15 +2,18 @@ package command.impl;
 
 import command.MenuCommand;
 import entity.constants.Role;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import service.UserService;
 import service.dto.UserRegistrationDto;
-import service.impl.UserServiceImpl;
 
 import java.util.Scanner;
 
+@Component
 public class CreateUserMenuCommand implements MenuCommand {
+    @Autowired
+    private UserService userService;
 
-    private UserService userService = UserServiceImpl.getInstance();
     @Override
     public void execute() {
         Scanner scanner = new Scanner(System.in);
@@ -34,5 +37,10 @@ public class CreateUserMenuCommand implements MenuCommand {
         userService.registerUser(userRegistrationDto);
         System.out.println("User " + username + " was created");
 
+    }
+
+    @Override
+    public int getHandledMenuNumber() {
+        return 7;
     }
 }
