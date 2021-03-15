@@ -8,4 +8,5 @@ import org.springframework.context.annotation.Import;
 @Import(ServiceConfig.class)
 @ComponentScan({"command","ui.menu"})
 public class ConsoleConfig {
+    //test
 }
