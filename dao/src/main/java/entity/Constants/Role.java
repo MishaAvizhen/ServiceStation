@@ -1,24 +1,23 @@
 package entity.constants;
 
-public enum Role {
-    USER_ROLE(1L),
-    ADMIN_ROLE(2L),
-    MASTER_ROLE(3L),
-    GUEST_ROLE(4L);
+    USER_ROLE("USER_ROLE"),
+    ADMIN_ROLE("ADMIN_ROLE"),
+    MASTER_ROLE("MASTER_ROLE"),
+    GUEST_ROLE("GUEST_ROLE");
 
-    private Long roleId;
+    private String roleName;
 
-     Role(Long roleId) {
-        this.roleId = roleId;
+    Role(String roleName) {
+        this.roleName = roleName;
     }
 
-    public Long getRoleId() {
-        return roleId;
+    public String getRoleName() {
+        return roleName;
     }
 
-    public static Role defineRoleByRoleId(Long inputRoleId) {
+    public static Role defineRoleByRoleName(String inputRoleName) {
         for (Role role : values()) {
-            if (inputRoleId.equals(role.roleId)) {
+            if (inputRoleName.equals(role.roleName)) {
                 return role;
             }
         }
