@@ -1,10 +1,10 @@
 package dao.impl;
 
 import dao.AppointmentDao;
-import dao.AbstractCRUDDao;
+import dao.AbstractCrudDao;
 import entity.Appointment;
 
-public class InMemoryAppointmentDao extends AbstractCRUDDao<Appointment> implements AppointmentDao {
+public class InMemoryAppointmentDao extends AbstractCrudDao<Appointment> implements AppointmentDao {
 
     private static InMemoryAppointmentDao inMemoryAppointmentDao;
 

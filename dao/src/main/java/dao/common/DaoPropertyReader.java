@@ -6,9 +6,8 @@ import java.io.InputStream;
 import java.util.Properties;
 
 public class DaoPropertyReader {
-    private String pathToProperty = "C:\\ProjectsAvizhen\\NetcrackerAvizhenSto\\dao\\src\\main\\resources\\application.properties";
+    private String pathToProperty = "C:\\ProjectsAvizhen\\service-station\\dao\\src\\main\\resources\\application.properties";
     private Properties prop = new Properties();
-
     public DaoPropertyReader() {
         try (InputStream input = new FileInputStream(pathToProperty)) {
             prop.load(input);

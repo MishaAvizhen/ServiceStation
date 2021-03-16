@@ -1,10 +1,10 @@
 package dao.impl;
 
-import dao.AbstractCRUDDao;
+import dao.AbstractCrudDao;
 import dao.UserDao;
 import entity.User;
 
-public class InMemoryUserDao extends AbstractCRUDDao<User> implements UserDao {
+public class InMemoryUserDao extends AbstractCrudDao<User> implements UserDao {
 
     private static InMemoryUserDao inMemoryUserDao;
 

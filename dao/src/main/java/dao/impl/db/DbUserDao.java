@@ -26,9 +26,8 @@ public class DbUserDao implements UserDao {
 
     @Override
     public List<User> findAll() {
-        String sqlQuery = "SELECT users.*, user_roles.role_id " +
-                "  FROM users, user_roles " +
-                "WHERE users.id = user_roles.user_id";
+        String sqlQuery = "SELECT users.*" +
+                "  FROM users";
 
         return jdbcTemplate.executeSelect(sqlQuery, resultSet -> {
             List<User> userList = new ArrayList<>();
@@ -42,10 +41,9 @@ public class DbUserDao implements UserDao {
 
     @Override
     public User findById(Long id) {
-        String sqlQuery = "SELECT users.*, user_roles.role_id \n" +
-                "FROM users, user_roles\n" +
-                "WHERE users.id = user_roles.user_id\n" +
-                "and users.id = " + id;
+        String sqlQuery = "SELECT users.* " +
+                "FROM users " +
+                "WHERE users.id =" + id;
 
         return jdbcTemplate.executeSelect(sqlQuery, resultSet -> {
             if (resultSet.next()) {
@@ -62,7 +60,7 @@ public class DbUserDao implements UserDao {
         user.setPhoneNumber(resultSet.getString("phone_number"));
         user.setEmail(resultSet.getString("email"));
         user.setPassword(resultSet.getString("password"));
-        user.setRole(Role.defineRoleByRoleId(resultSet.getLong("role_id")));
+        user.setRole(Role.defineRoleByRoleName(resultSet.getString("user_roles")));
         return user;
     }
 
@@ -91,12 +89,9 @@ public class DbUserDao implements UserDao {
         String insertUserSqlQuery = "INSERT INTO `users` " +
                 "VALUES (null,'" + entity.getUsername() + "', '"
                 + entity.getPhoneNumber() + "', '" + entity.getEmail() + "', '"
-                + entity.getPassword() + "')";
+                + entity.getPassword() + entity.getRole()+ "')";
         Long id = jdbcTemplate.executeInsertAndReturnGeneratedId(insertUserSqlQuery);
         entity.setId(id);
-        String insertRoleSqlQuery = "INSERT INTO `user_roles` " +
-                "VALUES (" + id + "," + entity.getRole().getRoleId() + ")";
-        jdbcTemplate.executeUpdate(insertRoleSqlQuery);
         return entity;
     }
 
