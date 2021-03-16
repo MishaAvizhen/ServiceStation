@@ -1,7 +1,7 @@
 package entity;
 
 
-import entity.constants.SlotStatus;
+import entity.consts.SlotStatus;
 
 import javax.persistence.*;
 import java.util.Date;

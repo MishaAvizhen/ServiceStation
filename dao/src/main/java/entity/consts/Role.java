@@ -1,5 +1,6 @@
-package entity.constants;
+package entity.consts;
 
+public enum Role {
     USER_ROLE("USER_ROLE"),
     ADMIN_ROLE("ADMIN_ROLE"),
     MASTER_ROLE("MASTER_ROLE"),

@@ -1,7 +1,7 @@
 package entity;
 
 
-import entity.constants.Role;
+import entity.consts.Role;
 
 import javax.persistence.*;
 import java.util.List;

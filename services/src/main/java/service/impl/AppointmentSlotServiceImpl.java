@@ -2,7 +2,7 @@ package service.impl;
 
 import entity.Appointment;
 import entity.User;
-import entity.constants.Role;
+import entity.consts.Role;
 import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

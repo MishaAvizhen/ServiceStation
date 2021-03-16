@@ -2,7 +2,7 @@ package command.impl;
 
 import command.MenuCommand;
 import entity.User;
-import entity.constants.RepairRequestStatus;
+import entity.consts.RepairRequestStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import service.AppointmentSlotService;

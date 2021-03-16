@@ -1,7 +1,7 @@
 package service.dto;
 
 
-import entity.constants.Role;
+import entity.consts.Role;
 
 public class UserRegistrationDto {
     private String username;

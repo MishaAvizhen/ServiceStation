@@ -1,10 +1,9 @@
 package service.impl;
 
 import entity.Appointment;
-import entity.constants.SlotStatus;
+import entity.consts.SlotStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import repository.AppointmentRepository;
 import repository.UserRepository;
 import service.AppointmentService;

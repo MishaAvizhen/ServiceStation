@@ -1,7 +1,7 @@
 package command.impl;
 
 import command.MenuCommand;
-import entity.constants.Role;
+import entity.consts.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import service.UserService;

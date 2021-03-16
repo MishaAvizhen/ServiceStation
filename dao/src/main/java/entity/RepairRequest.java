@@ -1,6 +1,6 @@
 package entity;
 
-import entity.constants.RepairRequestStatus;
+import entity.consts.RepairRequestStatus;
 
 import javax.persistence.*;
 import java.util.Date;

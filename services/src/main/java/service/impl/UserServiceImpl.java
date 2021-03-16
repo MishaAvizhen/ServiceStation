@@ -3,7 +3,7 @@ package service.impl;
 
 import entity.RepairRecord;
 import entity.User;
-import entity.constants.RepairRequestStatus;
+import entity.consts.RepairRequestStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import repository.RepairRecordRepository;

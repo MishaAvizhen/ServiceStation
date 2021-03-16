@@ -1,6 +1,6 @@
 package service.dto;
 
-import entity.constants.RepairRequestStatus;
+import entity.consts.RepairRequestStatus;
 
 import java.util.Date;
 
