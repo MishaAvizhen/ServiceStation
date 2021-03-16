@@ -4,6 +4,7 @@ package entity.constants;
     ADMIN_ROLE("ADMIN_ROLE"),
     MASTER_ROLE("MASTER_ROLE"),
     GUEST_ROLE("GUEST_ROLE");
+    // test
 
     private String roleName;
 
