@@ -6,7 +6,7 @@ import entity.BaseEntity;
 import java.io.*;
 import java.util.*;
 
-public abstract class AbstractCRUDDao<E extends BaseEntity> implements GenericDao<E>, BackUpable {
+public abstract class AbstractCrudDao<E extends BaseEntity> implements GenericDao<E>, BackUpable {
     private Long nextId = 1L;
     protected Map<Long, E> storeMap = new HashMap<>();
     private static String pathToBackupFolder = "C:\\ProjectsAvizhen\\NetcrackerAvizhenSto\\dao\\src\\main\\java\\docs\\";
