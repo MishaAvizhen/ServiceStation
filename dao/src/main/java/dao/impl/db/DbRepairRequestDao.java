@@ -4,7 +4,7 @@ import dao.RepairRequestDao;
 import dao.UserDao;
 import db.JdbcTemplate;
 import entity.RepairRequest;
-import entity.constants.RepairRequestStatus;
+import entity.consts.RepairRequestStatus;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

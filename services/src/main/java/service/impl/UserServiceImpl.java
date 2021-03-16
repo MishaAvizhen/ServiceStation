@@ -4,16 +4,13 @@ package service.impl;
 import dao.BeanManager;
 import dao.RepairRecordDao;
 import dao.UserDao;
-import dao.impl.InMemoryRepairRecordDao;
-import dao.impl.InMemoryUserDao;
 import entity.RepairRecord;
 import entity.User;
-import entity.constants.RepairRequestStatus;
+import entity.consts.RepairRequestStatus;
 import service.UserService;
 import service.converters.impl.UserConverter;
 import service.dto.UserRegistrationDto;
 
-import java.beans.beancontext.BeanContext;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;

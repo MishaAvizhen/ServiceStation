@@ -5,7 +5,7 @@ import dao.BeanManager;
 import dao.RepairRecordDao;
 import dao.RepairRequestDao;
 import entity.RepairRecord;
-import entity.constants.RepairRequestStatus;
+import entity.consts.RepairRequestStatus;
 import service.RepairRecordService;
 import service.converters.impl.RepairRecordConverter;
 import service.dto.RepairRecordRegistrationDto;

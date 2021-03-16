@@ -5,7 +5,7 @@ import dao.UserDao;
 import db.JdbcTemplate;
 import db.ResultSetExtractor;
 import entity.Appointment;
-import entity.constants.SlotStatus;
+import entity.consts.SlotStatus;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

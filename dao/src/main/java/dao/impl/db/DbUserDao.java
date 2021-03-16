@@ -3,7 +3,7 @@ package dao.impl.db;
 import dao.UserDao;
 import db.JdbcTemplate;
 import entity.User;
-import entity.constants.Role;
+import entity.consts.Role;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

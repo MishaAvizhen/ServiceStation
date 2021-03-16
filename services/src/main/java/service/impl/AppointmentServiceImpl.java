@@ -3,10 +3,8 @@ package service.impl;
 import dao.AppointmentDao;
 import dao.BeanManager;
 import dao.UserDao;
-import dao.impl.InMemoryAppointmentDao;
-import dao.impl.InMemoryUserDao;
 import entity.Appointment;
-import entity.constants.SlotStatus;
+import entity.consts.SlotStatus;
 import service.AppointmentService;
 import service.dto.AppointmentSlotDto;
 
