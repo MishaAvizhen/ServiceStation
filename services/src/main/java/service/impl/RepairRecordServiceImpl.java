@@ -6,7 +6,7 @@ import dao.RepairRequestDao;
 import dao.impl.InMemoryRepairRecordDao;
 import dao.impl.InMemoryRepairRequestDao;
 import entity.RepairRecord;
-import entity.constants.RepairRequestStatus;
+import entity.consts.RepairRequestStatus;
 import service.RepairRecordService;
 import service.converters.impl.RepairRecordConverter;
 import service.dto.RepairRecordRegistrationDto;

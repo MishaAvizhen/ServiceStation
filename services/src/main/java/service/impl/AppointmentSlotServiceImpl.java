@@ -4,7 +4,7 @@ import dao.AppointmentDao;
 import dao.impl.InMemoryAppointmentDao;
 import entity.Appointment;
 import entity.User;
-import entity.constants.Role;
+import entity.consts.Role;
 import org.apache.commons.lang3.time.DateUtils;
 import service.AppointmentSlotService;
 import service.UserService;

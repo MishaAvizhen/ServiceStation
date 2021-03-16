@@ -2,7 +2,6 @@ package command.impl;
 
 import command.MenuCommand;
 import entity.User;
-import entity.constants.Role;
 import service.UserService;
 import service.dto.UserRegistrationDto;
 import service.impl.UserServiceImpl;

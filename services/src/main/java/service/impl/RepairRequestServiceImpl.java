@@ -3,7 +3,7 @@ package service.impl;
 import dao.RepairRequestDao;
 import dao.impl.InMemoryRepairRequestDao;
 import entity.RepairRequest;
-import entity.constants.RepairRequestStatus;
+import entity.consts.RepairRequestStatus;
 import service.RepairRequestService;
 import service.converters.impl.RepairRequestConverter;
 import service.dto.RepairRequestRegistrationDto;

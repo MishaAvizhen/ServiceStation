@@ -1,9 +1,8 @@
 package command.impl;
 
 import command.MenuCommand;
-import entity.Appointment;
 import entity.User;
-import entity.constants.RepairRequestStatus;
+import entity.consts.RepairRequestStatus;
 import service.AppointmentService;
 import service.AppointmentSlotService;
 import service.RepairRequestService;

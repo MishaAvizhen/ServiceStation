@@ -7,7 +7,7 @@ import dao.impl.InMemoryRepairRecordDao;
 import dao.impl.InMemoryUserDao;
 import entity.RepairRecord;
 import entity.User;
-import entity.constants.RepairRequestStatus;
+import entity.consts.RepairRequestStatus;
 import service.UserService;
 import service.converters.impl.UserConverter;
 import service.dto.UserRegistrationDto;

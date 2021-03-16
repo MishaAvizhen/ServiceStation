@@ -1,4 +1,4 @@
-package entity.constants;
+package entity.consts;
 
 
 public enum SlotStatus {

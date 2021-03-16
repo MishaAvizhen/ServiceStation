@@ -1,7 +1,7 @@
 package entity;
 
 
-import entity.constants.Role;
+import entity.consts.Role;
 
 public class User extends BaseEntity {
 
