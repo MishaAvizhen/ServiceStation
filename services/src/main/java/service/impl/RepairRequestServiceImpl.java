@@ -1,13 +1,10 @@
 package service.impl;
 
 import dao.RepairRequestDao;
-import dao.UserDao;
 import dao.impl.InMemoryRepairRequestDao;
-import dao.impl.InMemoryUserDao;
 import entity.RepairRequest;
 import entity.constants.RepairRequestStatus;
 import service.RepairRequestService;
-import service.UserService;
 import service.converters.impl.RepairRequestConverter;
 import service.dto.RepairRequestRegistrationDto;
 
@@ -15,7 +12,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RepairRequestServiceImpl implements RepairRequestService {
-    private UserService userService = UserServiceImpl.getInstance();
     private RepairRequestDao repairRequestDao = InMemoryRepairRequestDao.getInstance();
 
 

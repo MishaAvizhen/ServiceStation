@@ -9,9 +9,8 @@ import java.util.*;
 public abstract class AbstractCrudDao<E extends BaseEntity> implements GenericDao<E>, BackUpable {
     private Long nextId = 1L;
     protected Map<Long, E> storeMap = new HashMap<>();
-    private static String pathToBackupFolder = "C:\\ProjectsAvizhen\\NetcrackerAvizhenSto\\dao\\src\\main\\java\\docs\\";
+    private static String pathToBackupFolder = "C:\\ProjectsAvizhen\\service-station\\dao\\src\\main\\java\\docs\\";
 
-    @Override
     public void writeToFile() {
         try (FileOutputStream fileOutputStream = new FileOutputStream(getBackUpFile());
              ObjectOutputStream objectOutputStreamRepairRecordDb = new ObjectOutputStream(fileOutputStream)) {
