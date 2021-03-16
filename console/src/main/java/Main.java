@@ -3,7 +3,6 @@ import config.DaoConfig;
 import config.ServiceConfig;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import repository.UserRepository;
 import ui.menu.ConsoleMenu;
 
 public class Main {
