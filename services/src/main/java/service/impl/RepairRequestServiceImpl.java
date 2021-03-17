@@ -2,7 +2,6 @@ package service.impl;
 
 import dao.BeanManager;
 import dao.RepairRequestDao;
-import dao.impl.InMemoryRepairRequestDao;
 import entity.RepairRequest;
 import entity.consts.RepairRequestStatus;
 import service.RepairRequestService;
