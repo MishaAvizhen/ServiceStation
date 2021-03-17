@@ -1,10 +1,9 @@
 package service.impl;
 
 
+import dao.BeanManager;
 import dao.RepairRecordDao;
 import dao.UserDao;
-import dao.impl.InMemoryRepairRecordDao;
-import dao.impl.InMemoryUserDao;
 import entity.RepairRecord;
 import entity.User;
 import entity.consts.RepairRequestStatus;
@@ -17,8 +16,8 @@ import java.util.Collections;
 import java.util.List;
 
 public class UserServiceImpl implements UserService {
-    private UserDao userDao = InMemoryUserDao.getInstance();
-    private RepairRecordDao repairRecordDao = InMemoryRepairRecordDao.getInstance();
+    private UserDao userDao = BeanManager.getInstance().getUserDao();
+    private RepairRecordDao repairRecordDao = BeanManager.getInstance().getRepairRecord();
 
     private static UserServiceImpl userService;
 
