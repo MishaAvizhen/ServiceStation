@@ -2,9 +2,9 @@ package entity.consts;
 
 
 public enum SlotStatus {
-    FREE_STATUS("FREE_STATUS"),
-    BUSY_STATUS("BUSY_STATUS"),
-    NOT_AVAILABLE_STATUS("NOT_AVAILABLE_STATUS");
+    FREE_STATUS("FREE"),
+    BUSY_STATUS("BUSY"),
+    NOT_AVAILABLE_STATUS("NOT_AVAILABLE");
 
     private String slotStatusName;
 
