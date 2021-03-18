@@ -1,10 +1,10 @@
 package entity.consts;
 
 public enum Role {
-    USER_ROLE("USER_ROLE"),
-    ADMIN_ROLE("ADMIN_ROLE"),
-    MASTER_ROLE("MASTER_ROLE"),
-    GUEST_ROLE("GUEST_ROLE");
+    USER_ROLE("USER"),
+    ADMIN_ROLE("ADMIN"),
+    MASTER_ROLE("MASTER"),
+    GUEST_ROLE("GUEST");
 
     private String roleName;
 

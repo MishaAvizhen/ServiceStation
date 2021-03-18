@@ -2,9 +2,9 @@ package entity.consts;
 
 
 public enum RepairRequestStatus {
-    PROCESSED_STATUS("PROCESSED_STATUS"),
-    CANCELLED_STATUS("CANCELLED_STATUS"),
-    IN_PROGRESS_STATUS("IN_PROGRESS_STATUS");
+    PROCESSED_STATUS("PROCESSED"),
+    CANCELLED_STATUS("CANCELLED"),
+    IN_PROGRESS_STATUS("IN_PROGRESS");
 
     private String statusName;
 
