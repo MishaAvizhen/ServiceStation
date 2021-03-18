@@ -1,9 +1,6 @@
 package service.impl;
 
 
-import dao.BeanManager;
-import dao.RepairRecordDao;
-import dao.UserDao;
 import entity.RepairRecord;
 import entity.User;
 import entity.consts.RepairRequestStatus;
@@ -11,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import repository.RepairRecordRepository;
 import repository.UserRepository;
-import entity.consts.RepairRequestStatus;
 import service.UserService;
 import service.converters.impl.UserConverter;
 import service.dto.UserRegistrationDto;

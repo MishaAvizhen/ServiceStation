@@ -2,12 +2,10 @@ package service.impl;
 
 import entity.RepairRequest;
 import entity.consts.RepairRequestStatus;
-import entity.consts.RepairRequestStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import repository.RepairRequestRepository;
 import service.RepairRequestService;
-import service.UserService;
 import service.converters.impl.RepairRequestConverter;
 import service.dto.RepairRequestRegistrationDto;
 
