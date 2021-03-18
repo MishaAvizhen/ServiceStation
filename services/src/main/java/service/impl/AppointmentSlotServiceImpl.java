@@ -15,6 +15,9 @@ import service.dto.WorkingHoursDto;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.*;
+import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.toList;
 
 @Service
 public class AppointmentSlotServiceImpl implements AppointmentSlotService {
@@ -42,18 +45,12 @@ public class AppointmentSlotServiceImpl implements AppointmentSlotService {
                 appointmentSlotDtos.add(new AppointmentSlotDto(master, intervalsByHour.getKey(), intervalsByHour.getValue()));
             }
         }
-
         List<Appointment> allAppointments = appointmentRepository.findAll();
-        List<AppointmentSlotDto> notAvailableSlots = new ArrayList<>();
-        for (Appointment appointment : allAppointments) {
-            for (AppointmentSlotDto appointmentSlotDto : appointmentSlotDtos) {
-                if (isAppointmentSlotEqualsToAppointment(appointmentSlotDto, appointment)) {
-                    notAvailableSlots.add(appointmentSlotDto);
-                }
-            }
-        }
-        appointmentSlotDtos.removeAll(notAvailableSlots);
-        return appointmentSlotDtos;
+        return appointmentSlotDtos.stream()
+                .filter(appointmentSlotDto ->
+                        allAppointments.stream()
+                                .noneMatch(appointment -> isAppointmentSlotEqualsToAppointment(appointmentSlotDto, appointment)))
+                .collect(Collectors.toList());
     }
 
     private boolean isAppointmentSlotEqualsToAppointment(AppointmentSlotDto appointmentSlotDto, Appointment appointment) {
@@ -78,14 +75,9 @@ public class AppointmentSlotServiceImpl implements AppointmentSlotService {
     }
 
     private List<User> findAllMasters() {
-        List<User> result = new ArrayList<>();
-        List<User> userServiceAllUsers = userService.findAllUsers();
-        for (User user : userServiceAllUsers) {
-            if (user.getRole().equals(Role.MASTER_ROLE)) {
-                result.add(user);
-            }
-        }
-        return result;
+        return userService.findAllUsers().stream()
+                .filter(user -> user.getRole().equals(Role.MASTER_ROLE))
+                .collect(toList());
     }
 
     private List<Map.Entry<LocalDateTime, LocalDateTime>> separateDayToSlots(LocalDateTime start, LocalDateTime end) {

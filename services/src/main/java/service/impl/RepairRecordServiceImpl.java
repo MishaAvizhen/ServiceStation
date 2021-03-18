@@ -12,6 +12,7 @@ import service.converters.impl.RepairRecordConverter;
 import service.dto.RepairRecordRegistrationDto;
 
 import java.util.List;
+
 @Service
 
 public class RepairRecordServiceImpl implements RepairRecordService {
@@ -31,14 +32,13 @@ public class RepairRecordServiceImpl implements RepairRecordService {
 
     @Override
     public void deleteRepairRecordByUsernameAndRepairRecordDescription(String username, String repairRecordDescription) {
-        List<RepairRecord> allRepairRecords = repairRecordRepository.findAll();
-        for (RepairRecord allRepairRecord : allRepairRecords) {
-            Long id = allRepairRecord.getId();
-            if (allRepairRecord.getRepairRequest().getUser().getUsername().equals(username) &&
-                    allRepairRecord.getRepairRecordDescription().equals(repairRecordDescription)) {
-                repairRecordRepository.delete(id);
+        RepairRecord repairRecord = repairRecordRepository.findAll().stream()
+                .filter(record -> record.getRepairRequest().getUser().getUsername().equals(username) &&
+                        record.getRepairRecordDescription().equals(repairRecordDescription))
+                .findFirst().orElse(null);
+        if (repairRecord != null) {
+            repairRecordRepository.delete(repairRecord);
 
-            }
         }
     }
 
@@ -58,13 +58,10 @@ public class RepairRecordServiceImpl implements RepairRecordService {
 
     @Override
     public RepairRecord findRepairRecordByUsernameAndRepairRecordDescription(String username, String repairRecordDescription) {
-        List<RepairRecord> allRepairRecords = repairRecordRepository.findAll();
-        for (RepairRecord allRepairRecord : allRepairRecords) {
-            if (allRepairRecord.getRepairRequest().getUser().getUsername().equals(username)
-                    && allRepairRecord.getRepairRecordDescription().equals(repairRecordDescription)) {
-                return allRepairRecord;
-            }
-        }
-        return null;
+        return repairRecordRepository.findAll().stream()
+                .filter(record -> record.getRepairRequest().getUser().getUsername().equals(username)
+                        && record.getRepairRecordDescription().equals(repairRecordDescription))
+                .findAny().orElse(null);
+
     }
 }

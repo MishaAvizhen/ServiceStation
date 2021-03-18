@@ -12,9 +12,10 @@ import service.UserService;
 import service.converters.impl.UserConverter;
 import service.dto.UserRegistrationDto;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import static java.util.stream.Collectors.toList;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -29,14 +30,9 @@ public class UserServiceImpl implements UserService {
         if (user == null) {
             return Collections.emptyList();
         }
-        List<RepairRecord> resultList = new ArrayList<>();
-        List<RepairRecord> repairRecordList = repairRecordRepository.findAll();
-        for (RepairRecord repairRecord : repairRecordList) {
-            if (repairRecord.getRepairRequest().getRepairRequestStatus().equals(RepairRequestStatus.PROCESSED_STATUS)) {
-                resultList.add(repairRecord);
-            }
-        }
-        return resultList;
+        return repairRecordRepository.findAll().stream()
+                .filter(record -> record.getRepairRequest().getRepairRequestStatus().equals(RepairRequestStatus.PROCESSED_STATUS))
+                .collect(toList());
     }
 
     @Override
@@ -64,15 +60,10 @@ public class UserServiceImpl implements UserService {
     public Long getSumWorkPriceAndDetailPrice(Long userId) {
         User userDaoById = userRepository.findOne(userId);
         String username = userDaoById.getUsername();
-        Long sumPrice = 0L;
-        List<RepairRecord> repairRecordList = repairRecordRepository.findAll();
-        for (RepairRecord record : repairRecordList) {
-            if (record.getRepairRequest().getUser().getUsername().equals(username)) {
-                sumPrice += record.getDetailPrice() + record.getWorkPrice();
-
-            }
-        }
-        return sumPrice;
+        return repairRecordRepository.findAll().stream()
+                .filter(e -> e.getRepairRequest().getUser().getUsername().equals(username))
+                .map(record -> record.getDetailPrice() + record.getWorkPrice())
+                .reduce(0L, (sumPrice, repRecPrice) -> sumPrice + repRecPrice);
     }
 
     @Override
