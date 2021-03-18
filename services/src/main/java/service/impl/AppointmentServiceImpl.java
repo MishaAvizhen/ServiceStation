@@ -1,11 +1,10 @@
 package service.impl;
 
+import dao.AppointmentDao;
+import dao.BeanManager;
+import dao.UserDao;
 import entity.Appointment;
 import entity.consts.SlotStatus;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import repository.AppointmentRepository;
-import repository.UserRepository;
 import service.AppointmentService;
 import service.dto.AppointmentSlotDto;
 
@@ -24,7 +23,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 
     @Override
     public List<Appointment> findAllAppointment() {
-        return appointmentRepository.findAll();
+        return appointmentDao.findAll();
     }
 
     @Override
@@ -40,9 +39,9 @@ public class AppointmentServiceImpl implements AppointmentService {
         appointment.setStartDate(startDateInDate);
         appointment.setEndDate(endDateInDate);
         appointment.setSlotStatus(SlotStatus.BUSY_STATUS);
-        appointment.setClient(userRepository.findOne(userId));
+        appointment.setClient(userDao.findById(userId));
         appointment.setNotes(" notes...");
-        return appointmentRepository.save(appointment);
+        return appointmentDao.save(appointment);
     }
 
 }

@@ -17,5 +17,5 @@ public class CommonMethods {
         }
         return null;
     }
-
 }
+

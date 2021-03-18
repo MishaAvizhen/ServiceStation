@@ -3,6 +3,7 @@ package service.impl;
 
 import entity.RepairRecord;
 import entity.consts.RepairRequestStatus;
+import entity.consts.RepairRequestStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import repository.RepairRecordRepository;
@@ -22,6 +23,17 @@ public class RepairRecordServiceImpl implements RepairRecordService {
     @Autowired
     private RepairRecordConverter repairRecordConverter;
 
+    private static RepairRecordServiceImpl repairRecordService;
+
+    private RepairRecordServiceImpl() {
+    }
+
+    public static RepairRecordServiceImpl getInstance() {
+        if (repairRecordService == null) {
+            repairRecordService = new RepairRecordServiceImpl();
+        }
+        return repairRecordService;
+    }
 
     @Override
     public List<RepairRecord> findAllRepairRecords() {
@@ -53,12 +65,12 @@ public class RepairRecordServiceImpl implements RepairRecordService {
     @Override
     public void updateRepairRecord(RepairRecordRegistrationDto repairRecordRegistrationDto, RepairRecord repairRecordToUpdate) {
         RepairRecord repairRecord = repairRecordConverter.convertToExistingEntity(repairRecordRegistrationDto, repairRecordToUpdate);
-        repairRecordRepository.saveAndFlush(repairRecord);
+        repairRecordDao.update(repairRecord);
     }
 
     @Override
     public RepairRecord findRepairRecordByUsernameAndRepairRecordDescription(String username, String repairRecordDescription) {
-        List<RepairRecord> allRepairRecords = repairRecordRepository.findAll();
+        List<RepairRecord> allRepairRecords = repairRecordService.findAllRepairRecords();
         for (RepairRecord allRepairRecord : allRepairRecords) {
             if (allRepairRecord.getRepairRequest().getUser().getUsername().equals(username)
                     && allRepairRecord.getRepairRecordDescription().equals(repairRecordDescription)) {
