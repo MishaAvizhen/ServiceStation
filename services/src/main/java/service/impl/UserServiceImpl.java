@@ -40,7 +40,7 @@ public class UserServiceImpl implements UserService {
         List<RepairRecord> resultList = new ArrayList<>();
         List<RepairRecord> repairRecordList = repairRecordDao.findAll();
         for (RepairRecord repairRecord : repairRecordList) {
-            if (repairRecord.getRepairRequest().getRepairRequestStatus().equals(RepairRequestStatus.PROCESSED_STATUS)) {
+            if (repairRecord.getRepairRequest().getRepairRequestStatus().equals(RepairRequestStatus.PROCESSED)) {
                 resultList.add(repairRecord);
             }
         }

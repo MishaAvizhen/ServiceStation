@@ -52,7 +52,7 @@ public class RepairRecordServiceImpl implements RepairRecordService {
         RepairRecordConverter repairRecordConverter = new RepairRecordConverter();
         RepairRecord repairRecord = repairRecordConverter.convertToEntity(repairRecordRegistrationDto);
         repairRecordDao.save(repairRecord);
-        repairRecord.getRepairRequest().setRepairRequestStatus(RepairRequestStatus.PROCESSED_STATUS);
+        repairRecord.getRepairRequest().setRepairRequestStatus(RepairRequestStatus.PROCESSED);
         repairRequestDao.save(repairRecord.getRepairRequest());
     }
 

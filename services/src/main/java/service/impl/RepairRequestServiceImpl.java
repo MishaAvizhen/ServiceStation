@@ -34,7 +34,7 @@ public class RepairRequestServiceImpl implements RepairRequestService {
         List<RepairRequest> allRepairRequests = repairRequestDao.findAll();
         for (RepairRequest request : allRepairRequests) {
             if (request.getUser().getUsername().equals(username) &&
-                    request.getRepairRequestStatus().equals(RepairRequestStatus.IN_PROGRESS_STATUS)) {
+                    request.getRepairRequestStatus().equals(RepairRequestStatus.IN_PROGRESS)) {
                 resultList.add(request);
             }
         }
@@ -46,7 +46,7 @@ public class RepairRequestServiceImpl implements RepairRequestService {
         List<RepairRequest> resultList = new ArrayList<>();
         List<RepairRequest> allRepairRequests = repairRequestDao.findAll();
         for (RepairRequest request : allRepairRequests) {
-            if (request.getRepairRequestStatus().equals(RepairRequestStatus.IN_PROGRESS_STATUS)) {
+            if (request.getRepairRequestStatus().equals(RepairRequestStatus.IN_PROGRESS)) {
                 resultList.add(request);
             }
         }

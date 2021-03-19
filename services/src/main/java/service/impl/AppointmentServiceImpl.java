@@ -48,7 +48,7 @@ public class AppointmentServiceImpl implements AppointmentService {
         appointment.setMaster(appointmentSlotDto.getMaster());
         appointment.setStartDate(startDateInDate);
         appointment.setEndDate(endDateInDate);
-        appointment.setSlotStatus(SlotStatus.BUSY_STATUS);
+        appointment.setSlotStatus(SlotStatus.BUSY);
         appointment.setClient(userDao.findById(userId));
         appointment.setNotes(" notes...");
         return appointmentDao.save(appointment);
