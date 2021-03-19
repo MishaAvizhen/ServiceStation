@@ -31,7 +31,7 @@ public class CreateUserMenuCommand implements MenuCommand {
                 .setPhoneNumber(phoneNumber)
                 .setEmail(email)
                 .setPassword(password)
-                .setRole(Role.USER_ROLE)
+                .setRole(Role.USER)
                 .build();
 
         userService.registerUser(userRegistrationDto);

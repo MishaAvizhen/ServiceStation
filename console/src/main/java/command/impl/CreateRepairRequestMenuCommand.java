@@ -59,7 +59,7 @@ public class CreateRepairRequestMenuCommand implements MenuCommand {
         RepairRequestRegistrationDto repairRequestRegistrationDto = new RepairRequestRegistrationDto.Builder()
                 .setDateOfRequest(date)
                 .setRepairRequestDescription(repairRequestDescription)
-                .setRepairRequestStatus(RepairRequestStatus.IN_PROGRESS_STATUS)
+                .setRepairRequestStatus(RepairRequestStatus.IN_PROGRESS)
                 .setCarRemark(carRemark)
                 .setUsername(username)
                 .build();

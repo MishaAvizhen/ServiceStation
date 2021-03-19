@@ -76,7 +76,7 @@ public class AppointmentSlotServiceImpl implements AppointmentSlotService {
 
     private List<User> findAllMasters() {
         return userService.findAllUsers().stream()
-                .filter(user -> user.getRole().equals(Role.MASTER_ROLE))
+                .filter(user -> user.getRole().equals(Role.MASTER))
                 .collect(toList());
     }
 

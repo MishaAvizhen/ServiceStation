@@ -11,6 +11,7 @@ import java.io.Serializable;
 @MappedSuperclass
 
 @Getter
+@Setter
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor

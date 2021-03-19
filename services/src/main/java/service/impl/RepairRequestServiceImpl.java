@@ -26,7 +26,7 @@ public class RepairRequestServiceImpl implements RepairRequestService {
     public List<RepairRequest> getListOfActiveRepairRequestsOfUser(String username) {
         return repairRequestRepository.findAll().stream()
                 .filter(request -> request.getUser().getUsername().equals(username) &&
-                        request.getRepairRequestStatus().equals(RepairRequestStatus.IN_PROGRESS_STATUS))
+                        request.getRepairRequestStatus().equals(RepairRequestStatus.IN_PROGRESS))
                 .collect(Collectors.toList());
 
     }
@@ -34,7 +34,7 @@ public class RepairRequestServiceImpl implements RepairRequestService {
     @Override
     public List<RepairRequest> getListOfAllActiveRepairRequests() {
         return repairRequestRepository.findAll().stream()
-                .filter(request -> request.getRepairRequestStatus().equals(RepairRequestStatus.IN_PROGRESS_STATUS))
+                .filter(request -> request.getRepairRequestStatus().equals(RepairRequestStatus.IN_PROGRESS))
                 .collect(toList());
 
     }

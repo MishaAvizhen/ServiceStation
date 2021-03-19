@@ -4,6 +4,7 @@ package service.impl;
 import entity.RepairRecord;
 import entity.User;
 import entity.consts.RepairRequestStatus;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import repository.RepairRecordRepository;
@@ -16,7 +17,7 @@ import java.util.Collections;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
-
+@Slf4j
 @Service
 public class UserServiceImpl implements UserService {
     @Autowired
@@ -31,12 +32,13 @@ public class UserServiceImpl implements UserService {
             return Collections.emptyList();
         }
         return repairRecordRepository.findAll().stream()
-                .filter(record -> record.getRepairRequest().getRepairRequestStatus().equals(RepairRequestStatus.PROCESSED_STATUS))
+                .filter(record -> record.getRepairRequest().getRepairRequestStatus().equals(RepairRequestStatus.PROCESSED))
                 .collect(toList());
     }
 
     @Override
     public User findUserByUsername(String username) {
+        log.info("Find user by username {}", username);
         return userRepository.findByUsername(username);
     }
 
