@@ -81,7 +81,7 @@ public class AppointmentSlotServiceImpl implements AppointmentSlotService {
         List<User> result = new ArrayList<>();
         List<User> userServiceAllUsers = userService.findAllUsers();
         for (User user : userServiceAllUsers) {
-            if (user.getRole().equals(Role.MASTER_ROLE)) {
+            if (user.getRole().equals(Role.MASTER)) {
                 result.add(user);
             }
         }

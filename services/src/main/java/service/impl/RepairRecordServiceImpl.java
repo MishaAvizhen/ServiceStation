@@ -46,7 +46,7 @@ public class RepairRecordServiceImpl implements RepairRecordService {
     public void registerRepairRecord(RepairRecordRegistrationDto repairRecordRegistrationDto) {
         RepairRecord repairRecord = repairRecordConverter.convertToEntity(repairRecordRegistrationDto);
         repairRecordRepository.save(repairRecord);
-        repairRecord.getRepairRequest().setRepairRequestStatus(RepairRequestStatus.PROCESSED_STATUS);
+        repairRecord.getRepairRequest().setRepairRequestStatus(RepairRequestStatus.PROCESSED);
         repairRequestRepository.save(repairRecord.getRepairRequest());
     }
 
