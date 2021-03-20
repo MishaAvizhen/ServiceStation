@@ -1,7 +1,7 @@
 package service.impl;
 
 import dao.AppointmentDao;
-import dao.impl.InMemoryAppointmentDao;
+import dao.BeanManager;
 import entity.Appointment;
 import entity.User;
 import entity.consts.Role;
@@ -17,7 +17,7 @@ import java.util.*;
 
 public class AppointmentSlotServiceImpl implements AppointmentSlotService {
     private UserService userService = UserServiceImpl.getInstance();
-    private AppointmentDao appointmentDao = InMemoryAppointmentDao.getInstance();
+    private AppointmentDao appointmentDao = BeanManager.getInstance().getAppointment();
     private final int startWorkHour = 8;
     private final int endWorkHour = 20;
 
@@ -79,7 +79,7 @@ public class AppointmentSlotServiceImpl implements AppointmentSlotService {
         List<User> result = new ArrayList<>();
         List<User> userServiceAllUsers = userService.findAllUsers();
         for (User user : userServiceAllUsers) {
-            if (user.getRole().equals(Role.MASTER_ROLE)) {
+            if (user.getRole().equals(Role.MASTER)) {
                 result.add(user);
             }
         }

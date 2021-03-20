@@ -1,9 +1,18 @@
 package entity.consts;
 
 public enum Role {
-    USER_ROLE,
-    ADMIN_ROLE,
-    MASTER_ROLE,
-    GUEST_ROLE;
+    USER,
+    ADMIN,
+    MASTER,
+    GUEST;
 
+
+    public static Role defineRoleByRoleName(String inputRoleName) {
+        for (Role role : values()) {
+            if (inputRoleName.equals(role.name())) {
+                return role;
+            }
+        }
+        return null;
+    }
 }

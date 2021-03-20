@@ -27,7 +27,7 @@ public class CreateAppointmentMenuCommand implements MenuCommand {
     @Override
     public void execute() {
         Scanner scanner = new Scanner(System.in);
-        System.out.println(" Enter username:  \n");
+        System.out.println(" Enter username:");
         String username = scanner.nextLine();
         User userByUsername = userService.findUserByUsername(username);
         if (userByUsername == null) {

@@ -1,9 +1,8 @@
 package service.impl;
 
 import dao.AppointmentDao;
+import dao.BeanManager;
 import dao.UserDao;
-import dao.impl.InMemoryAppointmentDao;
-import dao.impl.InMemoryUserDao;
 import entity.Appointment;
 import entity.consts.SlotStatus;
 import service.AppointmentService;
@@ -16,8 +15,8 @@ import java.util.Date;
 import java.util.List;
 
 public class AppointmentServiceImpl implements AppointmentService {
-    private AppointmentDao appointmentDao = InMemoryAppointmentDao.getInstance();
-    private UserDao userDao = InMemoryUserDao.getInstance();
+    private AppointmentDao appointmentDao = BeanManager.getInstance().getAppointment();
+    private UserDao userDao = BeanManager.getInstance().getUserDao();
 
     private static AppointmentServiceImpl appointmentService;
 
@@ -49,7 +48,7 @@ public class AppointmentServiceImpl implements AppointmentService {
         appointment.setMaster(appointmentSlotDto.getMaster());
         appointment.setStartDate(startDateInDate);
         appointment.setEndDate(endDateInDate);
-        appointment.setSlotStatus(SlotStatus.BUSY_STATUS);
+        appointment.setSlotStatus(SlotStatus.BUSY);
         appointment.setClient(userDao.findById(userId));
         appointment.setNotes(" notes...");
         return appointmentDao.save(appointment);

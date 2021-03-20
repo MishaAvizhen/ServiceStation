@@ -2,8 +2,17 @@ package entity.consts;
 
 
 public enum SlotStatus {
-    FREE_STATUS,
-    BUSY_STATUS,
-    NOT_AVAILABLE_STATUS;
+    FREE,
+    BUSY,
+    NOT_AVAILABLE;
 
+
+    public static SlotStatus defineSlotStatusByName(String inputStatusName) {
+        for (SlotStatus slotStatus : values()) {
+            if (inputStatusName.equals(slotStatus.name())) {
+                return slotStatus;
+            }
+        }
+        return null;
+    }
 }

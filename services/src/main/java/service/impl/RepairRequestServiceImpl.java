@@ -1,7 +1,7 @@
 package service.impl;
 
+import dao.BeanManager;
 import dao.RepairRequestDao;
-import dao.impl.InMemoryRepairRequestDao;
 import entity.RepairRequest;
 import entity.consts.RepairRequestStatus;
 import service.RepairRequestService;
@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RepairRequestServiceImpl implements RepairRequestService {
-    private RepairRequestDao repairRequestDao = InMemoryRepairRequestDao.getInstance();
+    private RepairRequestDao repairRequestDao = BeanManager.getInstance().getRepairRequest();
 
 
     private static RepairRequestServiceImpl repairRequestService;
@@ -34,7 +34,7 @@ public class RepairRequestServiceImpl implements RepairRequestService {
         List<RepairRequest> allRepairRequests = repairRequestDao.findAll();
         for (RepairRequest request : allRepairRequests) {
             if (request.getUser().getUsername().equals(username) &&
-                    request.getRepairRequestStatus().equals(RepairRequestStatus.IN_PROGRESS_STATUS)) {
+                    request.getRepairRequestStatus().equals(RepairRequestStatus.IN_PROGRESS)) {
                 resultList.add(request);
             }
         }
@@ -46,7 +46,7 @@ public class RepairRequestServiceImpl implements RepairRequestService {
         List<RepairRequest> resultList = new ArrayList<>();
         List<RepairRequest> allRepairRequests = repairRequestDao.findAll();
         for (RepairRequest request : allRepairRequests) {
-            if (request.getRepairRequestStatus().equals(RepairRequestStatus.IN_PROGRESS_STATUS)) {
+            if (request.getRepairRequestStatus().equals(RepairRequestStatus.IN_PROGRESS)) {
                 resultList.add(request);
             }
         }

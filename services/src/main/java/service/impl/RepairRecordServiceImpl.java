@@ -1,10 +1,9 @@
 package service.impl;
 
 
+import dao.BeanManager;
 import dao.RepairRecordDao;
 import dao.RepairRequestDao;
-import dao.impl.InMemoryRepairRecordDao;
-import dao.impl.InMemoryRepairRequestDao;
 import entity.RepairRecord;
 import entity.consts.RepairRequestStatus;
 import service.RepairRecordService;
@@ -14,8 +13,8 @@ import service.dto.RepairRecordRegistrationDto;
 import java.util.List;
 
 public class RepairRecordServiceImpl implements RepairRecordService {
-    private RepairRecordDao repairRecordDao = InMemoryRepairRecordDao.getInstance();
-    private RepairRequestDao repairRequestDao = InMemoryRepairRequestDao.getInstance();
+    private RepairRecordDao repairRecordDao = BeanManager.getInstance().getRepairRecord();
+    private RepairRequestDao repairRequestDao = BeanManager.getInstance().getRepairRequest();
 
     private static RepairRecordServiceImpl repairRecordService;
 
@@ -53,7 +52,7 @@ public class RepairRecordServiceImpl implements RepairRecordService {
         RepairRecordConverter repairRecordConverter = new RepairRecordConverter();
         RepairRecord repairRecord = repairRecordConverter.convertToEntity(repairRecordRegistrationDto);
         repairRecordDao.save(repairRecord);
-        repairRecord.getRepairRequest().setRepairRequestStatus(RepairRequestStatus.PROCESSED_STATUS);
+        repairRecord.getRepairRequest().setRepairRequestStatus(RepairRequestStatus.PROCESSED);
         repairRequestDao.save(repairRecord.getRepairRequest());
     }
 

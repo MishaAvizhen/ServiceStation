@@ -2,8 +2,17 @@ package entity.consts;
 
 
 public enum RepairRequestStatus {
-    PROCESSED_STATUS,
-    CANCELLED_STATUS,
-    IN_PROGRESS_STATUS;
+    PROCESSED,
+    CANCELLED,
+    IN_PROGRESS;
 
+
+    public static RepairRequestStatus defineRepairRequestStatusByName(String inputStatusName) {
+        for (RepairRequestStatus repairRequestStatus : values()) {
+            if (inputStatusName.equals(repairRequestStatus.name())) {
+                return repairRequestStatus;
+            }
+        }
+        return null;
+    }
 }
