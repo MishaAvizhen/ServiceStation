@@ -2,6 +2,7 @@ package command.impl;
 
 import command.MenuCommand;
 import entity.User;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import service.UserService;
@@ -10,6 +11,7 @@ import java.util.Scanner;
 
 @Component
 public class DeleteUserByIdMenuCommand implements MenuCommand {
+    private static final Logger log = Logger.getLogger(DeleteUserByIdMenuCommand.class);
     @Autowired
     private UserService userService;
 
@@ -24,6 +26,8 @@ public class DeleteUserByIdMenuCommand implements MenuCommand {
         }
         Long id = userByUsername.getId();
         userService.deleteUserById(id);
+        log.info(String.format(" user {@s} was deleted  ",username));
+        log.info(String.format(" user {@s} was deleted  ",username));
         System.out.println(" User " + username + " was deleted");
 
     }

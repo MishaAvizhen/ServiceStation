@@ -3,6 +3,7 @@ package command.impl;
 import command.MenuCommand;
 import entity.User;
 import entity.consts.RepairRequestStatus;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import service.AppointmentSlotService;
@@ -19,6 +20,7 @@ import static command.impl.CommonMethods.getDate;
 
 @Component
 public class CreateRepairRequestMenuCommand implements MenuCommand {
+    private static final Logger log = Logger.getLogger(CreateRepairRequestMenuCommand.class);
     @Autowired
     private AppointmentSlotService appointmentSlotService;
     @Autowired
@@ -64,7 +66,7 @@ public class CreateRepairRequestMenuCommand implements MenuCommand {
                 .setUsername(username)
                 .build();
         repairRequestService.registerRepairRequest(repairRequestRegistrationDto);
-
+        log.info(String.format(" Repair request was created "));
         System.out.println("Repair request for " + username + " was created");
         System.out.println("Appointment time:" + appointmentSlotDto.getStartDate() + " - " + appointmentSlotDto.getEndDate());
 

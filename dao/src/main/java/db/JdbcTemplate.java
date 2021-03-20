@@ -2,6 +2,7 @@ package db;
 
 import dao.common.DaoPropertyReader;
 import org.apache.ibatis.jdbc.ScriptRunner;
+import org.apache.log4j.Logger;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -9,6 +10,7 @@ import java.io.Reader;
 import java.sql.*;
 
 public class JdbcTemplate {
+    private static final Logger log = Logger.getLogger(JdbcTemplate.class);
 
     private DaoPropertyReader daoPropertyReader = new DaoPropertyReader();
 
@@ -19,15 +21,17 @@ public class JdbcTemplate {
         try {
             Class.forName(daoPropertyReader.getDriver());
         } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+            log.error(String.format("Exception: {%s} ", e));
         }
         try (Connection connection = DriverManager.getConnection(daoPropertyReader.getUrl(), daoPropertyReader.getUsername(),
                 daoPropertyReader.getPassword());
              Statement statement = connection.createStatement()) {
             ResultSet resultSet = statement.executeQuery(sqlQuery);
+            log.info(String.format("Sql query: {%s} ", sqlQuery));
+            log.debug(String.format("Sql query: {%s} ", sqlQuery));
             return resultSetExtractor.extractFromResultSet(resultSet);
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error(String.format("Exception: {%s} ", e));
         }
         return null;
     }
@@ -36,15 +40,18 @@ public class JdbcTemplate {
         try {
             Class.forName(daoPropertyReader.getDriver());
         } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+            log.error(String.format("Exception: {%s} ", e));
         }
         try (Connection connection = DriverManager.getConnection(daoPropertyReader.getUrl(), daoPropertyReader.getUsername(),
                 daoPropertyReader.getPassword());
              Statement statement = connection.createStatement()) {
             statement.executeUpdate(updateQuery);
+            log.info(String.format("Sql query: {%s} ", updateQuery));
+            log.debug(String.format("Sql query: {%s} ", updateQuery));
+
         } catch (Exception e) {
-            System.err.println("Sql query: " + updateQuery);
-            e.printStackTrace();
+            log.error(String.format("Exception: {%s} ", e));
+
         }
     }
 
@@ -53,7 +60,7 @@ public class JdbcTemplate {
 
             Class.forName(daoPropertyReader.getDriver());
         } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+            log.error(String.format("Exception: {%s} ", e));
         }
         try (Connection connection = DriverManager.getConnection(daoPropertyReader.getUrl(), daoPropertyReader.getUsername(),
                 daoPropertyReader.getPassword());
@@ -64,8 +71,8 @@ public class JdbcTemplate {
             //Running the script
             sr.runScript(reader);
         } catch (Exception e) {
-            System.err.println("Path to script: " + pathToScript);
-            e.printStackTrace();
+            log.debug(String.format("path to script: {%s} ", pathToScript));
+            log.error(String.format("Exception: {%s} ", e));
         }
     }
 
@@ -73,7 +80,7 @@ public class JdbcTemplate {
         try {
             Class.forName(daoPropertyReader.getDriver());
         } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+            log.error(String.format("Exception: {%s} ", e));
         }
         try (Connection connection = DriverManager.getConnection(daoPropertyReader.getUrl(), daoPropertyReader.getUsername(),
                 daoPropertyReader.getPassword());
@@ -84,8 +91,9 @@ public class JdbcTemplate {
             return rs.getLong(1);
 
         } catch (Exception e) {
-            System.err.println("Sql query: " + sqlQuery);
-            e.printStackTrace();
+            log.info(String.format("Sql query: {%s} ", sqlQuery));
+            log.debug(String.format("Sql query: {%s} ", sqlQuery));
+            log.error(String.format("Exception: {%s} ", e));
         }
         return null;
     }

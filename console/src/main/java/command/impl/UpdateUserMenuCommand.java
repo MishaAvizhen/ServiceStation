@@ -2,6 +2,7 @@ package command.impl;
 
 import command.MenuCommand;
 import entity.User;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import service.UserService;
@@ -11,6 +12,7 @@ import java.util.Scanner;
 
 @Component
 public class UpdateUserMenuCommand implements MenuCommand {
+    private static final Logger log = Logger.getLogger(UpdateUserMenuCommand.class);
     @Autowired
     private UserService userService;
 
@@ -38,6 +40,9 @@ public class UpdateUserMenuCommand implements MenuCommand {
                     .setRole(userToUpdate.getRole())
                     .build();
             userService.updateUser(userRegistrationDto, userToUpdate);
+            log.info(String.format(" User: \n  {@s} \n was update  ",userToUpdate.toString()));
+            log.debug(String.format(" User: \n  {@s} \n was update  ",userToUpdate.toString()));
+
             System.out.println("User " + updateUsername + " was updated");
         } else {
             System.out.println("For username " + username + " user not found!");

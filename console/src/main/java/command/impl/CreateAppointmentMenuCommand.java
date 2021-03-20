@@ -2,6 +2,7 @@ package command.impl;
 
 import command.MenuCommand;
 import entity.User;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import service.AppointmentService;
@@ -17,6 +18,7 @@ import static command.impl.CommonMethods.getDate;
 
 @Component
 public class CreateAppointmentMenuCommand implements MenuCommand {
+    private static final Logger log = Logger.getLogger(CreateAppointmentMenuCommand.class);
     @Autowired
     private AppointmentSlotService appointmentSlotService;
     @Autowired
@@ -34,7 +36,7 @@ public class CreateAppointmentMenuCommand implements MenuCommand {
         String username = scanner.nextLine();
         User userByUsername = userService.findUserByUsername(username);
         if (userByUsername == null) {
-            System.out.println("For username " + username + " user not found!");
+            log.info(String.format(" users {%s} not found", username));
         }
 
         System.out.println("Choose date:  \n" +
@@ -53,6 +55,8 @@ public class CreateAppointmentMenuCommand implements MenuCommand {
         int slotIndex = scanner.nextInt();
         AppointmentSlotDto appointmentSlotDto = appointmentSlotsByDate.get(slotIndex);
         appointmentService.createAppointment(appointmentSlotDto, userByUsername.getId());
+        log.info(String.format(" Appointment was created "));
+        log.debug(String.format("Appointment was created {%s}", appointmentSlotDto.toString()));
         System.out.println("Appointment to time:" + appointmentSlotDto.getStartDate() + " - " + appointmentSlotDto.getEndDate() +
                 " was created");
     }

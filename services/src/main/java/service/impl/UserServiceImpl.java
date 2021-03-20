@@ -4,7 +4,7 @@ package service.impl;
 import entity.RepairRecord;
 import entity.User;
 import entity.consts.RepairRequestStatus;
-import lombok.extern.slf4j.Slf4j;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import repository.RepairRecordRepository;
@@ -17,9 +17,11 @@ import java.util.Collections;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
-@Slf4j
+
 @Service
 public class UserServiceImpl implements UserService {
+    private static final Logger log = Logger.getLogger(UserServiceImpl.class);
+
     @Autowired
     private UserRepository userRepository;
     @Autowired
@@ -38,22 +40,28 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findUserByUsername(String username) {
-        log.info("Find user by username {}", username);
+        log.info(String.format("Find user by {%s}", username));
+        log.debug(String.format("Find user by {%s}", username));
         return userRepository.findByUsername(username);
     }
 
     @Override
     public User findUserById(Long userId) {
+        log.info(String.format("Find user by id= {%s}", userId));
+        log.debug(String.format("Find user by id= {%s}", userId));
         return userRepository.findOne(userId);
     }
 
     @Override
     public List<User> findAllUsers() {
+        log.info(String.format("Find all users"));
         return userRepository.findAll();
     }
 
     @Override
     public void deleteUserById(Long userId) {
+        log.info(String.format("Delete user with id=  {%s}", userId));
+        log.debug(String.format("Delete user with id=  {%s}", userId));
         userRepository.delete(userId);
 
     }
@@ -70,6 +78,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void registerUser(UserRegistrationDto userRegistrationDto) {
+        log.info(String.format("user with info:{%s} was created ", userRegistrationDto.toString()));
+        log.debug(String.format("user with info:{%s} was created ", userRegistrationDto.toString()));
         UserConverter userConverter = new UserConverter();
         User user = userConverter.convertToEntity(userRegistrationDto);
         userRepository.save(user);
@@ -78,6 +88,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void updateUser(UserRegistrationDto userRegistrationDto, User userToUpdate) {
+        log.info(String.format("user with info:{%s} was updated ", userToUpdate.toString()));
+        log.debug(String.format("user with info:{%s} was updated ", userToUpdate.toString()));
         UserConverter userConverter = new UserConverter();
         User updatedUser = userConverter.convertToExistingEntity(userRegistrationDto, userToUpdate);
         userRepository.saveAndFlush(updatedUser);

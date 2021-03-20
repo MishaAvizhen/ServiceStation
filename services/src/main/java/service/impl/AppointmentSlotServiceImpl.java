@@ -4,6 +4,7 @@ import entity.Appointment;
 import entity.User;
 import entity.consts.Role;
 import org.apache.commons.lang3.time.DateUtils;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import repository.AppointmentRepository;
@@ -21,6 +22,7 @@ import static java.util.stream.Collectors.toList;
 
 @Service
 public class AppointmentSlotServiceImpl implements AppointmentSlotService {
+    private static final Logger log = Logger.getLogger(AppointmentSlotServiceImpl.class);
     @Autowired
     private UserService userService;
     @Autowired
@@ -31,6 +33,8 @@ public class AppointmentSlotServiceImpl implements AppointmentSlotService {
 
     @Override
     public List<AppointmentSlotDto> getAvailableAppointmentSlotsByDate(Date date) {
+        log.info(String.format("get available appointment slot to date: {%s}", date));
+
         Date dateWOHours = trancateDateToDays(date);
         WorkingHoursDto workHoursByDate = getWorkHoursByDate(dateWOHours);
         Date startWorkDate = DateUtils.addHours(dateWOHours, workHoursByDate.getStartWorkHour());
