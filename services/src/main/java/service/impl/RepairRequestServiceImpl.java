@@ -17,12 +17,17 @@ import static java.util.stream.Collectors.toList;
 
 @Service
 public class RepairRequestServiceImpl implements RepairRequestService {
-        private static final Logger log = Logger.getLogger(RepairRequestServiceImpl.class);
-    @Autowired
+    private static final Logger log = Logger.getLogger(RepairRequestServiceImpl.class);
+
     private RepairRequestRepository repairRequestRepository;
 
-    @Autowired
     private RepairRequestConverter repairRequestConverter;
+
+    @Autowired
+    public RepairRequestServiceImpl(RepairRequestRepository repairRequestRepository, RepairRequestConverter repairRequestConverter) {
+        this.repairRequestRepository = repairRequestRepository;
+        this.repairRequestConverter = repairRequestConverter;
+    }
 
     @Override
     public List<RepairRequest> getListOfActiveRepairRequestsOfUser(String username) {
