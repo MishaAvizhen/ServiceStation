@@ -25,7 +25,7 @@ public class ConsoleMenu {
 
     public void initMenuConsole() {
 
-        log.info(String.format(" init menu begin..."));
+        log.info(" init menu begin...");
         int number;
         int exitNumber = 0;
         Scanner scanner = new Scanner(System.in);
@@ -50,7 +50,7 @@ public class ConsoleMenu {
             }
         } while (number != exitNumber);
         System.out.println("Goodbye");
-        log.info(String.format(" init menu end..."));
+        log.info(" init menu end...");
 
     }
 }

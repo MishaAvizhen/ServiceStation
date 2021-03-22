@@ -88,6 +88,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void updateUser(UserRegistrationDto userRegistrationDto, User userToUpdate) {
+        User byUsername = userRepository.findByUsername(userToUpdate.getUsername());
+        if (byUsername == null) {
+            log.error(String.format("user with username:{%s} not found ", userToUpdate.getUsername()));
+            throw new RuntimeException("user not found");
+        }
         log.info(String.format("user with info:{%s} was updated ", userToUpdate.toString()));
         log.debug(String.format("user with info:{%s} was updated ", userToUpdate.toString()));
         UserConverter userConverter = new UserConverter();
