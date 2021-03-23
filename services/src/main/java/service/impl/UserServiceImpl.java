@@ -40,15 +40,15 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findUserByUsername(String username) {
-        log.info(String.format("Find user by {%s}", username));
-        log.debug(String.format("Find user by {%s}", username));
+        log.info(String.format("Find user with name:  {%s}", username));
+        log.debug(String.format("Find user with name: {%s}", username));
         return userRepository.findByUsername(username);
     }
 
     @Override
     public User findUserById(Long userId) {
-        log.info(String.format("Find user by id= {%s}", userId));
-        log.debug(String.format("Find user by id= {%s}", userId));
+        log.info(String.format("Find user with id= {%s}", userId));
+        log.debug(String.format("Find user with id= {%s}", userId));
         return userRepository.findOne(userId);
     }
 

@@ -89,8 +89,8 @@ public class RepairRequestServiceImpl implements RepairRequestService {
 
     @Override
     public void updateRepairRequest(RepairRequestRegistrationDto repairRequestRegistrationDto, RepairRequest repairRequestToUpdate) {
-        log.info(String.format("repair request with info : {%s} was updated ", repairRequestRegistrationDto.getUsername()));
-        log.debug(String.format("repair request with info : {%s} was updated ", repairRequestRegistrationDto.getUsername()));
+        log.info(String.format("repair request for {%s} with info : {%s} was updated ", repairRequestRegistrationDto.getUsername(),repairRequestRegistrationDto.getCarRemark()));
+        log.debug(String.format("repair request for {%s} with info : {%s} was updated ", repairRequestRegistrationDto.getUsername(),repairRequestRegistrationDto.getCarRemark()));
         RepairRequest repairRequest = repairRequestConverter.convertToExistingEntity(repairRequestRegistrationDto, repairRequestToUpdate);
         repairRequestRepository.save(repairRequest);
     }

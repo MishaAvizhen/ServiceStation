@@ -42,12 +42,13 @@ public class RepairRequestTestData {
 
     }
 
-    public void deleteRepairRequestById(Long repairRequestId) {
-        RepairRequest repairRequestById = getRepairRequestById(repairRequestId);
-        if (repairRequestById != null) {
-            idToTestRepairRequestMap.remove(repairRequestById.getId());
+    public RepairRequest deleteRepairRequestById(Long repairRequestId) {
+        RepairRequest repairRequestToDelete = getRepairRequestById(repairRequestId);
+        if (repairRequestToDelete != null) {
+            idToTestRepairRequestMap.remove(repairRequestToDelete.getId());
 
         }
+        return repairRequestToDelete;
     }
 
     public RepairRequest updateTestRepairRequest(RepairRequest testRepairRequest) {

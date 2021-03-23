@@ -11,7 +11,6 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import repository.RepairRecordRepository;
 import repository.UserRepository;
-import service.UserService;
 import service.dto.UserRegistrationDto;
 
 import java.util.List;
@@ -29,7 +28,7 @@ public class UserServiceImplTest {
     private RepairRecordRepository repairRecordRepository;
 
     @InjectMocks
-    private UserService userService;
+    private UserServiceImpl userService;
 
     private UserTestData userTestData = UserTestData.getInstance();
 
@@ -81,21 +80,23 @@ public class UserServiceImplTest {
 
     @Test
     public void updateUser() {
-        String usernameToUpdate = "userToUpdate";
+        String usernameToUpdate = "userToDelete";
+        when(userRepository.findByUsername(usernameToUpdate)).thenReturn(userTestData.getTestUserByUsername(usernameToUpdate));
         User userToUpdate = userTestData.getTestUserByUsername(usernameToUpdate);
         String email = userToUpdate.getEmail();
         String newEmail = "1" + email;
         String phoneNumber = userToUpdate.getPhoneNumber();
+        String newPhoneNumber = "37522222222";
         userService.updateUser(new UserRegistrationDto.Builder()
                 .setEmail(newEmail)
                 .setPassword(userToUpdate.getPassword())
                 .setUsername(userToUpdate.getUsername())
-                .setPhoneNumber(phoneNumber)
+                .setPhoneNumber(newPhoneNumber)
                 .setRole(userToUpdate.getRole())
                 .build(), userToUpdate);
         User updatedUser = userTestData.getTestUserByUsername(usernameToUpdate);
-        Assert.assertEquals("email wasn't update", newEmail, updatedUser.getEmail());
-        Assert.assertNotEquals("phoneNumber was update", phoneNumber, updatedUser.getPhoneNumber());
+        Assert.assertNotEquals("email wasn't update", email, updatedUser.getEmail());
+        Assert.assertNotEquals("phoneNumber wasn't update", phoneNumber, updatedUser.getPhoneNumber());
 
     }
 
