@@ -18,13 +18,21 @@ import java.util.List;
 
 public class RepairRecordServiceImpl implements RepairRecordService {
     private static final Logger log = Logger.getLogger(RepairRecordServiceImpl.class);
-    @Autowired
+
     private RepairRecordRepository repairRecordRepository;
-    @Autowired
+
     private RepairRequestRepository repairRequestRepository;
-    @Autowired
+
     private RepairRecordConverter repairRecordConverter;
 
+    @Autowired
+    public RepairRecordServiceImpl(RepairRecordRepository repairRecordRepository,
+                                   RepairRequestRepository repairRequestRepository,
+                                   RepairRecordConverter repairRecordConverter) {
+        this.repairRecordRepository = repairRecordRepository;
+        this.repairRequestRepository = repairRequestRepository;
+        this.repairRecordConverter = repairRecordConverter;
+    }
 
     @Override
     public List<RepairRecord> findAllRepairRecords() {
@@ -49,8 +57,8 @@ public class RepairRecordServiceImpl implements RepairRecordService {
 
     @Override
     public void registerRepairRecord(RepairRecordRegistrationDto repairRecordRegistrationDto) {
-        log.info(String.format("  repair record with info: {%s} with created ", repairRecordRegistrationDto.toString()));
-        log.debug(String.format("  repair record with info: {%s} with created ", repairRecordRegistrationDto.toString()));
+        log.info(String.format("  repair record with info: {%s} was created ", repairRecordRegistrationDto.toString()));
+        log.debug(String.format("  repair record with info: {%s} was created ", repairRecordRegistrationDto.toString()));
         RepairRecord repairRecord = repairRecordConverter.convertToEntity(repairRecordRegistrationDto);
         repairRecordRepository.save(repairRecord);
         repairRecord.getRepairRequest().setRepairRequestStatus(RepairRequestStatus.PROCESSED);
@@ -59,8 +67,8 @@ public class RepairRecordServiceImpl implements RepairRecordService {
 
     @Override
     public void updateRepairRecord(RepairRecordRegistrationDto repairRecordRegistrationDto, RepairRecord repairRecordToUpdate) {
-        log.info(String.format("  repair record with info: {%s} with updated ", repairRecordToUpdate.toString()));
-        log.debug(String.format("  repair record with info: {%s} with updated ", repairRecordToUpdate.toString()));
+        log.info(String.format("  repair record with info: {%s} was updated ", repairRecordRegistrationDto.toString()));
+        log.debug(String.format("  repair record with info: {%s} was updated ", repairRecordRegistrationDto.toString()));
         RepairRecord repairRecord = repairRecordConverter.convertToExistingEntity(repairRecordRegistrationDto, repairRecordToUpdate);
         repairRecordRepository.saveAndFlush(repairRecord);
     }

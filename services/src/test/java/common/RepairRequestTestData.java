@@ -76,7 +76,7 @@ public class RepairRequestTestData {
         repairRequest.setRepairRequestDescription("repair request description");
         repairRequest.setRepairRequestStatus(RepairRequestStatus.IN_PROGRESS);
         repairRequest.setUser(UserTestData.getInstance().getTestUserByUsername(username));
-        repairRequest.setRepairRecord(RepairRecordTestData.getInstance().getRepairRecordById(repairRecordId));
+        repairRequest.setRepairRecord(null);
         return repairRequest;
     }
 }

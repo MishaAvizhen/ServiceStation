@@ -1,12 +1,14 @@
 package service.impl;
 
 import entity.RepairRequest;
+import entity.User;
 import entity.consts.RepairRequestStatus;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import repository.RepairRequestRepository;
 import service.RepairRequestService;
+import service.UserService;
 import service.converters.impl.RepairRequestConverter;
 import service.dto.RepairRequestRegistrationDto;
 
@@ -89,8 +91,8 @@ public class RepairRequestServiceImpl implements RepairRequestService {
 
     @Override
     public void updateRepairRequest(RepairRequestRegistrationDto repairRequestRegistrationDto, RepairRequest repairRequestToUpdate) {
-        log.info(String.format("repair request for {%s} with info : {%s} was updated ", repairRequestRegistrationDto.getUsername(),repairRequestRegistrationDto.getCarRemark()));
-        log.debug(String.format("repair request for {%s} with info : {%s} was updated ", repairRequestRegistrationDto.getUsername(),repairRequestRegistrationDto.getCarRemark()));
+        log.info(String.format("repair request for {%s} with info : {%s} was updated ", repairRequestRegistrationDto.getUsername(), repairRequestRegistrationDto.getCarRemark()));
+        log.debug(String.format("repair request for {%s} with info : {%s} was updated ", repairRequestRegistrationDto.getUsername(), repairRequestRegistrationDto.getCarRemark()));
         RepairRequest repairRequest = repairRequestConverter.convertToExistingEntity(repairRequestRegistrationDto, repairRequestToUpdate);
         repairRequestRepository.save(repairRequest);
     }

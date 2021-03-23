@@ -93,8 +93,8 @@ public class UserServiceImpl implements UserService {
             log.error(String.format("user with username:{%s} not found ", userToUpdate.getUsername()));
             throw new RuntimeException("user not found");
         }
-        log.info(String.format("user with info:{%s} was updated ", userToUpdate.toString()));
-        log.debug(String.format("user with info:{%s} was updated ", userToUpdate.toString()));
+        log.info(String.format("user with info:{%s} was updated ", userRegistrationDto.toString()));
+        log.debug(String.format("user with info:{%s} was updated ", userRegistrationDto.toString()));
         UserConverter userConverter = new UserConverter();
         User updatedUser = userConverter.convertToExistingEntity(userRegistrationDto, userToUpdate);
         userRepository.saveAndFlush(updatedUser);

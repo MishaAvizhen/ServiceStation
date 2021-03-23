@@ -109,5 +109,4 @@ public class UserServiceImplTest {
         Assert.assertNull("user was not delete", userToDeleteAfterDelete);
     }
 
-
 }

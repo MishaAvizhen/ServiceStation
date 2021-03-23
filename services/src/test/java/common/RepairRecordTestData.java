@@ -1,6 +1,8 @@
 package common;
 
 import entity.RepairRecord;
+import entity.RepairRequest;
+import entity.consts.RepairRequestStatus;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -25,21 +27,20 @@ public class RepairRecordTestData {
 
     private void initRepairRecordTestData() {
         saveTestRepairRecord(builtRepairRecordForTest(1L, 1L));
-        saveTestRepairRecord(builtRepairRecordForTest(2L, 2L));
-        saveTestRepairRecord(builtRepairRecordForTest(3L, 3L));
 
     }
 
     public List<RepairRecord> getAllRepairRecordForTest() {
         return new ArrayList<>(idToTestRepairRecordMap.values());
     }
-    public void deleteRepairRecordById(Long repairRecordId) {
-        RepairRecord repairRecordById = getRepairRecordById(repairRecordId);
-        if (repairRecordById != null) {
-            idToTestRepairRecordMap.remove(repairRecordById.getId());
+    public RepairRecord deleteRepairRecordById(Long repairRecordId) {
+        RepairRecord repairRecordToDelete = getRepairRecordById(repairRecordId);
+        if (repairRecordToDelete != null) {
+            idToTestRepairRecordMap.remove(repairRecordToDelete.getId());
 
         }
 
+        return repairRecordToDelete;
     }
 
     public RepairRecord getRepairRecordById(Long repairRecordId) {
@@ -50,16 +51,21 @@ public class RepairRecordTestData {
         }
         return null;
     }
+    public long getNextId() {
+        return idToTestRepairRecordMap.size() + 1L;
+    }
 
     public RepairRecord updateRepairRecord(RepairRecord testRepairRecord) {
         saveTestRepairRecord(testRepairRecord);
         return testRepairRecord;
     }
 
-    public RepairRecord saveTestRepairRecord(RepairRecord repairRecord) {
-        idToTestRepairRecordMap.put(repairRecord.getId(), repairRecord);
-        return repairRecord;
-
+    public RepairRecord saveTestRepairRecord(RepairRecord testRepairRecord) {
+        if (testRepairRecord.getId() == null) {
+            testRepairRecord.setId(getNextId());
+        }
+        idToTestRepairRecordMap.put(testRepairRecord.getId(), testRepairRecord);
+        return testRepairRecord;
     }
 
     private RepairRecord builtRepairRecordForTest(Long repairRecordId, Long repairRequestId) {
@@ -69,7 +75,10 @@ public class RepairRecordTestData {
         repairRecord.setDetailPrice(100L);
         repairRecord.setRepairRecordDescription("test repair record description");
         repairRecord.setWorkPrice(222L);
-        repairRecord.setRepairRequest(null);
+        RepairRequest repairRequestById = RepairRequestTestData.getInstance().getRepairRequestById(repairRequestId);
+        repairRecord.setRepairRequest(repairRequestById);
+        repairRequestById.setRepairRequestStatus(RepairRequestStatus.PROCESSED);
+        repairRequestById.setRepairRecord(repairRecord);
         return repairRecord;
     }
 }
