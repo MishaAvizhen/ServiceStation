@@ -27,7 +27,7 @@ public class StoDispatcherServlet extends HttpServlet {
             context = new AnnotationConfigApplicationContext(configClass);
             Collection<StoHandler> stoHandlers = context.getBeansOfType(StoHandler.class).values();
             for (StoHandler stoHandler : stoHandlers) {
-                uriToHandlerMap.put(stoHandler.getHandleURI(), stoHandler);
+                uriToHandlerMap.put(stoHandler.getHandledURI(), stoHandler);
             }
         } catch (ClassNotFoundException e) {
             throw new ServletException("Config class not found.", e);
@@ -37,14 +37,20 @@ public class StoDispatcherServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        getStoHandlerByRequest(request).handleDoGet(request, response);
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        getStoHandlerByRequest(request).handleDoPost(request, response);
+    }
+
+    private StoHandler getStoHandlerByRequest(HttpServletRequest request) throws ServletException, IOException {
         String requestURI = request.getRequestURI();
         StoHandler stoHandler = uriToHandlerMap.get(requestURI);
         if (stoHandler != null) {
-            stoHandler.handleDoGet(request, response);
-        } else {
-            throw new UnsupportedOperationException("Not recognized request");
+            return stoHandler;
         }
+        throw new UnsupportedOperationException("Not recognized request");
     }
-
-
 }

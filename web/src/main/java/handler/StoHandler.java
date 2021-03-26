@@ -9,5 +9,8 @@ public interface StoHandler {
     void handleDoGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException;
 
-    String getHandleURI();
+    void handleDoPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException;
+
+    String getHandledURI();
 }

@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import converters.impl.UserWebConverter;
 import dto.UserWebDto;
 import entity.User;
-import handler.StoHandler;
 import handler.StoHandlerAdapter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -16,34 +15,31 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.List;
 
 @Component
-public class FindAllUsersHandler extends StoHandlerAdapter {
+public class FindUserByUsername extends StoHandlerAdapter {
 
     private UserService userService;
 
-    @Autowired
-    public FindAllUsersHandler(UserService userService) {
-        this.userService = userService;
-    }
 
+    @Autowired
+    public FindUserByUsername(UserService userService) {
+        this.userService = userService;
+
+    }
 
     @Override
     public void handleDoGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        UserService userServiceBean = ServicesBeanUtils.getInstance().getUserService();
-        List<User> allUsers = userServiceBean.findAllUsers();
-        List<UserWebDto> userWebDtos = new ArrayList<>();
+
+        UserService userService = ServicesBeanUtils.getInstance().getUserService();
+        String username = request.getParameter("username");
+        User userByUsername = userService.findUserByUsername(username);
         UserWebConverter userWebConverter = new UserWebConverter();
-        for (User user : allUsers) {
-            UserWebDto userWebDto = userWebConverter.convertToDto(user);
-            userWebDtos.add(userWebDto);
-        }
+        UserWebDto userWebDto = userWebConverter.convertToDto(userByUsername);
 
         PrintWriter out = response.getWriter();
         ObjectMapper objectMapper = new ObjectMapper();
-        String jsonString = objectMapper.writeValueAsString(userWebDtos);
+        String jsonString = objectMapper.writeValueAsString(userWebDto);
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
         out.print(jsonString);
@@ -51,12 +47,8 @@ public class FindAllUsersHandler extends StoHandlerAdapter {
     }
 
     @Override
-    public void handleDoPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-    }
-
-    @Override
     public String getHandledURI() {
-        return "/api/users";
+
+        return "/api/users/byName";
     }
 }

@@ -1,5 +1,6 @@
 package service.beanUtils;
 
+import entity.RepairRequest;
 import org.springframework.context.ApplicationContext;
 import service.UserService;
 
@@ -21,5 +22,9 @@ public class ServicesBeanUtils {
 
     public UserService getUserService() {
          return applicationContext.getBean(UserService.class);
+    }
+
+    public RepairRequest getRepairRequest() {
+        return applicationContext.getBean(RepairRequest.class);
     }
 }
