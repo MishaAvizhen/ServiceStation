@@ -3,7 +3,7 @@ package dto;
 import entity.consts.Role;
 
 public class UserWebDto {
-
+    private Long userId;
     private String username;
     private String password;
     private String phoneNumber;
@@ -14,12 +14,21 @@ public class UserWebDto {
     public UserWebDto() {
     }
 
-    public UserWebDto(String username, String password, String phoneNumber, String email, Role role) {
+    public UserWebDto(Long userId, String username, String password, String phoneNumber, String email, Role role) {
+        this.userId = userId;
         this.username = username;
         this.password = password;
         this.phoneNumber = phoneNumber;
         this.email = email;
         this.role = role;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
     public String getUsername() {
@@ -30,20 +39,12 @@ public class UserWebDto {
         this.username = username;
     }
 
-    public Role getRole() {
-        return role;
+    public String getPassword() {
+        return password;
     }
 
-    public void setRole(Role role) {
-        this.role = role;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getPhoneNumber() {
@@ -54,11 +55,19 @@ public class UserWebDto {
         this.phoneNumber = phoneNumber;
     }
 
-    public String getPassword() {
-        return password;
+    public String getEmail() {
+        return email;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 }

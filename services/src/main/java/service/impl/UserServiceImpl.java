@@ -77,12 +77,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void registerUser(UserRegistrationDto userRegistrationDto) {
+    public User registerUser(UserRegistrationDto userRegistrationDto) {
         log.info(String.format("user with info:{%s} was created ", userRegistrationDto.toString()));
         log.debug(String.format("user with info:{%s} was created ", userRegistrationDto.toString()));
         UserConverter userConverter = new UserConverter();
         User user = userConverter.convertToEntity(userRegistrationDto);
-        userRepository.save(user);
+        return userRepository.save(user);
 
     }
 
