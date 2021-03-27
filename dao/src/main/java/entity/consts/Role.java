@@ -6,6 +6,7 @@ public enum Role {
     MASTER,
     GUEST;
 
+
     public static Role defineRoleByRoleName(String inputRoleName) {
         for (Role role : values()) {
             if (inputRoleName.equals(role.name())) {
