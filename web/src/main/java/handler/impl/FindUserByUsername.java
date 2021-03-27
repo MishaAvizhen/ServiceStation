@@ -30,7 +30,6 @@ public class FindUserByUsername extends StoHandlerAdapter {
     @Override
     public void handleDoGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        UserService userService = ServicesBeanUtils.getInstance().getUserService();
         String username = request.getParameter("username");
         User userByUsername = userService.findUserByUsername(username);
         UserWebConverter userWebConverter = new UserWebConverter();

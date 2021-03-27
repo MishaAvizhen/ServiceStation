@@ -24,7 +24,6 @@ public class DeleteUserByIdHandler extends StoHandlerAdapter {
 
     @Override
     public void handleDoGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        UserService userService = ServicesBeanUtils.getInstance().getUserService();
         Long userId = Long.valueOf(request.getParameter("userId"));
         userService.deleteUserById(userId);
 

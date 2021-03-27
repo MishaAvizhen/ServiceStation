@@ -32,8 +32,7 @@ public class FindAllUsersHandler extends StoHandlerAdapter {
 
     @Override
     public void handleDoGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        UserService userServiceBean = ServicesBeanUtils.getInstance().getUserService();
-        List<User> allUsers = userServiceBean.findAllUsers();
+        List<User> allUsers = userService.findAllUsers();
         List<UserWebDto> userWebDtos = new ArrayList<>();
         UserWebConverter userWebConverter = new UserWebConverter();
         for (User user : allUsers) {

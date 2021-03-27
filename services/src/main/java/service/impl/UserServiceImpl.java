@@ -87,7 +87,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateUser(UserRegistrationDto userRegistrationDto, User userToUpdate) {
+    public User updateUser(UserRegistrationDto userRegistrationDto, User userToUpdate) {
         User byUsername = userRepository.findByUsername(userToUpdate.getUsername());
         if (byUsername == null) {
             log.error(String.format("user with username:{%s} not found ", userToUpdate.getUsername()));
@@ -97,7 +97,7 @@ public class UserServiceImpl implements UserService {
         log.debug(String.format("user with info:{%s} was updated ", userRegistrationDto.toString()));
         UserConverter userConverter = new UserConverter();
         User updatedUser = userConverter.convertToExistingEntity(userRegistrationDto, userToUpdate);
-        userRepository.saveAndFlush(updatedUser);
+         return userRepository.saveAndFlush(updatedUser);
 
     }
 
