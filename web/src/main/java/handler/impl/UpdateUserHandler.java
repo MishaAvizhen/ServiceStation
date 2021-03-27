@@ -50,6 +50,7 @@ public class UpdateUserHandler extends StoHandlerAdapter {
         } else {
             throw new UnsupportedOperationException("User with id " + userWebDto.getUserId() + " not found");
         }
+
     }
 
     @Override
