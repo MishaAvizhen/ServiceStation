@@ -20,4 +20,7 @@ public interface RepairRequestService {
     void registerRepairRequest(RepairRequestRegistrationDto repairRequestRegistrationDto);
 
     void updateRepairRequest(RepairRequestRegistrationDto repairRequestRegistrationDto, RepairRequest repairRequestToUpdate);
+
+    void deleteRepairRequestById(Long repairRequestId);
+
 }

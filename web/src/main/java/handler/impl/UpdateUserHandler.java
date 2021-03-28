@@ -2,10 +2,8 @@ package handler.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import converters.impl.UserConverterFromWebDtoToRegistrationDto;
-import converters.impl.UserWebConverter;
 import dto.UserWebDto;
 import entity.User;
-import entity.consts.Role;
 import handler.StoHandlerAdapter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -37,7 +35,7 @@ public class UpdateUserHandler extends StoHandlerAdapter {
         Long userId = userWebDto.getUserId();
         User userById = userService.findUserById(userId);
         if (userById != null) {
-            UserRegistrationDto userRegistrationDto = registrationDto.convertToUserRegistrationDto(userWebDto);
+            UserRegistrationDto userRegistrationDto = registrationDto.convertToEntityRegistrationDto(userWebDto);
             User userAfterUpdate = userService.updateUser(userRegistrationDto, userById);
             PrintWriter out = response.getWriter();
             ObjectMapper objectMapper = new ObjectMapper();

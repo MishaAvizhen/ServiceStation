@@ -10,7 +10,6 @@ import java.util.Date;
 @Table(name = "repair_request")
 @Getter
 @Setter
-@ToString(callSuper = true)
 @NoArgsConstructor
 @AllArgsConstructor
 public class RepairRequest extends BaseEntity {
@@ -25,10 +24,21 @@ public class RepairRequest extends BaseEntity {
     private String repairRequestDescription;
     @ManyToOne(cascade = {CascadeType.REFRESH})
     @JoinColumn(name = "user_id")
-    @ToString.Exclude
+
     private User user;
     @OneToOne(cascade = {CascadeType.REFRESH}, mappedBy = "repairRequest", fetch = FetchType.EAGER)
-    @ToString.Exclude
+
     private RepairRecord repairRecord;
+
+    @Override
+    public String toString() {
+        return "RepairRequest{" +
+                "dateOfRequest=" + dateOfRequest +
+                ", repairRequestStatus=" + repairRequestStatus +
+                ", carRemark='" + carRemark + '\'' +
+                ", repairRequestDescription='" + repairRequestDescription + '\'' +
+                ", username=" + user.getUsername() +
+                "} " + super.toString();
+    }
 
 }

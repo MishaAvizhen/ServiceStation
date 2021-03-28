@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Import;
 
 @Configuration
 @Import(ServiceConfig.class)
-@ComponentScan("handler")
+@ComponentScan({"handler", "converters.impl"})
 public class WebConfig {
 
 }

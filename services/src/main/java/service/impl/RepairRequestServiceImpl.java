@@ -97,5 +97,13 @@ public class RepairRequestServiceImpl implements RepairRequestService {
         repairRequestRepository.save(repairRequest);
     }
 
+    @Override
+    public void deleteRepairRequestById(Long repairRequestId) {
+        log.info(String.format("Delete repair Request with id=  {%s}", repairRequestId));
+        log.debug(String.format("Delete repair Request with id=  {%s}", repairRequestId));
+        repairRequestRepository.delete(repairRequestId);
+
+    }
+
 
 }

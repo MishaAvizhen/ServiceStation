@@ -10,7 +10,6 @@ import handler.StoHandlerAdapter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import service.UserService;
-import service.beanUtils.ServicesBeanUtils;
 import service.dto.UserRegistrationDto;
 
 import javax.servlet.ServletException;
@@ -36,7 +35,7 @@ public class CreateUserHandler extends StoHandlerAdapter {
         UserWebDto userWebDto = mapper.readValue(request.getInputStream(), UserWebDto.class);
         userWebDto.setRole(Role.USER);
         UserConverterFromWebDtoToRegistrationDto registrationDto = new UserConverterFromWebDtoToRegistrationDto();
-        UserRegistrationDto userRegistrationDto = registrationDto.convertToUserRegistrationDto(userWebDto);
+        UserRegistrationDto userRegistrationDto = registrationDto.convertToEntityRegistrationDto(userWebDto);
         User createdUser = userService.registerUser(userRegistrationDto);
 
         UserWebConverter userWebConverter = new UserWebConverter();
