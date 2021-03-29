@@ -1,5 +1,5 @@
 package converters;
 
-public interface ConverterFromFirstDtoToSecond<UD, WD> {
-    UD convertToEntityRegistrationDto(WD webDto);
+public interface ConverterFromFirstDtoToSecond<S,T> {
+    T convertFromSourceDtoToTargetDto(S sourceDto);
 }

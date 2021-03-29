@@ -35,7 +35,7 @@ public class UpdateUserHandler extends StoHandlerAdapter {
         Long userId = userWebDto.getUserId();
         User userById = userService.findUserById(userId);
         if (userById != null) {
-            UserRegistrationDto userRegistrationDto = registrationDto.convertToEntityRegistrationDto(userWebDto);
+            UserRegistrationDto userRegistrationDto = registrationDto.convertFromSourceDtoToTargetDto(userWebDto);
             User userAfterUpdate = userService.updateUser(userRegistrationDto, userById);
             PrintWriter out = response.getWriter();
             ObjectMapper objectMapper = new ObjectMapper();

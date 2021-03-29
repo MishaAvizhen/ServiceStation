@@ -22,12 +22,12 @@ public class RepairRequest extends BaseEntity {
     private String carRemark;
     @Column(name = "repair_request_description")
     private String repairRequestDescription;
+
     @ManyToOne(cascade = {CascadeType.REFRESH})
     @JoinColumn(name = "user_id")
-
     private User user;
-    @OneToOne(cascade = {CascadeType.REFRESH}, mappedBy = "repairRequest", fetch = FetchType.EAGER)
 
+    @OneToOne(cascade = {CascadeType.REFRESH}, mappedBy = "repairRequest", fetch = FetchType.EAGER)
     private RepairRecord repairRecord;
 
     @Override
@@ -37,6 +37,7 @@ public class RepairRequest extends BaseEntity {
                 ", repairRequestStatus=" + repairRequestStatus +
                 ", carRemark='" + carRemark + '\'' +
                 ", repairRequestDescription='" + repairRequestDescription + '\'' +
+                ", userId=" + user.getId() +
                 ", username=" + user.getUsername() +
                 "} " + super.toString();
     }

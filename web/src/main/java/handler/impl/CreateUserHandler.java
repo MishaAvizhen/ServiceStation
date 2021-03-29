@@ -35,7 +35,7 @@ public class CreateUserHandler extends StoHandlerAdapter {
         UserWebDto userWebDto = mapper.readValue(request.getInputStream(), UserWebDto.class);
         userWebDto.setRole(Role.USER);
         UserConverterFromWebDtoToRegistrationDto registrationDto = new UserConverterFromWebDtoToRegistrationDto();
-        UserRegistrationDto userRegistrationDto = registrationDto.convertToEntityRegistrationDto(userWebDto);
+        UserRegistrationDto userRegistrationDto = registrationDto.convertFromSourceDtoToTargetDto(userWebDto);
         User createdUser = userService.registerUser(userRegistrationDto);
 
         UserWebConverter userWebConverter = new UserWebConverter();

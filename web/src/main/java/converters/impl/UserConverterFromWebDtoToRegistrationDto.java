@@ -5,10 +5,10 @@ import dto.UserWebDto;
 import service.dto.UserRegistrationDto;
 
 public class UserConverterFromWebDtoToRegistrationDto implements
-        ConverterFromFirstDtoToSecond<UserRegistrationDto, UserWebDto> {
+        ConverterFromFirstDtoToSecond<UserWebDto, UserRegistrationDto> {
 
     @Override
-    public UserRegistrationDto convertToEntityRegistrationDto(UserWebDto webDto) {
+    public UserRegistrationDto convertFromSourceDtoToTargetDto(UserWebDto webDto) {
         return new UserRegistrationDto.Builder()
                 .setUsername(webDto.getUsername())
                 .setEmail(webDto.getEmail())

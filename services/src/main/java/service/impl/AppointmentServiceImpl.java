@@ -8,13 +8,12 @@ import org.springframework.stereotype.Service;
 import repository.AppointmentRepository;
 import repository.UserRepository;
 import service.AppointmentService;
+import service.common.LocalDateTimeOperations;
 import service.dto.AppointmentSlotDto;
 
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
 import java.util.Date;
 import java.util.List;
+
 @Service
 
 public class AppointmentServiceImpl implements AppointmentService {
@@ -22,7 +21,7 @@ public class AppointmentServiceImpl implements AppointmentService {
     @Autowired
     private AppointmentRepository appointmentRepository;
     @Autowired
-    private UserRepository userRepository ;
+    private UserRepository userRepository;
 
     @Override
     public List<Appointment> findAllAppointment() {
@@ -34,12 +33,8 @@ public class AppointmentServiceImpl implements AppointmentService {
     public Appointment createAppointment(AppointmentSlotDto appointmentSlotDto, Long userId) {
         log.info(String.format("Appointment with info : {%s} was created \n for user with id: {%s} ", appointmentSlotDto.toString(), userId));
         log.debug(String.format("Appointment with info : {%s} was created \n for user with id: {%s} ", appointmentSlotDto.toString(), userId));
-        LocalDateTime startDateInLocalDate = appointmentSlotDto.getStartDate();
-        LocalDateTime endDateInLocalDate = appointmentSlotDto.getEndDate();
-        ZonedDateTime zdt = startDateInLocalDate.atZone(ZoneId.systemDefault());
-        ZonedDateTime zdt1 = endDateInLocalDate.atZone(ZoneId.systemDefault());
-        Date startDateInDate = Date.from(zdt.toInstant());
-        Date endDateInDate = Date.from(zdt1.toInstant());
+        Date startDateInDate = LocalDateTimeOperations.convertLocalDateTimeToDate(appointmentSlotDto.getStartDate());
+        Date endDateInDate = LocalDateTimeOperations.convertLocalDateTimeToDate(appointmentSlotDto.getEndDate());
         Appointment appointment = new Appointment();
         appointment.setMaster(appointmentSlotDto.getMaster());
         appointment.setStartDate(startDateInDate);

@@ -5,10 +5,10 @@ import dto.RepairRequestWebDto;
 import service.dto.RepairRequestRegistrationDto;
 
 public class RepairRequestConverterFromWebDtoToRegistrationDto implements
-        ConverterFromFirstDtoToSecond<RepairRequestRegistrationDto, RepairRequestWebDto> {
+        ConverterFromFirstDtoToSecond<RepairRequestWebDto, RepairRequestRegistrationDto> {
 
     @Override
-    public RepairRequestRegistrationDto convertToEntityRegistrationDto(RepairRequestWebDto webDto) {
+    public RepairRequestRegistrationDto convertFromSourceDtoToTargetDto(RepairRequestWebDto webDto) {
         return new RepairRequestRegistrationDto.Builder()
                 .setUsername(webDto.getUsername())
                 .setRepairRequestDescription(webDto.getRepairRequestDescription())
