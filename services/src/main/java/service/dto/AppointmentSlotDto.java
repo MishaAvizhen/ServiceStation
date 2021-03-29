@@ -15,6 +15,9 @@ public class AppointmentSlotDto {
         this.endDate = endDate;
     }
 
+    public AppointmentSlotDto() {
+    }
+
     public User getMaster() {
         return master;
     }

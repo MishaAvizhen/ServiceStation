@@ -2,12 +2,15 @@ package converters.impl;
 
 import converters.ConverterFromFirstDtoToSecond;
 import dto.AppointmentSlotWebDto;
+import org.springframework.stereotype.Component;
 import service.common.LocalDateTimeOperations;
 import service.dto.AppointmentSlotDto;
 
 import java.util.Date;
 
-public class AppointmentConverterToWebAppointmentConverter implements ConverterFromFirstDtoToSecond<AppointmentSlotDto, AppointmentSlotWebDto> {
+@Component
+public class AppointmentSlotDtoToAppointmentSlotWebDtoConverter
+        implements ConverterFromFirstDtoToSecond<AppointmentSlotDto, AppointmentSlotWebDto> {
 
     @Override
     public AppointmentSlotWebDto convertFromSourceDtoToTargetDto(AppointmentSlotDto sourceDto) {

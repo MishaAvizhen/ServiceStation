@@ -1,15 +1,18 @@
 package service.impl;
 
+import entity.Appointment;
 import entity.RepairRequest;
 import entity.consts.RepairRequestStatus;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import repository.RepairRequestRepository;
+import service.AppointmentService;
 import service.RepairRequestService;
 import service.converters.impl.RepairRequestConverter;
 import service.dto.RepairRequestRegistrationDto;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,10 +26,13 @@ public class RepairRequestServiceImpl implements RepairRequestService {
 
     private RepairRequestConverter repairRequestConverter;
 
+    private AppointmentService appointmentService;
+
     @Autowired
-    public RepairRequestServiceImpl(RepairRequestRepository repairRequestRepository, RepairRequestConverter repairRequestConverter) {
+    public RepairRequestServiceImpl(RepairRequestRepository repairRequestRepository, RepairRequestConverter repairRequestConverter, AppointmentService appointmentService) {
         this.repairRequestRepository = repairRequestRepository;
         this.repairRequestConverter = repairRequestConverter;
+        this.appointmentService = appointmentService;
     }
 
     @Override
@@ -83,7 +89,11 @@ public class RepairRequestServiceImpl implements RepairRequestService {
         log.info(String.format("repair request with info : {%s} was created ", repairRequestRegistrationDto.getUsername()));
         log.debug(String.format("repair request with info : {%s} was created ", repairRequestRegistrationDto.getUsername()));
         RepairRequest repairRequest = repairRequestConverter.convertToEntity(repairRequestRegistrationDto);
-        return repairRequestRepository.save(repairRequest);
+        RepairRequest createdRequest = repairRequestRepository.save(repairRequest);
+        Appointment createdAppointment = appointmentService.createAppointment(repairRequestRegistrationDto.getAppointmentSlotDto(),
+                repairRequest.getUser().getId(), createdRequest.getId());
+        createdRequest.setAppointments(Collections.singletonList(createdAppointment));
+        return createdRequest;
 
     }
 

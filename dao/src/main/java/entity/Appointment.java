@@ -15,12 +15,20 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Appointment extends BaseEntity {
+
     @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.MERGE})
     @JoinColumn(name = "client_id")
     private User client;
+
     @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.MERGE})
     @JoinColumn(name = "master_id")
     private User master;
+
+    @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.MERGE})
+    @JoinColumn(name = "repair_request_id")
+    @ToString.Exclude
+    private RepairRequest repairRequest;
+
     @Column(name = "slot_status")
     @Enumerated(EnumType.STRING)
     private SlotStatus slotStatus;

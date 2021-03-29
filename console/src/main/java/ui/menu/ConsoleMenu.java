@@ -31,7 +31,7 @@ public class ConsoleMenu {
         Scanner scanner = new Scanner(System.in);
         System.out.println("1- Find all user \n" +
                 "2- Find all repair request \n" + "3- Find all repair record \n" +
-                "4- Find user by username \n" + "5- Create appointment \n" +
+                "4- Find user by username \n"  +
                 "6- Find all appointment \n" + "7- Create user  \n" +
                 "8- Create repair request \n" + "9- Create repair record(For admin or Master)  \n" +
                 "10- Delete user by username \n" + "11- Delete repair request  \n" +

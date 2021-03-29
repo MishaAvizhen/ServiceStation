@@ -1,7 +1,7 @@
 package handler.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import converters.impl.AppointmentConverterToWebAppointmentConverter;
+import converters.impl.AppointmentSlotDtoToAppointmentSlotWebDtoConverter;
 import dto.AppointmentSlotWebDto;
 import handler.StoHandlerAdapter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +42,7 @@ public class GetAvailableSlotByDate extends StoHandlerAdapter {
             e.printStackTrace();
         }
         List<AppointmentSlotDto> availableAppointmentSlotsByDate = appointmentSlotService.getAvailableAppointmentSlotsByDate(date);
-        AppointmentConverterToWebAppointmentConverter appointmentConverter = new AppointmentConverterToWebAppointmentConverter();
+        AppointmentSlotDtoToAppointmentSlotWebDtoConverter appointmentConverter = new AppointmentSlotDtoToAppointmentSlotWebDtoConverter();
         List<AppointmentSlotWebDto> webDtos = new ArrayList<>();
         for (AppointmentSlotDto appointmentSlotDto : availableAppointmentSlotsByDate) {
             webDtos.add(appointmentConverter.convertFromSourceDtoToTargetDto(appointmentSlotDto));

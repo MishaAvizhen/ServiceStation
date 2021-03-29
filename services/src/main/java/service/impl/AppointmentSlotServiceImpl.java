@@ -14,11 +14,11 @@ import service.dto.AppointmentSlotDto;
 import service.dto.WorkingHoursDto;
 
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.*;
 import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
+import static service.common.LocalDateTimeOperations.convertDateToLocalDateTime;
 
 @Service
 public class AppointmentSlotServiceImpl implements AppointmentSlotService {
@@ -91,10 +91,6 @@ public class AppointmentSlotServiceImpl implements AppointmentSlotService {
             start = start.plusHours(1);
         }
         return result;
-    }
-
-    private LocalDateTime convertDateToLocalDateTime(Date date) {
-        return LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault());
     }
 
     private Date trancateDateToDays(Date dateTime) {

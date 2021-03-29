@@ -10,6 +10,7 @@ public class RepairRequestRegistrationDto {
     private String carRemark;
     private String repairRequestDescription;
     private String username;
+    private AppointmentSlotDto appointmentSlotDto;
 
     private RepairRequestRegistrationDto(Builder builder) {
 
@@ -18,6 +19,7 @@ public class RepairRequestRegistrationDto {
         this.carRemark = builder.carRemark;
         this.repairRequestDescription = builder.repairRequestDescription;
         this.username = builder.username;
+        this.appointmentSlotDto = builder.appointmentSlotDto;
     }
 
 
@@ -41,12 +43,17 @@ public class RepairRequestRegistrationDto {
         return username;
     }
 
+    public AppointmentSlotDto getAppointmentSlotDto() {
+        return appointmentSlotDto;
+    }
+
     public static class Builder {
         private Date dateOfRequest;
         private RepairRequestStatus repairRequestStatus;
         private String carRemark;
         private String repairRequestDescription;
         private String username;
+        private AppointmentSlotDto appointmentSlotDto;
 
         public Builder() {
         }
@@ -76,6 +83,11 @@ public class RepairRequestRegistrationDto {
             return this;
         }
 
+        public Builder setAppointmentSlotDto(AppointmentSlotDto appointmentSlotDto) {
+            this.appointmentSlotDto = appointmentSlotDto;
+            return this;
+        }
+
         public RepairRequestRegistrationDto build() {
             return new RepairRequestRegistrationDto(this);
         }
@@ -89,6 +101,7 @@ public class RepairRequestRegistrationDto {
                 ", carRemark='" + carRemark + '\'' +
                 ", repairRequestDescription='" + repairRequestDescription + '\'' +
                 ", username='" + username + '\'' +
+                ", appointmentSlot='" + appointmentSlotDto.getMaster() + '\'' +
                 '}';
     }
 }

@@ -2,9 +2,14 @@ package entity;
 
 import entity.consts.RepairRequestStatus;
 import lombok.*;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "repair_request")
@@ -29,6 +34,9 @@ public class RepairRequest extends BaseEntity {
 
     @OneToOne(cascade = {CascadeType.REFRESH}, mappedBy = "repairRequest", fetch = FetchType.EAGER)
     private RepairRecord repairRecord;
+
+    @OneToMany(cascade = {CascadeType.REFRESH}, mappedBy = "repairRequest", fetch = FetchType.EAGER)
+    private List<Appointment> appointments;
 
     @Override
     public String toString() {

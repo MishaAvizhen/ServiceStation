@@ -2,8 +2,10 @@ package converters.impl;
 
 import converters.ConverterFromFirstDtoToSecond;
 import dto.UserWebDto;
+import org.springframework.stereotype.Component;
 import service.dto.UserRegistrationDto;
 
+@Component
 public class UserConverterFromWebDtoToRegistrationDto implements
         ConverterFromFirstDtoToSecond<UserWebDto, UserRegistrationDto> {
 

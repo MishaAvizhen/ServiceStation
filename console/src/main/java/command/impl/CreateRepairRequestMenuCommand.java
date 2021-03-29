@@ -64,6 +64,7 @@ public class CreateRepairRequestMenuCommand implements MenuCommand {
                 .setRepairRequestStatus(RepairRequestStatus.IN_PROGRESS)
                 .setCarRemark(carRemark)
                 .setUsername(username)
+                .setAppointmentSlotDto(appointmentSlotDto)
                 .build();
         repairRequestService.registerRepairRequest(repairRequestRegistrationDto);
         log.info(String.format(" Repair request was created "));

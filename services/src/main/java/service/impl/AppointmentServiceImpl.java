@@ -6,6 +6,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import repository.AppointmentRepository;
+import repository.RepairRequestRepository;
 import repository.UserRepository;
 import service.AppointmentService;
 import service.common.LocalDateTimeOperations;
@@ -22,6 +23,8 @@ public class AppointmentServiceImpl implements AppointmentService {
     private AppointmentRepository appointmentRepository;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private RepairRequestRepository repairRequestRepository;
 
     @Override
     public List<Appointment> findAllAppointment() {
@@ -30,7 +33,7 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     @Override
-    public Appointment createAppointment(AppointmentSlotDto appointmentSlotDto, Long userId) {
+    public Appointment createAppointment(AppointmentSlotDto appointmentSlotDto, Long userId, Long repairRequestId) {
         log.info(String.format("Appointment with info : {%s} was created \n for user with id: {%s} ", appointmentSlotDto.toString(), userId));
         log.debug(String.format("Appointment with info : {%s} was created \n for user with id: {%s} ", appointmentSlotDto.toString(), userId));
         Date startDateInDate = LocalDateTimeOperations.convertLocalDateTimeToDate(appointmentSlotDto.getStartDate());
@@ -42,6 +45,7 @@ public class AppointmentServiceImpl implements AppointmentService {
         appointment.setSlotStatus(SlotStatus.BUSY);
         appointment.setClient(userRepository.findOne(userId));
         appointment.setNotes(" notes...");
+        appointment.setRepairRequest(repairRequestRepository.findOne(repairRequestId));
         return appointmentRepository.save(appointment);
     }
 

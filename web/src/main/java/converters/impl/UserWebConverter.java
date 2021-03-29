@@ -3,7 +3,9 @@ package converters.impl;
 import converters.Converter;
 import dto.UserWebDto;
 import entity.User;
+import org.springframework.stereotype.Component;
 
+@Component
 public class UserWebConverter implements Converter<User, UserWebDto> {
 
     @Override

@@ -16,6 +16,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import repository.RepairRecordRepository;
 import repository.RepairRequestRepository;
 import repository.UserRepository;
+import service.AppointmentService;
 import service.converters.impl.RepairRequestConverter;
 import service.dto.RepairRequestRegistrationDto;
 
@@ -38,6 +39,8 @@ public class RepairRequestServiceImplTest {
 
     @Mock
     private UserRepository userRepository;
+    @Mock
+    private AppointmentServiceImpl appointmentService;
 
     @InjectMocks
     private UserServiceImpl userService;
@@ -54,7 +57,7 @@ public class RepairRequestServiceImplTest {
     @Before
     public void setUp() throws Exception {
         repairRequestConverter = new RepairRequestConverter(userService);
-        repairRequestService = new RepairRequestServiceImpl(repairRequestRepository, repairRequestConverter);
+        repairRequestService = new RepairRequestServiceImpl(repairRequestRepository, repairRequestConverter,appointmentService);
         when(userRepository.findByUsername("user")).thenReturn(userTestData.getTestUserByUsername("user"));
         when(repairRequestRepository.findAll()).thenReturn(repairRequestTestData.getAllTestRepairRequest());
         when(repairRecordRepository.findAll()).thenReturn(repairRecordTestData.getAllRepairRecordForTest());
