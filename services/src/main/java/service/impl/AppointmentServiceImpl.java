@@ -1,10 +1,11 @@
 package service.impl;
 
-import dao.AppointmentDao;
-import dao.BeanManager;
-import dao.UserDao;
 import entity.Appointment;
 import entity.consts.SlotStatus;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import repository.AppointmentRepository;
+import repository.UserRepository;
 import service.AppointmentService;
 import service.dto.AppointmentSlotDto;
 
@@ -13,27 +14,17 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Date;
 import java.util.List;
+@Service
 
 public class AppointmentServiceImpl implements AppointmentService {
-    private AppointmentDao appointmentDao = BeanManager.getInstance().getAppointment();
-    private UserDao userDao = BeanManager.getInstance().getUserDao();
-
-    private static AppointmentServiceImpl appointmentService;
-
-    private AppointmentServiceImpl() {
-    }
-
-    public static AppointmentServiceImpl getInstance() {
-        if (appointmentService == null) {
-            appointmentService = new AppointmentServiceImpl();
-        }
-        return appointmentService;
-    }
-
+    @Autowired
+    private AppointmentRepository appointmentRepository;
+    @Autowired
+    private UserRepository userRepository ;
 
     @Override
     public List<Appointment> findAllAppointment() {
-        return appointmentDao.findAll();
+        return appointmentRepository.findAll();
     }
 
     @Override
@@ -49,9 +40,9 @@ public class AppointmentServiceImpl implements AppointmentService {
         appointment.setStartDate(startDateInDate);
         appointment.setEndDate(endDateInDate);
         appointment.setSlotStatus(SlotStatus.BUSY);
-        appointment.setClient(userDao.findById(userId));
+        appointment.setClient(userRepository.findOne(userId));
         appointment.setNotes(" notes...");
-        return appointmentDao.save(appointment);
+        return appointmentRepository.save(appointment);
     }
 
 }

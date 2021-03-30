@@ -1,11 +1,12 @@
 package service.impl;
 
-import dao.AppointmentDao;
-import dao.BeanManager;
 import entity.Appointment;
 import entity.User;
 import entity.consts.Role;
 import org.apache.commons.lang3.time.DateUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import repository.AppointmentRepository;
 import service.AppointmentSlotService;
 import service.UserService;
 import service.dto.AppointmentSlotDto;
@@ -15,12 +16,15 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.*;
 
+@Service
 public class AppointmentSlotServiceImpl implements AppointmentSlotService {
-    private UserService userService = UserServiceImpl.getInstance();
-    private AppointmentDao appointmentDao = BeanManager.getInstance().getAppointment();
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private AppointmentRepository appointmentRepository;
+
     private final int startWorkHour = 8;
     private final int endWorkHour = 20;
-
 
     @Override
     public List<AppointmentSlotDto> getAvailableAppointmentSlotsByDate(Date date) {
@@ -39,7 +43,7 @@ public class AppointmentSlotServiceImpl implements AppointmentSlotService {
             }
         }
 
-        List<Appointment> allAppointments = appointmentDao.findAll();
+        List<Appointment> allAppointments = appointmentRepository.findAll();
         List<AppointmentSlotDto> notAvailableSlots = new ArrayList<>();
         for (Appointment appointment : allAppointments) {
             for (AppointmentSlotDto appointmentSlotDto : appointmentSlotDtos) {
@@ -57,7 +61,6 @@ public class AppointmentSlotServiceImpl implements AppointmentSlotService {
                 appointmentSlotDto.getStartDate().equals(convertDateToLocalDateTime(appointment.getStartDate())) &&
                 appointmentSlotDto.getEndDate().equals(convertDateToLocalDateTime(appointment.getEndDate()))) {
             return true;
-
         }
         return false;
     }
@@ -71,7 +74,6 @@ public class AppointmentSlotServiceImpl implements AppointmentSlotService {
             result.addAll(getAvailableAppointmentSlotsByDate(currentDate));
             currentDate = DateUtils.addDays(currentDate, 1);
         }
-
         return result;
     }
 
@@ -95,7 +97,6 @@ public class AppointmentSlotServiceImpl implements AppointmentSlotService {
         return result;
     }
 
-
     private LocalDateTime convertDateToLocalDateTime(Date date) {
         return LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault());
     }
@@ -105,11 +106,6 @@ public class AppointmentSlotServiceImpl implements AppointmentSlotService {
     }
 
     private WorkingHoursDto getWorkHoursByDate(Date date) {
-
         return new WorkingHoursDto(startWorkHour, endWorkHour);
-
-
     }
-
-
 }

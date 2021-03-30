@@ -2,14 +2,17 @@ package command.impl;
 
 import command.MenuCommand;
 import entity.RepairRequest;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import service.RepairRequestService;
 import service.dto.RepairRequestRegistrationDto;
-import service.impl.RepairRequestServiceImpl;
 
 import java.util.Scanner;
 
+@Component
 public class UpdateRepairRequestMenuCommand implements MenuCommand {
-    private RepairRequestService repairRequestService = RepairRequestServiceImpl.getInstance();
+    @Autowired
+    private RepairRequestService repairRequestService;
 
     @Override
     public void execute() {
@@ -38,6 +41,11 @@ public class UpdateRepairRequestMenuCommand implements MenuCommand {
             System.out.println("For username " + username + " user not found!");
         }
 
+    }
+
+    @Override
+    public int getHandledMenuNumber() {
+        return 15;
     }
 
 }

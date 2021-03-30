@@ -2,66 +2,93 @@ package entity;
 
 import entity.consts.RepairRequestStatus;
 
+import javax.persistence.*;
 import java.util.Date;
 
+@Entity
+@Table(name = "repair_request")
 public class RepairRequest extends BaseEntity {
-
+    @Column(name = "date_of_repair")
     private Date dateOfRequest;
+    @Column(name = "status")
+    @Enumerated(EnumType.STRING)
     private RepairRequestStatus repairRequestStatus;
+    @Column(name = "car_remark")
     private String carRemark;
+    @Column(name = "repair_request_description")
     private String repairRequestDescription;
+    @ManyToOne(cascade = {CascadeType.REFRESH})
+    @JoinColumn(name = "user_id")
     private User user;
+    @OneToOne(cascade = {CascadeType.REFRESH}, mappedBy = "repairRequest", fetch = FetchType.EAGER)
+    private RepairRecord repairRecord;
+
 
     public RepairRequest() {
     }
 
-    public RepairRequest(User user, String repairRequestDescription, String carRemark, RepairRequestStatus repairRequestStatus, Date dateOfRequest) {
-        this.user = user;
-        this.repairRequestDescription = repairRequestDescription;
-        this.carRemark = carRemark;
-        this.repairRequestStatus = repairRequestStatus;
+    public RepairRequest(Date dateOfRequest, RepairRequestStatus repairRequestStatus, String carRemark,
+                         String repairRequestDescription, User user, RepairRecord repairRecord) {
         this.dateOfRequest = dateOfRequest;
-
+        this.repairRequestStatus = repairRequestStatus;
+        this.carRemark = carRemark;
+        this.repairRequestDescription = repairRequestDescription;
+        this.user = user;
+        this.repairRecord = repairRecord;
     }
 
     public Date getDateOfRequest() {
         return dateOfRequest;
     }
 
-    public void setDateOfRequest(Date dateOfRequest) {
+    public RepairRequest setDateOfRequest(Date dateOfRequest) {
         this.dateOfRequest = dateOfRequest;
+        return this;
     }
 
     public RepairRequestStatus getRepairRequestStatus() {
         return repairRequestStatus;
     }
 
-    public void setRepairRequestStatus(RepairRequestStatus repairRequestStatus) {
+    public RepairRequest setRepairRequestStatus(RepairRequestStatus repairRequestStatus) {
         this.repairRequestStatus = repairRequestStatus;
+        return this;
     }
 
     public String getCarRemark() {
         return carRemark;
     }
 
-    public void setCarRemark(String carRemark) {
+    public RepairRequest setCarRemark(String carRemark) {
         this.carRemark = carRemark;
+        return this;
     }
 
     public String getRepairRequestDescription() {
         return repairRequestDescription;
     }
 
-    public void setRepairRequestDescription(String repairRequestDescription) {
+    public RepairRequest setRepairRequestDescription(String repairRequestDescription) {
         this.repairRequestDescription = repairRequestDescription;
+        return this;
     }
 
     public User getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public RepairRequest setUser(User user) {
         this.user = user;
+        return this;
+    }
+
+    public RepairRecord getRepairRecord() {
+        return repairRecord;
+    }
+
+    public RepairRequest setRepairRecord(RepairRecord repairRecord) {
+        this.repairRecord = repairRecord;
+        return this;
     }
 
     @Override
@@ -71,7 +98,6 @@ public class RepairRequest extends BaseEntity {
                 ", repairRequestStatus=" + repairRequestStatus +
                 ", carRemark='" + carRemark + '\'' +
                 ", repairRequestDescription='" + repairRequestDescription + '\'' +
-                ", user=" + user +
                 "} " + super.toString();
     }
 }

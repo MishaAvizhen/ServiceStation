@@ -2,35 +2,24 @@ package ui.menu;
 
 import command.MenuCommand;
 import command.impl.*;
-import dao.common.impl.BackUpablesManager;
-import dao.impl.InMemoryUserDao;
-import entity.User;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
+@Component
 public class ConsoleMenu {
 
     private Map<Integer, MenuCommand> actionNumberToMenuCommandMap = new HashMap<>();
 
-    public ConsoleMenu() {
-        actionNumberToMenuCommandMap.put(1, new FindAllUsersMenuCommand());
-        actionNumberToMenuCommandMap.put(2, new FindAllRepairRequestMenuCommand());
-        actionNumberToMenuCommandMap.put(3, new FindAllRepairRecordsMenuCommand());
-        actionNumberToMenuCommandMap.put(4, new FindUserByUsernameMenuCommand());
-        actionNumberToMenuCommandMap.put(5, new CreateAppointmentMenuCommand());
-        actionNumberToMenuCommandMap.put(6, new FindAllAppointmentMenuCommand());
-        actionNumberToMenuCommandMap.put(7, new CreateUserMenuCommand());
-        actionNumberToMenuCommandMap.put(8, new CreateRepairRequestMenuCommand());
-        actionNumberToMenuCommandMap.put(9, new CreateRepairRecordMenuCommand());
-        actionNumberToMenuCommandMap.put(10, new DeleteUserByIdMenuCommand());
-        actionNumberToMenuCommandMap.put(11, new DeleteRepairRequestMenuCommand());
-        actionNumberToMenuCommandMap.put(12, new DeleteRepairRecordMenuCommand());
-        actionNumberToMenuCommandMap.put(13, new GetSumPriceMenuCommand());
-        actionNumberToMenuCommandMap.put(14, new UpdateUserMenuCommand());
-        actionNumberToMenuCommandMap.put(15, new UpdateRepairRequestMenuCommand());
-        actionNumberToMenuCommandMap.put(16, new UpdateRepairRecordMenuCommand());
+    @Autowired
+    public ConsoleMenu(List<MenuCommand> allMenuCommands) {
+        for (MenuCommand menuCommand : allMenuCommands) {
+            actionNumberToMenuCommandMap.put(menuCommand.getHandledMenuNumber(), menuCommand);
+        }
     }
 
     public void initMenuConsole() {

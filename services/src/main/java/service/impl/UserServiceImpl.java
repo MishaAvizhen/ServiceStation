@@ -1,12 +1,13 @@
 package service.impl;
 
 
-import dao.BeanManager;
-import dao.RepairRecordDao;
-import dao.UserDao;
 import entity.RepairRecord;
 import entity.User;
 import entity.consts.RepairRequestStatus;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import repository.RepairRecordRepository;
+import repository.UserRepository;
 import service.UserService;
 import service.converters.impl.UserConverter;
 import service.dto.UserRegistrationDto;
@@ -15,30 +16,21 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+@Service
 public class UserServiceImpl implements UserService {
-    private UserDao userDao = BeanManager.getInstance().getUserDao();
-    private RepairRecordDao repairRecordDao = BeanManager.getInstance().getRepairRecord();
-
-    private static UserServiceImpl userService;
-
-    private UserServiceImpl() {
-    }
-
-    public static UserServiceImpl getInstance() {
-        if (userService == null) {
-            userService = new UserServiceImpl();
-        }
-        return userService;
-    }
+    @Autowired
+    private UserRepository userRepository;
+    @Autowired
+    private RepairRecordRepository repairRecordRepository;
 
     @Override
     public List<RepairRecord> getUserRepairRecordList(Long userId) {
-        User user = userDao.findById(userId);
+        User user = userRepository.findOne(userId);
         if (user == null) {
             return Collections.emptyList();
         }
         List<RepairRecord> resultList = new ArrayList<>();
-        List<RepairRecord> repairRecordList = repairRecordDao.findAll();
+        List<RepairRecord> repairRecordList = repairRecordRepository.findAll();
         for (RepairRecord repairRecord : repairRecordList) {
             if (repairRecord.getRepairRequest().getRepairRequestStatus().equals(RepairRequestStatus.PROCESSED)) {
                 resultList.add(repairRecord);
@@ -49,46 +41,31 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findUserByUsername(String username) {
-        for (User user : userDao.findAll()) {
-            if (user == null) {
-                System.out.println("User not found");
-            } else if (username.equals(user.getUsername())) {
-                return user;
-            }
-        }
-        return null;
+        return userRepository.findByUsername(username);
     }
 
     @Override
     public User findUserById(Long userId) {
-        User userDaoById = userDao.findById(userId);
-        if (userDaoById == null) {
-            System.out.println("User not found");
-        } else {
-            return userDaoById;
-        }
-        return null;
+        return userRepository.findOne(userId);
     }
 
     @Override
     public List<User> findAllUsers() {
-        return userDao.findAll();
+        return userRepository.findAll();
     }
-
 
     @Override
     public void deleteUserById(Long userId) {
-        userDao.deleteById(userId);
-
+        userRepository.delete(userId);
 
     }
 
     @Override
     public Long getSumWorkPriceAndDetailPrice(Long userId) {
-        User userDaoById = userDao.findById(userId);
+        User userDaoById = userRepository.findOne(userId);
         String username = userDaoById.getUsername();
         Long sumPrice = 0L;
-        List<RepairRecord> repairRecordList = repairRecordDao.findAll();
+        List<RepairRecord> repairRecordList = repairRecordRepository.findAll();
         for (RepairRecord record : repairRecordList) {
             if (record.getRepairRequest().getUser().getUsername().equals(username)) {
                 sumPrice += record.getDetailPrice() + record.getWorkPrice();
@@ -102,7 +79,7 @@ public class UserServiceImpl implements UserService {
     public void registerUser(UserRegistrationDto userRegistrationDto) {
         UserConverter userConverter = new UserConverter();
         User user = userConverter.convertToEntity(userRegistrationDto);
-        userDao.save(user);
+        userRepository.save(user);
 
     }
 
@@ -110,7 +87,7 @@ public class UserServiceImpl implements UserService {
     public void updateUser(UserRegistrationDto userRegistrationDto, User userToUpdate) {
         UserConverter userConverter = new UserConverter();
         User updatedUser = userConverter.convertToExistingEntity(userRegistrationDto, userToUpdate);
-        userDao.update(updatedUser);
+        userRepository.saveAndFlush(updatedUser);
 
     }
 

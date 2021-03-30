@@ -2,13 +2,16 @@ package command.impl;
 
 import command.MenuCommand;
 import entity.User;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import service.UserService;
-import service.impl.UserServiceImpl;
 
 import java.util.Scanner;
 
+@Component
 public class DeleteUserByIdMenuCommand implements MenuCommand {
-    private UserService userService = UserServiceImpl.getInstance();
+    @Autowired
+    private UserService userService;
 
     @Override
     public void execute() {
@@ -23,5 +26,10 @@ public class DeleteUserByIdMenuCommand implements MenuCommand {
         userService.deleteUserById(id);
         System.out.println(" User " + username + " was deleted");
 
+    }
+
+    @Override
+    public int getHandledMenuNumber() {
+        return 10;
     }
 }

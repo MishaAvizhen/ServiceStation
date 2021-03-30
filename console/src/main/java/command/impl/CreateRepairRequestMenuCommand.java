@@ -3,16 +3,13 @@ package command.impl;
 import command.MenuCommand;
 import entity.User;
 import entity.consts.RepairRequestStatus;
-import service.AppointmentService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import service.AppointmentSlotService;
 import service.RepairRequestService;
 import service.UserService;
 import service.dto.AppointmentSlotDto;
 import service.dto.RepairRequestRegistrationDto;
-import service.impl.AppointmentServiceImpl;
-import service.impl.AppointmentSlotServiceImpl;
-import service.impl.RepairRequestServiceImpl;
-import service.impl.UserServiceImpl;
 
 import java.util.Date;
 import java.util.List;
@@ -20,12 +17,14 @@ import java.util.Scanner;
 
 import static command.impl.CommonMethods.getDate;
 
+@Component
 public class CreateRepairRequestMenuCommand implements MenuCommand {
-
-    private AppointmentSlotService appointmentSlotService = new AppointmentSlotServiceImpl();
-    private UserService userService = UserServiceImpl.getInstance();
-    private RepairRequestService repairRequestService = RepairRequestServiceImpl.getInstance();
-    private AppointmentService appointmentConverterService = AppointmentServiceImpl.getInstance();
+    @Autowired
+    private AppointmentSlotService appointmentSlotService;
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private RepairRequestService repairRequestService;
 
     @Override
     public void execute() {
@@ -69,6 +68,11 @@ public class CreateRepairRequestMenuCommand implements MenuCommand {
         System.out.println("Repair request for " + username + " was created");
         System.out.println("Appointment time:" + appointmentSlotDto.getStartDate() + " - " + appointmentSlotDto.getEndDate());
 
+    }
+
+    @Override
+    public int getHandledMenuNumber() {
+        return 8;
     }
 
 }
