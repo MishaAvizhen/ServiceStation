@@ -113,5 +113,12 @@ public class RepairRequestServiceImpl implements RepairRequestService {
 
     }
 
+    @Override
+    public RepairRequest findRepairRequestById(Long repairRequestId) {
+        log.info(String.format("Find repair request  with id= {%s}", repairRequestId));
+        log.debug(String.format("Find repair request  with id= {%s}", repairRequestId));
+        return repairRequestRepository.findOne(repairRequestId);
+    }
+
 
 }

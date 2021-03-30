@@ -2,6 +2,7 @@ package handler.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import handler.StoHandlerAdapter;
+import handler.StoRestHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import service.UserService;
@@ -14,7 +15,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 @Component
-public class DeleteUserByIdHandler extends StoHandlerAdapter {
+public class DeleteUserByIdHandler extends StoRestHandler{
     private UserService userService;
 
     @Autowired
@@ -27,14 +28,7 @@ public class DeleteUserByIdHandler extends StoHandlerAdapter {
         Long userId = Long.valueOf(request.getParameter("userId"));
         userService.deleteUserById(userId);
 
-        PrintWriter out = response.getWriter();
-        ObjectMapper objectMapper = new ObjectMapper();
-        String jsonString = objectMapper.writeValueAsString("User with id: " + userId + " was delete");
-        response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8");
-        out.print(jsonString);
-        out.flush();
-
+        writeResponseAsJson("User with id: " + userId + " was delete", response);
     }
 
     @Override

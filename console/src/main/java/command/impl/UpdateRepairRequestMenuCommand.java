@@ -1,13 +1,18 @@
 package command.impl;
 
 import command.MenuCommand;
+import entity.Appointment;
 import entity.RepairRequest;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import service.AppointmentService;
+import service.AppointmentSlotService;
 import service.RepairRequestService;
+import service.dto.AppointmentSlotDto;
 import service.dto.RepairRequestRegistrationDto;
 
+import java.util.List;
 import java.util.Scanner;
 
 @Component

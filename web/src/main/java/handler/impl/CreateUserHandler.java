@@ -7,6 +7,7 @@ import dto.UserWebDto;
 import entity.User;
 import entity.consts.Role;
 import handler.StoHandlerAdapter;
+import handler.StoRestHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import service.UserService;
@@ -19,7 +20,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 @Component
-public class CreateUserHandler extends StoHandlerAdapter {
+public class CreateUserHandler extends StoRestHandler {
     private UserService userService;
     private UserToUserWebDtoConverter userToUserWebDtoConverter;
     private UserWebDtoToUserRegistrationDtoConverter registrationDto;
@@ -39,20 +40,12 @@ public class CreateUserHandler extends StoHandlerAdapter {
     @Override
     public void handleDoPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        ObjectMapper mapper = new ObjectMapper();
-        UserWebDto userWebDto = mapper.readValue(request.getInputStream(), UserWebDto.class);
+        UserWebDto userWebDto = readRequestEntity(UserWebDto.class, request);
         userWebDto.setRole(Role.USER);
         UserRegistrationDto userRegistrationDto = registrationDto.convertFromSourceDtoToTargetDto(userWebDto);
         User createdUser = userService.registerUser(userRegistrationDto);
 
-
-        PrintWriter out = response.getWriter();
-        ObjectMapper objectMapper = new ObjectMapper();
-        String jsonString = objectMapper.writeValueAsString(userToUserWebDtoConverter.convertToDto(createdUser));
-        response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8");
-        out.print(jsonString);
-        out.flush();
+        writeResponseAsJson(userToUserWebDtoConverter.convertToDto(createdUser), response);
 
     }
 

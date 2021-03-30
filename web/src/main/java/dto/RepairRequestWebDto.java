@@ -3,6 +3,7 @@ package dto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import entity.consts.RepairRequestStatus;
 import lombok.*;
+import service.dto.AppointmentSlotDto;
 
 import java.util.Date;
 
@@ -18,5 +19,6 @@ public class RepairRequestWebDto {
     private String carRemark;
     private String repairRequestDescription;
     private String username;
+    private AppointmentSlotDto appointmentSlotDto;
 
 }

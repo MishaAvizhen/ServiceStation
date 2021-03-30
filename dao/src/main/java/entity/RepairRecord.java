@@ -1,6 +1,7 @@
 package entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -21,7 +22,7 @@ public class RepairRecord extends BaseEntity {
     private Long workPrice;
     @Column(name = "other_notes")
     private String otherNotes;
-
+    @JsonIgnore
     @OneToOne(cascade = {CascadeType.REFRESH, CascadeType.MERGE})
     @JoinColumn(name = "repair_request_id")
     @ToString.Exclude

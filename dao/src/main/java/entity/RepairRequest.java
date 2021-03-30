@@ -1,5 +1,6 @@
 package entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import entity.consts.RepairRequestStatus;
 import lombok.*;
 import org.hibernate.annotations.Fetch;
@@ -18,6 +19,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class RepairRequest extends BaseEntity {
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
     @Column(name = "date_of_repair")
     private Date dateOfRequest;
     @Column(name = "status")

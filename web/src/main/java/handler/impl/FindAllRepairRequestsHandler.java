@@ -1,10 +1,10 @@
 package handler.impl;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import converters.impl.RepairRequestToRepairRequestWebDtoConverter;
 import dto.RepairRequestWebDto;
 import entity.RepairRequest;
-import handler.StoHandlerAdapter;
+import entity.consts.RepairRequestStatus;
+import handler.StoRestHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import service.RepairRequestService;
@@ -13,14 +13,15 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
-public class FindAllRepairRequestsHandler extends StoHandlerAdapter {
+public class FindAllRepairRequestsHandler extends StoRestHandler {
     private RepairRequestService repairRequestService;
     private RepairRequestToRepairRequestWebDtoConverter requestWebConverter;
+
     @Autowired
     public FindAllRepairRequestsHandler(RepairRequestService repairRequestService, RepairRequestToRepairRequestWebDtoConverter requestWebConverter) {
         this.repairRequestService = repairRequestService;
@@ -30,20 +31,22 @@ public class FindAllRepairRequestsHandler extends StoHandlerAdapter {
 
     @Override
     public void handleDoGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String username = request.getParameter("username");
+        String carRemark = request.getParameter("carRemark");
+        Long requestId = request.getParameter("requestId") != null ? Long.valueOf(request.getParameter("requestId")) : null;
         List<RepairRequest> allRepairRequests = repairRequestService.findAllRepairRequests();
+        List<RepairRequest> filteredRequest = allRepairRequests.stream()
+                .filter(repairRequest -> username == null || username.equals(repairRequest.getUser().getUsername()))
+                .filter(repairRequest -> carRemark == null || carRemark.equals(repairRequest.getCarRemark()))
+                .filter(repairRequest -> requestId == null || requestId.equals(repairRequest.getId()))
+                .collect(Collectors.toList());
         List<RepairRequestWebDto> requestWebDtos = new ArrayList<>();
-        for (RepairRequest repairRequest : allRepairRequests) {
+        for (RepairRequest repairRequest : filteredRequest) {
             RepairRequestWebDto repairRequestWebDto = requestWebConverter.convertToDto(repairRequest);
             requestWebDtos.add(repairRequestWebDto);
 
         }
-        PrintWriter out = response.getWriter();
-        ObjectMapper objectMapper = new ObjectMapper();
-        String jsonString = objectMapper.writeValueAsString(requestWebDtos);
-        response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8");
-        out.print(jsonString);
-        out.flush();
+        writeResponseAsJson(requestWebDtos, response);
     }
 
     @Override

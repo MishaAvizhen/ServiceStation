@@ -23,4 +23,6 @@ public interface RepairRequestService {
 
     void deleteRepairRequestById(Long repairRequestId);
 
+    RepairRequest findRepairRequestById(Long repairRequestId);
+
 }

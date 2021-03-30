@@ -3,7 +3,7 @@ package handler.impl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import converters.impl.AppointmentSlotDtoToAppointmentSlotWebDtoConverter;
 import dto.AppointmentSlotWebDto;
-import handler.StoHandlerAdapter;
+import handler.StoRestHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import service.AppointmentSlotService;
@@ -13,7 +13,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -22,14 +21,12 @@ import java.util.Date;
 import java.util.List;
 
 @Component
-public class GetAvailableSlotByDateHandler extends StoHandlerAdapter {
+public class GetAvailableSlotByDateHandler extends StoRestHandler {
     private AppointmentSlotService appointmentSlotService;
-    private ObjectMapper objectMapper;
 
     @Autowired
-    public GetAvailableSlotByDateHandler(AppointmentSlotService appointmentSlotService, ObjectMapper objectMapper) {
+    public GetAvailableSlotByDateHandler(AppointmentSlotService appointmentSlotService) {
         this.appointmentSlotService = appointmentSlotService;
-        this.objectMapper = objectMapper;
     }
 
 
@@ -49,12 +46,7 @@ public class GetAvailableSlotByDateHandler extends StoHandlerAdapter {
         for (AppointmentSlotDto appointmentSlotDto : availableAppointmentSlotsByDate) {
             webDtos.add(appointmentConverter.convertFromSourceDtoToTargetDto(appointmentSlotDto));
         }
-        PrintWriter out = response.getWriter();
-        String jsonString = objectMapper.writeValueAsString(webDtos);
-        response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8");
-        out.print(jsonString);
-        out.flush();
+        writeResponseAsJson(webDtos, response);
     }
 
     @Override

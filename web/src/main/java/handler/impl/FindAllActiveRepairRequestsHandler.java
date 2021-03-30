@@ -5,6 +5,7 @@ import converters.impl.RepairRequestToRepairRequestWebDtoConverter;
 import dto.RepairRequestWebDto;
 import entity.RepairRequest;
 import handler.StoHandlerAdapter;
+import handler.StoRestHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import service.RepairRequestService;
@@ -18,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class FindAllActiveRepairRequestsHandler extends StoHandlerAdapter {
+public class FindAllActiveRepairRequestsHandler extends StoRestHandler{
     private RepairRequestService repairRequestService;
     private RepairRequestToRepairRequestWebDtoConverter webConverter;
 
@@ -37,13 +38,8 @@ public class FindAllActiveRepairRequestsHandler extends StoHandlerAdapter {
             RepairRequestWebDto repairRequestWebDto = webConverter.convertToDto(activeRepairRequest);
             requestWebDtos.add(repairRequestWebDto);
         }
-        PrintWriter out = response.getWriter();
-        ObjectMapper objectMapper = new ObjectMapper();
-        String jsonString = objectMapper.writeValueAsString(requestWebDtos);
-        response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8");
-        out.print(jsonString);
-        out.flush();
+        writeResponseAsJson(requestWebDtos, response);
+
     }
 
     @Override

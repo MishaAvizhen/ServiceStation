@@ -49,4 +49,10 @@ public class AppointmentServiceImpl implements AppointmentService {
         return appointmentRepository.save(appointment);
     }
 
+    @Override
+    public Appointment findAppointmentByRepairRequestId(Long repairRequestId) {
+        log.info(String.format("Find appointment for repair request  with id= {%s}", repairRequestId));
+        log.debug(String.format("Find appointment for repair request  with id= {%s}", repairRequestId));
+        return appointmentRepository.findOne(repairRequestId);
+    }
 }

@@ -1,38 +1,25 @@
 package converters.impl;
 
 import converters.ConverterFromFirstDtoToSecond;
-import dto.RepairRequestRegistrationWebDto;
-import entity.consts.RepairRequestStatus;
-import org.springframework.beans.factory.annotation.Autowired;
+import dto.RepairRequestWebDto;
+import entity.Appointment;
 import org.springframework.stereotype.Component;
-import service.dto.AppointmentSlotDto;
+import service.AppointmentService;
 import service.dto.RepairRequestRegistrationDto;
-
-import java.util.Date;
 
 @Component
 public class RepairRequestFromWebDtoToRegistrationDtoConverter implements
-        ConverterFromFirstDtoToSecond<RepairRequestRegistrationWebDto, RepairRequestRegistrationDto> {
-
-    private AppointmentSlotWebDtoToAppointmentSlotDtoConverter appointmentSlotWebDtoToAppointmentSlotDtoConverter;
-
-    @Autowired
-    public RepairRequestFromWebDtoToRegistrationDtoConverter(AppointmentSlotWebDtoToAppointmentSlotDtoConverter appointmentSlotWebDtoToAppointmentSlotDtoConverter) {
-        this.appointmentSlotWebDtoToAppointmentSlotDtoConverter = appointmentSlotWebDtoToAppointmentSlotDtoConverter;
-    }
+        ConverterFromFirstDtoToSecond<RepairRequestWebDto,RepairRequestRegistrationDto> {
 
     @Override
-    public RepairRequestRegistrationDto convertFromSourceDtoToTargetDto(RepairRequestRegistrationWebDto sourceDto) {
-        AppointmentSlotDto appointmentSlotDto = appointmentSlotWebDtoToAppointmentSlotDtoConverter
-                .convertFromSourceDtoToTargetDto(sourceDto.getAppointmentSlotWebDto());
+    public RepairRequestRegistrationDto convertFromSourceDtoToTargetDto(RepairRequestWebDto sourceDto) {
         return new RepairRequestRegistrationDto.Builder()
-                .setDateOfRequest(new Date())
-                .setRepairRequestDescription(sourceDto.getRepairRequestDescription())
-                .setRepairRequestStatus(RepairRequestStatus.IN_PROGRESS)
+                .setRepairRequestStatus(sourceDto.getRepairRequestStatus())
                 .setCarRemark(sourceDto.getCarRemark())
-                .setUsername(sourceDto.getClientUsername())
-                .setAppointmentSlotDto(appointmentSlotDto)
+                .setUsername(sourceDto.getUsername())
+                .setRepairRequestDescription(sourceDto.getRepairRequestDescription())
+                .setDateOfRequest(sourceDto.getDateOfRequest())
+                .setAppointmentSlotDto(sourceDto.getAppointmentSlotDto())
                 .build();
-
     }
 }

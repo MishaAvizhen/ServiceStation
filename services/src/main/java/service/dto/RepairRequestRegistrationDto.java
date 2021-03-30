@@ -1,5 +1,6 @@
 package service.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import entity.consts.RepairRequestStatus;
 
 import java.util.Date;
@@ -48,6 +49,7 @@ public class RepairRequestRegistrationDto {
     }
 
     public static class Builder {
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
         private Date dateOfRequest;
         private RepairRequestStatus repairRequestStatus;
         private String carRemark;

@@ -10,6 +10,7 @@ public abstract class StoHandlerAdapter implements StoHandler {
     @Override
     public void handleDoGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
     }
 
     @Override
