@@ -6,7 +6,7 @@ import entity.User;
 import org.springframework.stereotype.Component;
 
 @Component
-public class UserWebConverter implements Converter<User, UserWebDto> {
+public class UserToUserWebDtoConverter implements Converter<User, UserWebDto> {
 
     @Override
     public UserWebDto convertToDto(User entity) {

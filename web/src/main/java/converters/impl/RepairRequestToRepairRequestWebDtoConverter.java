@@ -9,16 +9,14 @@ import org.springframework.stereotype.Component;
 import service.UserService;
 
 @Component
-public class RepairRequestWebConverter implements Converter<RepairRequest, RepairRequestWebDto> {
+public class RepairRequestToRepairRequestWebDtoConverter implements Converter<RepairRequest, RepairRequestWebDto> {
     private UserService userService;
 
     @Autowired
-    public RepairRequestWebConverter(UserService userService) {
+    public RepairRequestToRepairRequestWebDtoConverter(UserService userService) {
         this.userService = userService;
     }
 
-    public RepairRequestWebConverter() {
-    }
 
     @Override
     public RepairRequestWebDto convertToDto(RepairRequest entity) {

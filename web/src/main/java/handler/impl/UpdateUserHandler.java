@@ -1,7 +1,7 @@
 package handler.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import converters.impl.UserConverterFromWebDtoToRegistrationDto;
+import converters.impl.UserWebDtoToUserRegistrationDtoConverter;
 import dto.UserWebDto;
 import entity.User;
 import handler.StoHandlerAdapter;
@@ -31,7 +31,7 @@ public class UpdateUserHandler extends StoHandlerAdapter {
         ObjectMapper mapper = new ObjectMapper();
         UserWebDto userWebDto = mapper.readValue(request.getInputStream(), UserWebDto.class);
 
-        UserConverterFromWebDtoToRegistrationDto registrationDto = new UserConverterFromWebDtoToRegistrationDto();
+        UserWebDtoToUserRegistrationDtoConverter registrationDto = new UserWebDtoToUserRegistrationDtoConverter();
         Long userId = userWebDto.getUserId();
         User userById = userService.findUserById(userId);
         if (userById != null) {

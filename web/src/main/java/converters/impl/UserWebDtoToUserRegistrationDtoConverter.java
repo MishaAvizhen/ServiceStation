@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 import service.dto.UserRegistrationDto;
 
 @Component
-public class UserConverterFromWebDtoToRegistrationDto implements
+public class UserWebDtoToUserRegistrationDtoConverter implements
         ConverterFromFirstDtoToSecond<UserWebDto, UserRegistrationDto> {
 
     @Override

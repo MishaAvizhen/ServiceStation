@@ -22,12 +22,14 @@ import java.util.Date;
 import java.util.List;
 
 @Component
-public class GetAvailableSlotByDate extends StoHandlerAdapter {
+public class GetAvailableSlotByDateHandler extends StoHandlerAdapter {
     private AppointmentSlotService appointmentSlotService;
+    private ObjectMapper objectMapper;
 
     @Autowired
-    public GetAvailableSlotByDate(AppointmentSlotService appointmentSlotService) {
+    public GetAvailableSlotByDateHandler(AppointmentSlotService appointmentSlotService, ObjectMapper objectMapper) {
         this.appointmentSlotService = appointmentSlotService;
+        this.objectMapper = objectMapper;
     }
 
 
@@ -48,7 +50,6 @@ public class GetAvailableSlotByDate extends StoHandlerAdapter {
             webDtos.add(appointmentConverter.convertFromSourceDtoToTargetDto(appointmentSlotDto));
         }
         PrintWriter out = response.getWriter();
-        ObjectMapper objectMapper = new ObjectMapper();
         String jsonString = objectMapper.writeValueAsString(webDtos);
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");

@@ -7,8 +7,9 @@ import service.common.LocalDateTimeOperations;
 import service.dto.AppointmentSlotDto;
 
 @Component
-public class AppointmentSlotWebDtoToAppointmentSlotDto
+public class AppointmentSlotWebDtoToAppointmentSlotDtoConverter
         implements ConverterFromFirstDtoToSecond<AppointmentSlotWebDto, AppointmentSlotDto> {
+
     @Override
     public AppointmentSlotDto convertFromSourceDtoToTargetDto(AppointmentSlotWebDto sourceDto) {
         AppointmentSlotDto appointmentSlotDto = new AppointmentSlotDto();

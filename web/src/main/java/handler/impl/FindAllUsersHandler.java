@@ -1,15 +1,13 @@
 package handler.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import converters.impl.UserWebConverter;
+import converters.impl.UserToUserWebDtoConverter;
 import dto.UserWebDto;
 import entity.User;
-import handler.StoHandler;
 import handler.StoHandlerAdapter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import service.UserService;
-import service.beanUtils.ServicesBeanUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -23,20 +21,25 @@ import java.util.List;
 public class FindAllUsersHandler extends StoHandlerAdapter {
 
     private UserService userService;
+    private UserToUserWebDtoConverter userToUserWebDtoConverter;
 
     @Autowired
-    public FindAllUsersHandler(UserService userService) {
+    public FindAllUsersHandler(UserService userService, UserToUserWebDtoConverter userToUserWebDtoConverter) {
         this.userService = userService;
+        this.userToUserWebDtoConverter = userToUserWebDtoConverter;
     }
+
+
+
+
 
 
     @Override
     public void handleDoGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         List<User> allUsers = userService.findAllUsers();
         List<UserWebDto> userWebDtos = new ArrayList<>();
-        UserWebConverter userWebConverter = new UserWebConverter();
         for (User user : allUsers) {
-            UserWebDto userWebDto = userWebConverter.convertToDto(user);
+            UserWebDto userWebDto = userToUserWebDtoConverter.convertToDto(user);
             userWebDtos.add(userWebDto);
         }
 

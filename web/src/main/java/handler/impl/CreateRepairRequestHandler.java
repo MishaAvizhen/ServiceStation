@@ -1,8 +1,8 @@
 package handler.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import converters.impl.RepairRequestConverterFromWebDtoToRegistrationDto;
-import converters.impl.RepairRequestWebConverter;
+import converters.impl.RepairRequestFromWebDtoToRegistrationDtoConverter;
+import converters.impl.RepairRequestToRepairRequestWebDtoConverter;
 import dto.RepairRequestRegistrationWebDto;
 import entity.RepairRequest;
 import handler.StoHandlerAdapter;
@@ -19,31 +19,33 @@ import java.io.PrintWriter;
 
 @Component
 public class CreateRepairRequestHandler extends StoHandlerAdapter {
+
     private RepairRequestService repairRequestService;
-    private RepairRequestConverterFromWebDtoToRegistrationDto repairRequestConverterFromWebDtoToRegistrationDto;
-    private RepairRequestWebConverter requestWebConverter;
+    private RepairRequestFromWebDtoToRegistrationDtoConverter repairRequestFromWebDtoToRegistrationDtoConverter;
+    private RepairRequestToRepairRequestWebDtoConverter requestWebConverter;
+    private ObjectMapper objectMapper;
 
     @Autowired
     public CreateRepairRequestHandler(RepairRequestService repairRequestService,
-                                      RepairRequestConverterFromWebDtoToRegistrationDto repairRequestConverterFromWebDtoToRegistrationDto,
-                                      RepairRequestWebConverter requestWebConverter) {
+                                      RepairRequestFromWebDtoToRegistrationDtoConverter repairRequestFromWebDtoToRegistrationDtoConverter,
+                                      RepairRequestToRepairRequestWebDtoConverter requestWebConverter,
+                                      ObjectMapper objectMapper) {
         this.repairRequestService = repairRequestService;
-        this.repairRequestConverterFromWebDtoToRegistrationDto = repairRequestConverterFromWebDtoToRegistrationDto;
+        this.repairRequestFromWebDtoToRegistrationDtoConverter = repairRequestFromWebDtoToRegistrationDtoConverter;
         this.requestWebConverter = requestWebConverter;
+        this.objectMapper = objectMapper;
     }
 
     @Override
     public void handleDoPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        ObjectMapper mapper = new ObjectMapper();
-        RepairRequestRegistrationWebDto repairRequestRegistrationWebDto = mapper.readValue(request.getInputStream(),
+        RepairRequestRegistrationWebDto repairRequestRegistrationWebDto = objectMapper.readValue(request.getInputStream(),
                 RepairRequestRegistrationWebDto.class);
-        RepairRequestRegistrationDto repairRequestRegistrationDto = repairRequestConverterFromWebDtoToRegistrationDto.convertFromSourceDtoToTargetDto(repairRequestRegistrationWebDto);
+        RepairRequestRegistrationDto repairRequestRegistrationDto = repairRequestFromWebDtoToRegistrationDtoConverter.convertFromSourceDtoToTargetDto(repairRequestRegistrationWebDto);
 
 
         RepairRequest repairRequest = repairRequestService.registerRepairRequest(repairRequestRegistrationDto);
 
         PrintWriter out = response.getWriter();
-        ObjectMapper objectMapper = new ObjectMapper();
         String jsonString = objectMapper.writeValueAsString(requestWebConverter.convertToDto(repairRequest));
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");

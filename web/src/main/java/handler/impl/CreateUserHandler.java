@@ -1,8 +1,8 @@
 package handler.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import converters.impl.UserConverterFromWebDtoToRegistrationDto;
-import converters.impl.UserWebConverter;
+import converters.impl.UserToUserWebDtoConverter;
+import converters.impl.UserWebDtoToUserRegistrationDtoConverter;
 import dto.UserWebDto;
 import entity.User;
 import entity.consts.Role;
@@ -21,28 +21,34 @@ import java.io.PrintWriter;
 @Component
 public class CreateUserHandler extends StoHandlerAdapter {
     private UserService userService;
+    private UserToUserWebDtoConverter userToUserWebDtoConverter;
+    private UserWebDtoToUserRegistrationDtoConverter registrationDto;
 
     @Autowired
-    public CreateUserHandler(UserService userService) {
+    public CreateUserHandler(UserService userService, UserToUserWebDtoConverter userToUserWebDtoConverter,
+                             UserWebDtoToUserRegistrationDtoConverter registrationDto) {
         this.userService = userService;
+        this.userToUserWebDtoConverter = userToUserWebDtoConverter;
+        this.registrationDto = registrationDto;
     }
+
+
+
+
 
     @Override
     public void handleDoPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-
         ObjectMapper mapper = new ObjectMapper();
         UserWebDto userWebDto = mapper.readValue(request.getInputStream(), UserWebDto.class);
         userWebDto.setRole(Role.USER);
-        UserConverterFromWebDtoToRegistrationDto registrationDto = new UserConverterFromWebDtoToRegistrationDto();
         UserRegistrationDto userRegistrationDto = registrationDto.convertFromSourceDtoToTargetDto(userWebDto);
         User createdUser = userService.registerUser(userRegistrationDto);
 
-        UserWebConverter userWebConverter = new UserWebConverter();
 
         PrintWriter out = response.getWriter();
         ObjectMapper objectMapper = new ObjectMapper();
-        String jsonString = objectMapper.writeValueAsString(userWebConverter.convertToDto(createdUser));
+        String jsonString = objectMapper.writeValueAsString(userToUserWebDtoConverter.convertToDto(createdUser));
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
         out.print(jsonString);

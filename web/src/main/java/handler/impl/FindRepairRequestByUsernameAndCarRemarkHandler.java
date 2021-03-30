@@ -1,7 +1,7 @@
 package handler.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import converters.impl.RepairRequestWebConverter;
+import converters.impl.RepairRequestToRepairRequestWebDtoConverter;
 import dto.RepairRequestWebDto;
 import entity.RepairRequest;
 import handler.StoHandlerAdapter;
@@ -19,10 +19,10 @@ import java.io.PrintWriter;
 public class FindRepairRequestByUsernameAndCarRemarkHandler extends StoHandlerAdapter {
 
     private RepairRequestService repairRequestService;
-    private RepairRequestWebConverter requestWebConverter;
+    private RepairRequestToRepairRequestWebDtoConverter requestWebConverter;
 
     @Autowired
-    public FindRepairRequestByUsernameAndCarRemarkHandler(RepairRequestService repairRequestService, RepairRequestWebConverter requestWebConverter) {
+    public FindRepairRequestByUsernameAndCarRemarkHandler(RepairRequestService repairRequestService, RepairRequestToRepairRequestWebDtoConverter requestWebConverter) {
         this.repairRequestService = repairRequestService;
         this.requestWebConverter = requestWebConverter;
     }

@@ -1,14 +1,13 @@
 package handler.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import converters.impl.UserWebConverter;
+import converters.impl.UserToUserWebDtoConverter;
 import dto.UserWebDto;
 import entity.User;
 import handler.StoHandlerAdapter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import service.UserService;
-import service.beanUtils.ServicesBeanUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -17,12 +16,12 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 @Component
-public class FindUserByUsername extends StoHandlerAdapter {
+public class FindUserByUsernameHandler extends StoHandlerAdapter {
 
     private UserService userService;
 
     @Autowired
-    public FindUserByUsername(UserService userService) {
+    public FindUserByUsernameHandler(UserService userService) {
         this.userService = userService;
 
     }
@@ -32,8 +31,8 @@ public class FindUserByUsername extends StoHandlerAdapter {
 
         String username = request.getParameter("username");
         User userByUsername = userService.findUserByUsername(username);
-        UserWebConverter userWebConverter = new UserWebConverter();
-        UserWebDto userWebDto = userWebConverter.convertToDto(userByUsername);
+        UserToUserWebDtoConverter userToUserWebDtoConverter = new UserToUserWebDtoConverter();
+        UserWebDto userWebDto = userToUserWebDtoConverter.convertToDto(userByUsername);
 
         PrintWriter out = response.getWriter();
         ObjectMapper objectMapper = new ObjectMapper();

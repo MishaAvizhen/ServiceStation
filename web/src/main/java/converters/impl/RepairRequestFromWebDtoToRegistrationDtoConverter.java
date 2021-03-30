@@ -11,22 +11,19 @@ import service.dto.RepairRequestRegistrationDto;
 import java.util.Date;
 
 @Component
-public class RepairRequestConverterFromWebDtoToRegistrationDto implements
+public class RepairRequestFromWebDtoToRegistrationDtoConverter implements
         ConverterFromFirstDtoToSecond<RepairRequestRegistrationWebDto, RepairRequestRegistrationDto> {
 
-    private AppointmentSlotWebDtoToAppointmentSlotDto appointmentSlotWebDtoToAppointmentSlotDto;
+    private AppointmentSlotWebDtoToAppointmentSlotDtoConverter appointmentSlotWebDtoToAppointmentSlotDtoConverter;
 
     @Autowired
-    public RepairRequestConverterFromWebDtoToRegistrationDto(AppointmentSlotWebDtoToAppointmentSlotDto appointmentSlotWebDtoToAppointmentSlotDto) {
-        this.appointmentSlotWebDtoToAppointmentSlotDto = appointmentSlotWebDtoToAppointmentSlotDto;
-    }
-
-    public RepairRequestConverterFromWebDtoToRegistrationDto() {
+    public RepairRequestFromWebDtoToRegistrationDtoConverter(AppointmentSlotWebDtoToAppointmentSlotDtoConverter appointmentSlotWebDtoToAppointmentSlotDtoConverter) {
+        this.appointmentSlotWebDtoToAppointmentSlotDtoConverter = appointmentSlotWebDtoToAppointmentSlotDtoConverter;
     }
 
     @Override
     public RepairRequestRegistrationDto convertFromSourceDtoToTargetDto(RepairRequestRegistrationWebDto sourceDto) {
-        AppointmentSlotDto appointmentSlotDto = appointmentSlotWebDtoToAppointmentSlotDto
+        AppointmentSlotDto appointmentSlotDto = appointmentSlotWebDtoToAppointmentSlotDtoConverter
                 .convertFromSourceDtoToTargetDto(sourceDto.getAppointmentSlotWebDto());
         return new RepairRequestRegistrationDto.Builder()
                 .setDateOfRequest(new Date())
