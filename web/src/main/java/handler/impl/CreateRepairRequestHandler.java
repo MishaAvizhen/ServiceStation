@@ -47,6 +47,6 @@ public class CreateRepairRequestHandler extends StoRestHandler {
 
     @Override
     public String getHandledURI() {
-        return "/api/createRepairRequest";
+        return "/api/repairRequests/createRequest";
     }
 }

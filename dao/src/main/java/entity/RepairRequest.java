@@ -1,6 +1,7 @@
 package entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import entity.consts.RepairRequestStatus;
 import lombok.*;
 import org.hibernate.annotations.Fetch;
@@ -34,6 +35,7 @@ public class RepairRequest extends BaseEntity {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @JsonIgnore
     @OneToOne(cascade = {CascadeType.REFRESH}, mappedBy = "repairRequest", fetch = FetchType.EAGER)
     private RepairRecord repairRecord;
 

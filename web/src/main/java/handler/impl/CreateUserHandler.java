@@ -33,10 +33,6 @@ public class CreateUserHandler extends StoRestHandler {
         this.registrationDto = registrationDto;
     }
 
-
-
-
-
     @Override
     public void handleDoPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 

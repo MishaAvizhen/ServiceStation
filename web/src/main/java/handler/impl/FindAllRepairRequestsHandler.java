@@ -33,18 +33,19 @@ public class FindAllRepairRequestsHandler extends StoRestHandler {
     public void handleDoGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String username = request.getParameter("username");
         String carRemark = request.getParameter("carRemark");
+        String status = request.getParameter("status");
         Long requestId = request.getParameter("requestId") != null ? Long.valueOf(request.getParameter("requestId")) : null;
         List<RepairRequest> allRepairRequests = repairRequestService.findAllRepairRequests();
         List<RepairRequest> filteredRequest = allRepairRequests.stream()
                 .filter(repairRequest -> username == null || username.equals(repairRequest.getUser().getUsername()))
                 .filter(repairRequest -> carRemark == null || carRemark.equals(repairRequest.getCarRemark()))
                 .filter(repairRequest -> requestId == null || requestId.equals(repairRequest.getId()))
+                .filter(repairRequest -> status == null || status.equals(repairRequest.getRepairRequestStatus().toString()))
                 .collect(Collectors.toList());
         List<RepairRequestWebDto> requestWebDtos = new ArrayList<>();
         for (RepairRequest repairRequest : filteredRequest) {
             RepairRequestWebDto repairRequestWebDto = requestWebConverter.convertToDto(repairRequest);
             requestWebDtos.add(repairRequestWebDto);
-
         }
         writeResponseAsJson(requestWebDtos, response);
     }

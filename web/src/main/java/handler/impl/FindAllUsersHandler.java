@@ -1,10 +1,8 @@
 package handler.impl;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import converters.impl.UserToUserWebDtoConverter;
 import dto.UserWebDto;
 import entity.User;
-import handler.StoHandlerAdapter;
 import handler.StoRestHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -14,10 +12,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 @Component
@@ -44,13 +40,7 @@ public class FindAllUsersHandler extends StoRestHandler {
             UserWebDto userWebDto = userToUserWebDtoConverter.convertToDto(user);
             userWebDtos.add(userWebDto);
         }
-
         writeResponseAsJson(userWebDtos, response);
-    }
-
-    @Override
-    public void handleDoPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
     }
 
     @Override
