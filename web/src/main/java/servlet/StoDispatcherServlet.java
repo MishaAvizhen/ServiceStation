@@ -1,5 +1,6 @@
 package servlet;
 
+import dto.errorHandling.ErrorDto;
 import handler.StoHandler;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -37,20 +38,22 @@ public class StoDispatcherServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        getStoHandlerByRequest(request).handleDoGet(request, response);
+        getStoHandlerByRequest(request,response).handleDoGet(request, response);
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        getStoHandlerByRequest(request).handleDoPost(request, response);
+        getStoHandlerByRequest(request,response).handleDoPost(request, response);
     }
 
-    private StoHandler getStoHandlerByRequest(HttpServletRequest request) throws ServletException, IOException {
+    private StoHandler getStoHandlerByRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String requestURI = request.getRequestURI();
         StoHandler stoHandler = uriToHandlerMap.get(requestURI);
         if (stoHandler != null) {
             return stoHandler;
+        } else {
+            response.sendRedirect(request.getContextPath() + "/");
         }
-        throw new UnsupportedOperationException("Not recognized request");
+         throw new UnsupportedOperationException("Not recognized request");
     }
 }

@@ -30,6 +30,11 @@ public abstract class StoRestHandler extends StoHandlerAdapter {
         out.flush();
     }
 
+    protected void writeErrorResponseAsJson(Object responseObject, HttpServletResponse response, int errorStatus) throws IOException {
+        response.setStatus(errorStatus);
+        writeResponseAsJson(responseObject, response);
+    }
+
     protected <T> T readRequestEntity(Class<T> requestEntityClass, HttpServletRequest request) throws IOException {
         return objectMapper.readValue(request.getInputStream(), requestEntityClass);
     }
