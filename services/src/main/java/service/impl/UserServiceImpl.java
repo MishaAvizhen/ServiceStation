@@ -29,7 +29,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<RepairRecord> getUserRepairRecordList(Long userId) {
-        User user = userRepository.findOne(userId);
+        User user = userRepository.getOne(userId);
         if (user == null) {
             return Collections.emptyList();
         }
@@ -49,7 +49,7 @@ public class UserServiceImpl implements UserService {
     public User findUserById(Long userId) {
         log.info(String.format("Find user with id= {%s}", userId));
         log.debug(String.format("Find user with id= {%s}", userId));
-        return userRepository.findOne(userId);
+        return userRepository.getOne(userId);
     }
 
     @Override
@@ -62,13 +62,13 @@ public class UserServiceImpl implements UserService {
     public void deleteUserById(Long userId) {
         log.info(String.format("Delete user with id=  {%s}", userId));
         log.debug(String.format("Delete user with id=  {%s}", userId));
-        userRepository.delete(userId);
+        userRepository.deleteById(userId);
 
     }
 
     @Override
     public Long getSumWorkPriceAndDetailPrice(Long userId) {
-        User userDaoById = userRepository.findOne(userId);
+        User userDaoById = userRepository.getOne(userId);
         if (userDaoById == null) {
             log.error(String.format("user with id :{%s} not found ", userId));
             throw new RuntimeException("user not found");

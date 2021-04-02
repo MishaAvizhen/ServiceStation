@@ -12,7 +12,7 @@ import java.util.TimeZone;
 
 @Configuration
 @Import(ServiceConfig.class)
-@ComponentScan({"handler", "converters"})
+@ComponentScan({"handler", "converters", "controllers"})
 public class WebConfig {
 
     @Bean

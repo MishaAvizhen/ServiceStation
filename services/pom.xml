@@ -14,9 +14,9 @@
     <name>services</name>
 
     <properties>
-        <spring.version>4.2.0.RELEASE</spring.version>
+        <spring.version>5.0.13.RELEASE</spring.version>
         <junit.version>4.12</junit.version>
-        <mockito.version>1.10.19</mockito.version>
+        <mockito.version>2.15.0</mockito.version>
         <log4j.version>1.2.17</log4j.version>
     </properties>
     <dependencies>
@@ -75,8 +75,6 @@
             <artifactId>surefire-junit4</artifactId>
             <version>2.12.4</version>
         </dependency>
-
-
 
 
     </dependencies>

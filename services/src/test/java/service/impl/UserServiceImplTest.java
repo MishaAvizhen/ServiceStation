@@ -39,7 +39,7 @@ public class UserServiceImplTest {
         when(userRepository.findAll()).thenReturn(userTestData.getAllTestUsers());
         when(userRepository.save(any((User.class)))).thenAnswer(i -> userTestData.saveTestUser((User) i.getArguments()[0]));
         when(userRepository.saveAndFlush(any((User.class)))).thenAnswer(i -> userTestData.updateTestUser((User) i.getArguments()[0]));
-        doAnswer(i -> userTestData.deleteTestUserById((Long) i.getArguments()[0])).when(userRepository).delete(any(Long.class));
+        doAnswer(i -> userTestData.deleteTestUserById((Long) i.getArguments()[0])).when(userRepository).deleteById(any(Long.class));
     }
 
     @Test

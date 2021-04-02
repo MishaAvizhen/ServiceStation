@@ -133,7 +133,7 @@ public class RepairRequestServiceImplTest {
 
     @Test
     public void deleteRepairRequestByUsernameAndRepairRequestDescription() throws Exception {
-        doAnswer(i -> repairRequestTestData.deleteRepairRequestById((Long) i.getArguments()[0])).when(repairRequestRepository).delete(any(Long.class));
+        doAnswer(i -> repairRequestTestData.deleteRepairRequestById((Long) i.getArguments()[0])).when(repairRequestRepository).deleteById(any(Long.class));
         long repairRequestId = 3L;
         RepairRequest repairRequestToDelete = repairRequestTestData.deleteRepairRequestById(repairRequestId);
         String username = repairRequestToDelete.getUser().getUsername();

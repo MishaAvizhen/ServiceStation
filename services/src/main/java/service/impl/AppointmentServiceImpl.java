@@ -43,9 +43,9 @@ public class AppointmentServiceImpl implements AppointmentService {
         appointment.setStartDate(startDateInDate);
         appointment.setEndDate(endDateInDate);
         appointment.setSlotStatus(SlotStatus.BUSY);
-        appointment.setClient(userRepository.findOne(userId));
+        appointment.setClient(userRepository.getOne(userId));
         appointment.setNotes(" notes...");
-        appointment.setRepairRequest(repairRequestRepository.findOne(repairRequestId));
+        appointment.setRepairRequest(repairRequestRepository.getOne(repairRequestId));
         return appointmentRepository.save(appointment);
     }
 
@@ -53,6 +53,6 @@ public class AppointmentServiceImpl implements AppointmentService {
     public Appointment findAppointmentByRepairRequestId(Long repairRequestId) {
         log.info(String.format("Find appointment for repair request  with id= {%s}", repairRequestId));
         log.debug(String.format("Find appointment for repair request  with id= {%s}", repairRequestId));
-        return appointmentRepository.findOne(repairRequestId);
+        return appointmentRepository.getOne(repairRequestId);
     }
 }

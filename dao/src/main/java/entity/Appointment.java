@@ -3,6 +3,7 @@ package entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import entity.consts.SlotStatus;
 import lombok.*;
 
@@ -16,6 +17,7 @@ import java.util.Date;
 @ToString(callSuper = true)
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Appointment extends BaseEntity {
     @JsonIgnore
     @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.MERGE})

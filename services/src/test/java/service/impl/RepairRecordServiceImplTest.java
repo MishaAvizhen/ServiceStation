@@ -83,7 +83,7 @@ public class RepairRecordServiceImplTest {
     @Test
     public void deleteRepairRecordByUsernameAndRepairRecordDescription() throws Exception {
 
-        doAnswer(i -> repairRecordTestData.deleteRepairRecordById((Long) i.getArguments()[0])).when(repairRecordRepository).delete(any(Long.class));
+        doAnswer(i -> repairRecordTestData.deleteRepairRecordById((Long) i.getArguments()[0])).when(repairRecordRepository).deleteById(any(Long.class));
         long repairRecordId = 1L;
         RepairRecord repairRecordToDelete = repairRecordTestData.deleteRepairRecordById(repairRecordId);
         String username = repairRecordToDelete.getRepairRequest().getUser().getUsername();
@@ -98,7 +98,7 @@ public class RepairRecordServiceImplTest {
     public void registerRepairRecord() throws Exception {
         when(repairRecordRepository.save(any((RepairRecord.class)))).thenAnswer(i -> repairRecordTestData.saveTestRepairRecord((RepairRecord) i.getArguments()[0]));
         when(repairRequestRepository.save(any((RepairRequest.class)))).thenAnswer(i -> repairRequestTestData.saveTestRepairRequest((RepairRequest) i.getArguments()[0]));
-        when(repairRequestRepository.findOne(any(Long.class))).thenAnswer(i -> repairRequestTestData.getRepairRequestById((Long) i.getArguments()[0]));
+        when(repairRequestRepository.getOne(any(Long.class))).thenAnswer(i -> repairRequestTestData.getRepairRequestById((Long) i.getArguments()[0]));
 
         String repairRecordDescription = "test record description new";
         Long workPrice = 323L;
@@ -130,7 +130,7 @@ public class RepairRecordServiceImplTest {
     public void updateRepairRecord() throws Exception {
 
         String usernameToUpdate = "user";
-        when(repairRequestRepository.findOne(any(Long.class))).thenAnswer(i -> repairRequestTestData.getRepairRequestById((Long) i.getArguments()[0]));
+        when(repairRequestRepository.getOne(any(Long.class))).thenAnswer(i -> repairRequestTestData.getRepairRequestById((Long) i.getArguments()[0]));
         when(userRepository.findByUsername(usernameToUpdate)).thenReturn(userTestData.getTestUserByUsername(usernameToUpdate));
         long repairRecordId = 1L;
         RepairRecord repairRecordByIdToUpdate = repairRecordTestData.getRepairRecordById(repairRecordId);

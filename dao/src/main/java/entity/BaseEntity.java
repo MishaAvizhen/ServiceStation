@@ -19,7 +19,7 @@ import java.io.Serializable;
 public class BaseEntity implements Serializable {
     private static final long serialVersionUID = -2883330545357288318L;
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
 }

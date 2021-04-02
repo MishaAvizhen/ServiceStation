@@ -18,6 +18,9 @@ public class UserRegistrationDto {
         this.role = builder.role;
     }
 
+    public UserRegistrationDto() {
+    }
+
     public String getUsername() {
         return username;
     }

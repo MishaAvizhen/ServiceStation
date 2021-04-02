@@ -44,7 +44,7 @@ public class RepairRecordServiceImpl implements RepairRecordService {
     public RepairRecord findRepairRecordById(Long repairRecordId) {
         log.info(String.format("Find repair record  with id= {%s}", repairRecordId));
         log.debug(String.format("Find repair record  with id= {%s}", repairRecordId));
-        return repairRecordRepository.findOne(repairRecordId);
+        return repairRecordRepository.getOne(repairRecordId);
     }
 
 
@@ -97,6 +97,6 @@ public class RepairRecordServiceImpl implements RepairRecordService {
     public void deleteRepairRecordById(Long repairRecordId) {
         log.info(String.format("Delete repair record with id=  {%s}", repairRecordId));
         log.debug(String.format("Delete repair record with id=  {%s}", repairRecordId));
-        repairRecordRepository.delete(repairRecordId);
+        repairRecordRepository.deleteById(repairRecordId);
     }
 }

@@ -37,7 +37,8 @@ public class UpdateRepairRecordHandler extends StoRestHandler {
             Long repairRecordId = repairRecordDtoToUpdate.getRepairRecordId();
             RepairRecord repairRecordById = repairRecordService.findRepairRecordById(repairRecordId);
             if (repairRecordById != null) {
-                RepairRecordRegistrationDto repairRecordRegistrationDto = repairRecordFromDtoToUpdateToRegistrationDtoConverter.convertFromSourceDtoToTargetDto(repairRecordDtoToUpdate);
+                RepairRecordRegistrationDto repairRecordRegistrationDto =
+                        repairRecordFromDtoToUpdateToRegistrationDtoConverter.convertFromSourceDtoToTargetDto(repairRecordDtoToUpdate);
                 RepairRecord repairRecordAfterUpdate = repairRecordService.updateRepairRecord(repairRecordRegistrationDto, repairRecordById);
                 writeResponseAsJson(repairRecordAfterUpdate, response);
             } else {

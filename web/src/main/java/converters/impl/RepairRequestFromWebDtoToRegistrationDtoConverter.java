@@ -2,14 +2,20 @@ package converters.impl;
 
 import converters.ConverterFromFirstDtoToSecond;
 import dto.RepairRequestWebDto;
-import entity.Appointment;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import service.AppointmentService;
 import service.dto.RepairRequestRegistrationDto;
 
 @Component
 public class RepairRequestFromWebDtoToRegistrationDtoConverter implements
         ConverterFromFirstDtoToSecond<RepairRequestWebDto,RepairRequestRegistrationDto> {
+
+    private AppointmentSlotWebDtoToAppointmentSlotDtoConverter slotDtoConverter;
+
+    @Autowired
+    public RepairRequestFromWebDtoToRegistrationDtoConverter(AppointmentSlotWebDtoToAppointmentSlotDtoConverter slotDtoConverter) {
+        this.slotDtoConverter = slotDtoConverter;
+    }
 
     @Override
     public RepairRequestRegistrationDto convertFromSourceDtoToTargetDto(RepairRequestWebDto sourceDto) {
@@ -19,7 +25,7 @@ public class RepairRequestFromWebDtoToRegistrationDtoConverter implements
                 .setUsername(sourceDto.getUsername())
                 .setRepairRequestDescription(sourceDto.getRepairRequestDescription())
                 .setDateOfRequest(sourceDto.getDateOfRequest())
-                .setAppointmentSlotDto(sourceDto.getAppointmentSlotDto())
+                .setAppointmentSlotDto(slotDtoConverter.convertFromSourceDtoToTargetDto(sourceDto.getAppointmentSlotWebDto()))
                 .build();
     }
 }

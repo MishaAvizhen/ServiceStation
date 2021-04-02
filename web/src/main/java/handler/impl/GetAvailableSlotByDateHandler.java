@@ -1,6 +1,5 @@
 package handler.impl;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import converters.impl.AppointmentSlotDtoToAppointmentSlotWebDtoConverter;
 import dto.AppointmentSlotWebDto;
 import handler.StoRestHandler;
@@ -23,10 +22,12 @@ import java.util.List;
 @Component
 public class GetAvailableSlotByDateHandler extends StoRestHandler {
     private AppointmentSlotService appointmentSlotService;
+    private AppointmentSlotDtoToAppointmentSlotWebDtoConverter appointmentConverter;
 
     @Autowired
-    public GetAvailableSlotByDateHandler(AppointmentSlotService appointmentSlotService) {
+    public GetAvailableSlotByDateHandler(AppointmentSlotService appointmentSlotService, AppointmentSlotDtoToAppointmentSlotWebDtoConverter appointmentConverter) {
         this.appointmentSlotService = appointmentSlotService;
+        this.appointmentConverter = appointmentConverter;
     }
 
 
@@ -41,7 +42,6 @@ public class GetAvailableSlotByDateHandler extends StoRestHandler {
             e.printStackTrace();
         }
         List<AppointmentSlotDto> availableAppointmentSlotsByDate = appointmentSlotService.getAvailableAppointmentSlotsByDate(date);
-        AppointmentSlotDtoToAppointmentSlotWebDtoConverter appointmentConverter = new AppointmentSlotDtoToAppointmentSlotWebDtoConverter();
         List<AppointmentSlotWebDto> webDtos = new ArrayList<>();
         for (AppointmentSlotDto appointmentSlotDto : availableAppointmentSlotsByDate) {
             webDtos.add(appointmentConverter.convertFromSourceDtoToTargetDto(appointmentSlotDto));

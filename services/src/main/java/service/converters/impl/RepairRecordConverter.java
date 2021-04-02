@@ -28,7 +28,7 @@ public class RepairRecordConverter implements Converter<RepairRecord, RepairReco
 
     @Override
     public RepairRecord convertToExistingEntity(RepairRecordRegistrationDto dto, RepairRecord entity) {
-        RepairRequest repairRequestById = repairRequestRepository.findOne(dto.getRepairRequestId());
+        RepairRequest repairRequestById = repairRequestRepository.getOne(dto.getRepairRequestId());
         entity.setRepairRequest(repairRequestById);
         entity.setOtherNotes(dto.getOtherNotes());
         entity.setRepairRecordDescription(dto.getRepairRecordDescription());

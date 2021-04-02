@@ -109,7 +109,7 @@ public class RepairRequestServiceImpl implements RepairRequestService {
     public void deleteRepairRequestById(Long repairRequestId) {
         log.info(String.format("Delete repair Request with id=  {%s}", repairRequestId));
         log.debug(String.format("Delete repair Request with id=  {%s}", repairRequestId));
-        repairRequestRepository.delete(repairRequestId);
+        repairRequestRepository.deleteById(repairRequestId);
 
     }
 
@@ -117,7 +117,7 @@ public class RepairRequestServiceImpl implements RepairRequestService {
     public RepairRequest findRepairRequestById(Long repairRequestId) {
         log.info(String.format("Find repair request  with id= {%s}", repairRequestId));
         log.debug(String.format("Find repair request  with id= {%s}", repairRequestId));
-        return repairRequestRepository.findOne(repairRequestId);
+        return repairRequestRepository.getOne(repairRequestId);
     }
 
 

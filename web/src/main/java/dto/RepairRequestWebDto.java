@@ -19,6 +19,6 @@ public class RepairRequestWebDto {
     private String carRemark;
     private String repairRequestDescription;
     private String username;
-    private AppointmentSlotDto appointmentSlotDto;
+    private AppointmentSlotWebDto appointmentSlotWebDto;
 
 }
