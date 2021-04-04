@@ -2,6 +2,7 @@ package service.impl;
 
 import entity.Appointment;
 import entity.consts.SlotStatus;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import repository.AppointmentRepository;
@@ -17,6 +18,7 @@ import java.util.List;
 @Service
 
 public class AppointmentServiceImpl implements AppointmentService {
+    private static final Logger log = Logger.getLogger(AppointmentServiceImpl.class);
     @Autowired
     private AppointmentRepository appointmentRepository;
     @Autowired
@@ -24,11 +26,14 @@ public class AppointmentServiceImpl implements AppointmentService {
 
     @Override
     public List<Appointment> findAllAppointment() {
+        log.info(String.format("Find all appointments"));
         return appointmentRepository.findAll();
     }
 
     @Override
     public Appointment createAppointment(AppointmentSlotDto appointmentSlotDto, Long userId) {
+        log.info(String.format("Appointment with info : {%s} was created \n for user with id: {%s} ", appointmentSlotDto.toString(), userId));
+        log.debug(String.format("Appointment with info : {%s} was created \n for user with id: {%s} ", appointmentSlotDto.toString(), userId));
         LocalDateTime startDateInLocalDate = appointmentSlotDto.getStartDate();
         LocalDateTime endDateInLocalDate = appointmentSlotDto.getEndDate();
         ZonedDateTime zdt = startDateInLocalDate.atZone(ZoneId.systemDefault());

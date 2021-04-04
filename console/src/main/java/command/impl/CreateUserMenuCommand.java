@@ -2,6 +2,7 @@ package command.impl;
 
 import command.MenuCommand;
 import entity.consts.Role;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import service.UserService;
@@ -11,6 +12,7 @@ import java.util.Scanner;
 
 @Component
 public class CreateUserMenuCommand implements MenuCommand {
+    private static final Logger log = Logger.getLogger(CreateRepairRequestMenuCommand.class);
     @Autowired
     private UserService userService;
 
@@ -35,6 +37,7 @@ public class CreateUserMenuCommand implements MenuCommand {
                 .build();
 
         userService.registerUser(userRegistrationDto);
+        log.info(String.format(" User was created "));
         System.out.println("User " + username + " was created");
 
     }

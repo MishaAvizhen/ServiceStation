@@ -1,21 +1,16 @@
 package service.dto;
 
-import java.util.Date;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
+@Getter
+@ToString
+@NoArgsConstructor
+@AllArgsConstructor
 public class WorkingHoursDto {
-   private int startWorkHour;
-   private int endWorkHour;
+    private int startWorkHour;
+    private int endWorkHour;
 
-    public WorkingHoursDto(int startWorkHour, int endWorkHour) {
-        this.startWorkHour = startWorkHour;
-        this.endWorkHour = endWorkHour;
-    }
-
-    public int getStartWorkHour() {
-        return startWorkHour;
-    }
-
-    public int getEndWorkHour() {
-        return endWorkHour;
-    }
 }

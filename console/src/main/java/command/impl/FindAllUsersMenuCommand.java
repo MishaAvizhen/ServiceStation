@@ -3,6 +3,7 @@ package command.impl;
 
 import command.MenuCommand;
 import entity.User;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import service.UserService;
@@ -11,6 +12,7 @@ import java.util.List;
 
 @Component
 public class FindAllUsersMenuCommand implements MenuCommand {
+    private static final Logger log = Logger.getLogger(FindUserByUsernameMenuCommand.class);
     @Autowired
     private UserService userService;
 
@@ -18,9 +20,10 @@ public class FindAllUsersMenuCommand implements MenuCommand {
     public void execute() {
         List<User> all = userService.findAllUsers();
         if (all.size() != 0) {
-            System.out.println(all);
+            log.info(String.format(" users:\n{%s}", all.toString()));
         } else {
-            System.out.println("User not found");
+            log.info(String.format(" users not found"));
+            log.debug(String.format(" users not found"));
         }
     }
 

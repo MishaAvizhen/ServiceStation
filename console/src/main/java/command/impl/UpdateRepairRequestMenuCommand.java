@@ -2,6 +2,7 @@ package command.impl;
 
 import command.MenuCommand;
 import entity.RepairRequest;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import service.RepairRequestService;
@@ -11,6 +12,7 @@ import java.util.Scanner;
 
 @Component
 public class UpdateRepairRequestMenuCommand implements MenuCommand {
+    private static final Logger log = Logger.getLogger(UpdateRepairRequestMenuCommand.class);
     @Autowired
     private RepairRequestService repairRequestService;
 
@@ -36,6 +38,8 @@ public class UpdateRepairRequestMenuCommand implements MenuCommand {
                     .setUsername(repairRequestByUsernameAndCarRemarkToUpdate.getUser().getUsername())
                     .build();
             repairRequestService.updateRepairRequest(repairRequestRegistrationDto, repairRequestByUsernameAndCarRemarkToUpdate);
+            log.info(String.format(" Repair request: \n  {@s} \n was update  ",repairRequestRegistrationDto.toString()));
+            log.debug(String.format(" Repair request: \n  {@s} \n was update  ",repairRequestRegistrationDto.toString()));
             System.out.println("Repair request for user " + repairRequestByUsernameAndCarRemarkToUpdate.getUser().getUsername() + " was updated");
         } else {
             System.out.println("For username " + username + " user not found!");

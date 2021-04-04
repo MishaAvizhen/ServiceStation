@@ -4,6 +4,7 @@ import entity.Appointment;
 import entity.User;
 import entity.consts.Role;
 import org.apache.commons.lang3.time.DateUtils;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import repository.AppointmentRepository;
@@ -15,9 +16,13 @@ import service.dto.WorkingHoursDto;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.*;
+import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.toList;
 
 @Service
 public class AppointmentSlotServiceImpl implements AppointmentSlotService {
+    private static final Logger log = Logger.getLogger(AppointmentSlotServiceImpl.class);
     @Autowired
     private UserService userService;
     @Autowired
@@ -28,6 +33,8 @@ public class AppointmentSlotServiceImpl implements AppointmentSlotService {
 
     @Override
     public List<AppointmentSlotDto> getAvailableAppointmentSlotsByDate(Date date) {
+        log.info(String.format("get available appointment slot to date: {%s}", date));
+
         Date dateWOHours = trancateDateToDays(date);
         WorkingHoursDto workHoursByDate = getWorkHoursByDate(dateWOHours);
         Date startWorkDate = DateUtils.addHours(dateWOHours, workHoursByDate.getStartWorkHour());
@@ -42,18 +49,12 @@ public class AppointmentSlotServiceImpl implements AppointmentSlotService {
                 appointmentSlotDtos.add(new AppointmentSlotDto(master, intervalsByHour.getKey(), intervalsByHour.getValue()));
             }
         }
-
         List<Appointment> allAppointments = appointmentRepository.findAll();
-        List<AppointmentSlotDto> notAvailableSlots = new ArrayList<>();
-        for (Appointment appointment : allAppointments) {
-            for (AppointmentSlotDto appointmentSlotDto : appointmentSlotDtos) {
-                if (isAppointmentSlotEqualsToAppointment(appointmentSlotDto, appointment)) {
-                    notAvailableSlots.add(appointmentSlotDto);
-                }
-            }
-        }
-        appointmentSlotDtos.removeAll(notAvailableSlots);
-        return appointmentSlotDtos;
+        return appointmentSlotDtos.stream()
+                .filter(appointmentSlotDto ->
+                        allAppointments.stream()
+                                .noneMatch(appointment -> isAppointmentSlotEqualsToAppointment(appointmentSlotDto, appointment)))
+                .collect(Collectors.toList());
     }
 
     private boolean isAppointmentSlotEqualsToAppointment(AppointmentSlotDto appointmentSlotDto, Appointment appointment) {
@@ -78,14 +79,9 @@ public class AppointmentSlotServiceImpl implements AppointmentSlotService {
     }
 
     private List<User> findAllMasters() {
-        List<User> result = new ArrayList<>();
-        List<User> userServiceAllUsers = userService.findAllUsers();
-        for (User user : userServiceAllUsers) {
-            if (user.getRole().equals(Role.MASTER)) {
-                result.add(user);
-            }
-        }
-        return result;
+        return userService.findAllUsers().stream()
+                .filter(user -> user.getRole().equals(Role.MASTER))
+                .collect(toList());
     }
 
     private List<Map.Entry<LocalDateTime, LocalDateTime>> separateDayToSlots(LocalDateTime start, LocalDateTime end) {

@@ -1,7 +1,7 @@
 package ui.menu;
 
 import command.MenuCommand;
-import command.impl.*;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -12,6 +12,7 @@ import java.util.Scanner;
 
 @Component
 public class ConsoleMenu {
+    private static final Logger log = Logger.getLogger(ConsoleMenu.class);
 
     private Map<Integer, MenuCommand> actionNumberToMenuCommandMap = new HashMap<>();
 
@@ -23,6 +24,8 @@ public class ConsoleMenu {
     }
 
     public void initMenuConsole() {
+
+        log.info(" init menu begin...");
         int number;
         int exitNumber = 0;
         Scanner scanner = new Scanner(System.in);
@@ -47,7 +50,7 @@ public class ConsoleMenu {
             }
         } while (number != exitNumber);
         System.out.println("Goodbye");
-
+        log.info(" init menu end...");
 
     }
 }

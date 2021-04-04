@@ -78,4 +78,15 @@ public class RepairRecordRegistrationDto {
 
         }
     }
+
+    @Override
+    public String toString() {
+        return "RepairRecordRegistrationDto{" +
+                "repairRecordDescription='" + repairRecordDescription + '\'' +
+                ", detailPrice=" + detailPrice +
+                ", workPrice=" + workPrice +
+                ", otherNotes='" + otherNotes + '\'' +
+                ", repairRequestId=" + repairRequestId +
+                '}';
+    }
 }

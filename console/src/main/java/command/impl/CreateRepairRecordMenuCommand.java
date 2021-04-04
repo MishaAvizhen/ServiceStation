@@ -2,6 +2,7 @@ package command.impl;
 
 import command.MenuCommand;
 import entity.RepairRequest;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import service.RepairRecordService;
@@ -13,6 +14,7 @@ import java.util.Scanner;
 
 @Component
 public class CreateRepairRecordMenuCommand implements MenuCommand {
+    private static final Logger log = Logger.getLogger(CreateAppointmentMenuCommand.class);
     @Autowired
     private RepairRequestService repairRequestService;
     @Autowired
@@ -52,6 +54,7 @@ public class CreateRepairRecordMenuCommand implements MenuCommand {
                 .setOtherNotes(otherNotes)
                 .build();
         repairRecordService.registerRepairRecord(repairRecordRegistrationDto);
+        log.info(String.format(" Repair record was created "));
         System.out.println("Repair record for " + username + " was created");
 
     }

@@ -80,4 +80,15 @@ public class RepairRequestRegistrationDto {
             return new RepairRequestRegistrationDto(this);
         }
     }
+
+    @Override
+    public String toString() {
+        return "RepairRequestRegistrationDto{" +
+                "dateOfRequest=" + dateOfRequest +
+                ", repairRequestStatus=" + repairRequestStatus +
+                ", carRemark='" + carRemark + '\'' +
+                ", repairRequestDescription='" + repairRequestDescription + '\'' +
+                ", username='" + username + '\'' +
+                '}';
+    }
 }
