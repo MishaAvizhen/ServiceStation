@@ -6,6 +6,7 @@ public enum SlotStatus {
     BUSY,
     NOT_AVAILABLE;
 
+
     public static SlotStatus defineSlotStatusByName(String inputStatusName) {
         for (SlotStatus slotStatus : values()) {
             if (inputStatusName.equals(slotStatus.name())) {
