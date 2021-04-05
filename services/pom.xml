@@ -75,6 +75,11 @@
             <artifactId>surefire-junit4</artifactId>
             <version>2.12.4</version>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-core</artifactId>
+            <version>5.3.3.RELEASE</version>
+        </dependency>
 
 
     </dependencies>

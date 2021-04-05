@@ -4,6 +4,7 @@ import command.MenuCommand;
 import entity.consts.Role;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import service.UserService;
 import service.dto.UserRegistrationDto;
@@ -15,6 +16,8 @@ public class CreateUserMenuCommand implements MenuCommand {
     private static final Logger log = Logger.getLogger(CreateRepairRequestMenuCommand.class);
     @Autowired
     private UserService userService;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Override
     public void execute() {
@@ -32,7 +35,7 @@ public class CreateUserMenuCommand implements MenuCommand {
                 .setUsername(username)
                 .setPhoneNumber(phoneNumber)
                 .setEmail(email)
-                .setPassword(password)
+                .setPassword(passwordEncoder.encode(password))
                 .setRole(Role.USER)
                 .build();
 

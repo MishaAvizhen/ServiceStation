@@ -4,6 +4,7 @@ import converters.impl.UserWebDtoToUserRegistrationDtoConverter;
 import dto.UserWebDto;
 import entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import service.UserService;
 import service.dto.UserRegistrationDto;
@@ -15,12 +16,15 @@ import java.util.List;
 public class UserRestController {
     private UserService userService;
     private UserWebDtoToUserRegistrationDtoConverter registrationDto;
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserRestController(UserService userService, UserWebDtoToUserRegistrationDtoConverter registrationDto) {
+    public UserRestController(UserService userService, UserWebDtoToUserRegistrationDtoConverter registrationDto,
+                              PasswordEncoder passwordEncoder) {
         this.userService = userService;
 
         this.registrationDto = registrationDto;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @GetMapping("/users")
@@ -28,7 +32,7 @@ public class UserRestController {
         return userService.findAllUsers();
     }
 
-    @GetMapping("/users/id/{userId}")
+    @GetMapping("/users/{userId}")
     public User getUserById(@PathVariable Long userId) {
         return userService.findUserById(userId);
     }
@@ -59,6 +63,7 @@ public class UserRestController {
 
     @PostMapping("/users/create")
     public User getCreatedUser(@RequestBody UserRegistrationDto userRegistrationDto) {
+        userRegistrationDto.setPassword(passwordEncoder.encode(userRegistrationDto.getPassword()));
         return userService.registerUser(userRegistrationDto);
     }
 

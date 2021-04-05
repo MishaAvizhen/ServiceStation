@@ -28,8 +28,7 @@ public class RepairRecordRestController {
     @GetMapping("/records")
     public List<RepairRecord> getAllRepairRecords(@RequestParam(value = "username", required = false) String username,
                                                   @RequestParam(value = "carRemark", required = false) String carRemark,
-                                                  @RequestParam(value = "repairRecordId", required = false) String repairRecordId,
-                                                  @RequestParam(value = "status", required = false) String status) {
+                                                  @RequestParam(value = "repairRecordId", required = false) String repairRecordId) {
 
         List<RepairRecord> allRepairRecords = repairRecordService.findAllRepairRecords();
         return allRepairRecords.stream()
@@ -39,7 +38,7 @@ public class RepairRecordRestController {
                 .collect(Collectors.toList());
     }
 
-    @GetMapping("/records/id/{repairRecordId}")
+    @GetMapping("/records/{repairRecordId}")
     public RepairRecord getRepairRecord(@PathVariable Long repairRecordId) {
         return repairRecordService.findRepairRecordById(repairRecordId);
     }
@@ -66,7 +65,8 @@ public class RepairRecordRestController {
 
     @PostMapping("/records/create")
     public RepairRecord getCreatedRepairRecord(@RequestBody RepairRecordRegistrationWebDto repairRecordRegistrationWebDto) {
-        RepairRecordRegistrationDto repairRecordRegistrationDto = repairRecordFromRegistrationWebDtoToRegistrationDtoConverter.convertFromSourceDtoToTargetDto(repairRecordRegistrationWebDto);
+        RepairRecordRegistrationDto repairRecordRegistrationDto =
+                repairRecordFromRegistrationWebDtoToRegistrationDtoConverter.convertFromSourceDtoToTargetDto(repairRecordRegistrationWebDto);
         return repairRecordService.registerRepairRecord(repairRecordRegistrationDto);
     }
 }

@@ -56,7 +56,7 @@ public class RepairRequestRestController {
         return filteredRequest;
     }
 
-    @GetMapping("/requests/id/{requestId}")
+    @GetMapping("/requests/{requestId}")
     public RepairRequest getRepairRequest(@PathVariable Long requestId) {
         return repairRequestService.findRepairRequestById(requestId);
     }
