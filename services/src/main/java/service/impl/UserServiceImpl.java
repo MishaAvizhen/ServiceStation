@@ -6,6 +6,9 @@ import entity.User;
 import entity.consts.RepairRequestStatus;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import repository.RepairRecordRepository;
 import repository.UserRepository;
@@ -13,8 +16,8 @@ import service.UserService;
 import service.converters.impl.UserConverter;
 import service.dto.UserRegistrationDto;
 
-import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import static java.util.stream.Collectors.toList;
 
@@ -26,13 +29,13 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
     @Autowired
     private RepairRecordRepository repairRecordRepository;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+
 
     @Override
     public List<RepairRecord> getUserRepairRecordList(Long userId) {
-        User user = userRepository.getOne(userId);
-        if (user == null) {
-            return Collections.emptyList();
-        }
         return repairRecordRepository.findAll().stream()
                 .filter(record -> record.getRepairRequest().getRepairRequestStatus().equals(RepairRequestStatus.PROCESSED))
                 .collect(toList());
@@ -49,7 +52,8 @@ public class UserServiceImpl implements UserService {
     public User findUserById(Long userId) {
         log.info(String.format("Find user with id= {%s}", userId));
         log.debug(String.format("Find user with id= {%s}", userId));
-        return userRepository.getOne(userId);
+        Optional<User> optionalUser = userRepository.findById(userId);
+        return optionalUser.orElse(null);
     }
 
     @Override
@@ -68,12 +72,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Long getSumWorkPriceAndDetailPrice(Long userId) {
-        User userDaoById = userRepository.getOne(userId);
-        if (userDaoById == null) {
+        Optional<User> userOptional = userRepository.findById(userId);
+        User user = userOptional.orElse(null);
+        if (user == null) {
             log.error(String.format("user with id :{%s} not found ", userId));
             throw new RuntimeException("user not found");
         } else {
-            String username = userDaoById.getUsername();
+            String username = user.getUsername();
             return repairRecordRepository.findAll().stream()
                     .filter(e -> e.getRepairRequest().getUser().getUsername().equals(username))
                     .map(record -> record.getDetailPrice() + record.getWorkPrice())
@@ -86,7 +91,13 @@ public class UserServiceImpl implements UserService {
     public User registerUser(UserRegistrationDto userRegistrationDto) {
         log.info(String.format("user with info:{%s} was created ", userRegistrationDto.toString()));
         log.debug(String.format("user with info:{%s} was created ", userRegistrationDto.toString()));
+        User existUser = userRepository.findByUsername(userRegistrationDto.getUsername());
+
+        if (existUser != null) {
+            throw new IllegalArgumentException("User " + userRegistrationDto.getUsername()+" already exist");
+        }
         UserConverter userConverter = new UserConverter();
+        userRegistrationDto.setPassword(encodePassword(userRegistrationDto.getPassword()));
         User user = userConverter.convertToEntity(userRegistrationDto);
         return userRepository.save(user);
 
@@ -94,17 +105,22 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User updateUser(UserRegistrationDto userRegistrationDto, User userToUpdate) {
-        User byUsername = userRepository.findByUsername(userToUpdate.getUsername());
-        if (byUsername == null) {
-            log.error(String.format("user with username:{%s} not found ", userToUpdate.getUsername()));
-            throw new RuntimeException("user not found");
-        }
+
         log.info(String.format("user with info:{%s} was updated ", userRegistrationDto.toString()));
         log.debug(String.format("user with info:{%s} was updated ", userRegistrationDto.toString()));
         UserConverter userConverter = new UserConverter();
+        userRegistrationDto.setPassword(encodePassword(userRegistrationDto.getPassword()));
         User updatedUser = userConverter.convertToExistingEntity(userRegistrationDto, userToUpdate);
+        if (updatedUser.getUsername().equals(userRegistrationDto.getUsername())) {
+            throw new IllegalArgumentException("User " + userRegistrationDto.getUsername()+" already exist");
+        }
         return userRepository.saveAndFlush(updatedUser);
-
     }
+
+     private String encodePassword (String password) {
+         return passwordEncoder.encode(password);
+     }
+
+
 
 }

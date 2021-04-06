@@ -3,6 +3,8 @@ package controllers;
 import converters.impl.UserWebDtoToUserRegistrationDtoConverter;
 import dto.UserWebDto;
 import entity.User;
+import exceptions.NotContentException;
+import exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -12,63 +14,76 @@ import service.dto.UserRegistrationDto;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/api")
+@RequestMapping(value = "/api/users")
 public class UserRestController {
     private UserService userService;
     private UserWebDtoToUserRegistrationDtoConverter registrationDto;
-    private PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserRestController(UserService userService, UserWebDtoToUserRegistrationDtoConverter registrationDto,
-                              PasswordEncoder passwordEncoder) {
+    public UserRestController(UserService userService, UserWebDtoToUserRegistrationDtoConverter registrationDto) {
         this.userService = userService;
 
         this.registrationDto = registrationDto;
-        this.passwordEncoder = passwordEncoder;
     }
 
-    @GetMapping("/users")
+    @GetMapping
     public List<User> getAllUsers() {
         return userService.findAllUsers();
     }
 
-    @GetMapping("/users/{userId}")
+    @GetMapping("/{userId}")
     public User getUserById(@PathVariable Long userId) {
-        return userService.findUserById(userId);
+        User user = userService.findUserById(userId);
+        if (user == null) {
+            throw new ResourceNotFoundException(userId.toString());
+        }
+        return user;
     }
 
-    @GetMapping("/users/username/{username}")
+    @GetMapping("/username/{username}")
     public User getUserByUsername(@PathVariable String username) {
-        return userService.findUserByUsername(username);
-
+        User user = userService.findUserByUsername(username);
+        if (user == null) {
+            throw new ResourceNotFoundException(username);
+        }
+        return user;
     }
 
-    @GetMapping("/users/delete/{userId}")
+
+    @DeleteMapping ("/{userId}")
     public void deleteUserById(@PathVariable Long userId) {
-        userService.deleteUserById(userId);
-
+        User user = userService.findUserById(userId);
+        if (user == null) {
+            throw new NotContentException(userId.toString());
+        } else {
+            userService.deleteUserById(userId);
+        }
     }
 
-    @PostMapping("/users/{userId}/update")
+    @PutMapping("/{userId}")
     public User getUpdatedUser(@RequestBody UserWebDto userWebDto, @PathVariable Long userId) {
         User userToUpdate = userService.findUserById(userId);
         if (userToUpdate == null) {
-            throw new UnsupportedOperationException("User with id " + userWebDto.getUserId() + " not found");
-
+            throw new ResourceNotFoundException("User with id " + userWebDto.getUserId() + " not found");
         } else {
+
             UserRegistrationDto userRegistrationDto = registrationDto.convertFromSourceDtoToTargetDto(userWebDto);
+
             return userService.updateUser(userRegistrationDto, userToUpdate);
         }
     }
 
-    @PostMapping("/users/create")
+    @PostMapping("/create")
     public User getCreatedUser(@RequestBody UserRegistrationDto userRegistrationDto) {
-        userRegistrationDto.setPassword(passwordEncoder.encode(userRegistrationDto.getPassword()));
         return userService.registerUser(userRegistrationDto);
     }
 
-    @GetMapping("/users/{userId}/price")
+    @GetMapping("/{userId}/price")
     public Long getSumPriceOfUser(@PathVariable Long userId) {
+        User user = userService.findUserById(userId);
+        if (user == null) {
+            throw new ResourceNotFoundException(userId.toString());
+        }
         return userService.getSumWorkPriceAndDetailPrice(userId);
     }
 

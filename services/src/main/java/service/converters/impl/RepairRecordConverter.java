@@ -8,6 +8,8 @@ import repository.RepairRequestRepository;
 import service.converters.Converter;
 import service.dto.RepairRecordRegistrationDto;
 
+import java.util.Optional;
+
 @Service
 public class RepairRecordConverter implements Converter<RepairRecord, RepairRecordRegistrationDto> {
 
@@ -28,8 +30,9 @@ public class RepairRecordConverter implements Converter<RepairRecord, RepairReco
 
     @Override
     public RepairRecord convertToExistingEntity(RepairRecordRegistrationDto dto, RepairRecord entity) {
-        RepairRequest repairRequestById = repairRequestRepository.getOne(dto.getRepairRequestId());
-        entity.setRepairRequest(repairRequestById);
+        Optional<RepairRequest> requestOptional = repairRequestRepository.findById(dto.getRepairRequestId());
+        RepairRequest repairRequest = requestOptional.orElse(null);
+        entity.setRepairRequest(repairRequest);
         entity.setOtherNotes(dto.getOtherNotes());
         entity.setRepairRecordDescription(dto.getRepairRecordDescription());
         entity.setDetailPrice(dto.getDetailPrice());

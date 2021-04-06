@@ -7,6 +7,8 @@ import dto.AppointmentSlotWebDto;
 import dto.RepairRequestRegistrationWebDto;
 import dto.RepairRequestWebDto;
 import entity.RepairRequest;
+import exceptions.NotContentException;
+import exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
@@ -15,13 +17,14 @@ import service.RepairRequestService;
 import service.dto.AppointmentSlotDto;
 import service.dto.RepairRequestRegistrationDto;
 
+import javax.management.relation.RelationNotFoundException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping(value = "/api")
+@RequestMapping(value = "/api/requests")
 public class RepairRequestRestController {
     private RepairRequestService repairRequestService;
     private RepairRequestFromRegistrationWebDtoToRegistrationDtoConverter repairRequestFromRegistrationWebDtoToRegistrationDtoConverter;
@@ -41,36 +44,46 @@ public class RepairRequestRestController {
         this.repairRequestFromWebDtoToRegistrationDtoConverter = repairRequestFromWebDtoToRegistrationDtoConverter;
     }
 
-    @GetMapping("/requests")
+    @GetMapping
     public List<RepairRequest> getAllRepairRequests(@RequestParam(value = "username", required = false) String username,
                                                     @RequestParam(value = "carRemark", required = false) String carRemark,
                                                     @RequestParam(value = "requestId", required = false) String requestId,
                                                     @RequestParam(value = "status", required = false) String status) {
         List<RepairRequest> allRepairRequests = repairRequestService.findAllRepairRequests();
-        List<RepairRequest> filteredRequest = allRepairRequests.stream()
+        return allRepairRequests.stream()
                 .filter(repairRequest -> username == null || username.equals(repairRequest.getUser().getUsername()))
                 .filter(repairRequest -> carRemark == null || carRemark.equals(repairRequest.getCarRemark()))
                 .filter(repairRequest -> requestId == null || requestId.equals(repairRequest.getId().toString()))
                 .filter(repairRequest -> status == null || status.equals(repairRequest.getRepairRequestStatus().toString()))
                 .collect(Collectors.toList());
-        return filteredRequest;
     }
 
-    @GetMapping("/requests/{requestId}")
+    @GetMapping("/{requestId}")
     public RepairRequest getRepairRequest(@PathVariable Long requestId) {
+        RepairRequest foundRepairRequest = repairRequestService.findRepairRequestById(requestId);
+        if (foundRepairRequest == null) {
+            throw new ResourceNotFoundException(requestId.toString());
+        }
         return repairRequestService.findRepairRequestById(requestId);
     }
 
-    @GetMapping("/requests/delete/{requestId}")
+    @DeleteMapping("/{requestId}")
     public void deleteRepairRequestById(@PathVariable Long requestId) {
-        repairRequestService.deleteRepairRequestById(requestId);
+        RepairRequest requestToDelete = repairRequestService.findRepairRequestById(requestId);
+        if (requestToDelete == null) {
+            throw new NotContentException(requestId.toString());
+        } else {
+            repairRequestService.deleteRepairRequestById(requestId);
+
+        }
     }
 
-    @PostMapping("/requests/{requestId}/update")
-    public RepairRequest getUpdatedRepairRequest(@RequestBody RepairRequestWebDto repairRequestWebDto, @PathVariable Long requestId) {
+    @PutMapping("/{requestId}")
+    public RepairRequest getUpdatedRepairRequest(@PathVariable Long requestId,
+                                                 @RequestBody RepairRequestWebDto repairRequestWebDto) {
         RepairRequest repairRequestToUpdate = repairRequestService.findRepairRequestById(requestId);
         if (repairRequestToUpdate == null) {
-            throw new UnsupportedOperationException("RepairRequest with id " + repairRequestWebDto.getRequestId() + " not found");
+            throw new ResourceNotFoundException("RepairRequest to update with id " + repairRequestWebDto.getRequestId() + " not found");
 
         } else {
             RepairRequestRegistrationDto repairRequestRegistrationDto =
@@ -80,7 +93,7 @@ public class RepairRequestRestController {
         }
     }
 
-    @PostMapping("/requests/create")
+    @PostMapping("/create")
     public RepairRequest getCreatedRepairRequest(@RequestBody RepairRequestRegistrationWebDto repairRequestRegistrationWebDto) {
         RepairRequestRegistrationDto repairRequestRegistrationDto =
                 repairRequestFromRegistrationWebDtoToRegistrationDtoConverter.convertFromSourceDtoToTargetDto(repairRequestRegistrationWebDto);

@@ -13,6 +13,7 @@ import service.converters.impl.RepairRecordConverter;
 import service.dto.RepairRecordRegistrationDto;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 
@@ -44,7 +45,8 @@ public class RepairRecordServiceImpl implements RepairRecordService {
     public RepairRecord findRepairRecordById(Long repairRecordId) {
         log.info(String.format("Find repair record  with id= {%s}", repairRecordId));
         log.debug(String.format("Find repair record  with id= {%s}", repairRecordId));
-        return repairRecordRepository.getOne(repairRecordId);
+        Optional<RepairRecord> recordOptional = repairRecordRepository.findById(repairRecordId);
+        return recordOptional.orElse(null);
     }
 
 

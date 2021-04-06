@@ -14,6 +14,7 @@ import service.dto.RepairRequestRegistrationDto;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
@@ -117,7 +118,8 @@ public class RepairRequestServiceImpl implements RepairRequestService {
     public RepairRequest findRepairRequestById(Long repairRequestId) {
         log.info(String.format("Find repair request  with id= {%s}", repairRequestId));
         log.debug(String.format("Find repair request  with id= {%s}", repairRequestId));
-        return repairRequestRepository.getOne(repairRequestId);
+        Optional<RepairRequest> requestOptional = repairRequestRepository.findById(repairRequestId);
+        return requestOptional.orElse(null);
     }
 
 

@@ -14,6 +14,7 @@ import service.dto.AppointmentSlotDto;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 
@@ -34,6 +35,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 
     @Override
     public Appointment createAppointment(AppointmentSlotDto appointmentSlotDto, Long userId, Long repairRequestId) {
+
         log.info(String.format("Appointment with info : {%s} was created \n for user with id: {%s} ", appointmentSlotDto.toString(), userId));
         log.debug(String.format("Appointment with info : {%s} was created \n for user with id: {%s} ", appointmentSlotDto.toString(), userId));
         Date startDateInDate = LocalDateTimeOperations.convertLocalDateTimeToDate(appointmentSlotDto.getStartDate());
@@ -53,6 +55,7 @@ public class AppointmentServiceImpl implements AppointmentService {
     public Appointment findAppointmentByRepairRequestId(Long repairRequestId) {
         log.info(String.format("Find appointment for repair request  with id= {%s}", repairRequestId));
         log.debug(String.format("Find appointment for repair request  with id= {%s}", repairRequestId));
-        return appointmentRepository.getOne(repairRequestId);
+        Optional<Appointment> appointmentOptional= appointmentRepository.findById(repairRequestId);
+        return  appointmentOptional.orElse(null);
     }
 }
