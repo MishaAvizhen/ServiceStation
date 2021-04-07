@@ -24,13 +24,11 @@ public class FindUserByUsernameMenuCommand implements MenuCommand {
         Scanner scanner = new Scanner(System.in);
         String username = scanner.next();
         log.info(String.format("Find user by name: {%s}", username));
-        log.debug(String.format("Find user by name: {%s}", username));
         User userByUsername = userService.findUserByUsername(username);
         if (userByUsername != null) {
             log.info(String.format("Detected User: {%s}", userByUsername));
         } else {
             log.info(String.format("user {%s} not found", username));
-            log.debug(String.format("user {%s} not found", username));
         }
     }
 

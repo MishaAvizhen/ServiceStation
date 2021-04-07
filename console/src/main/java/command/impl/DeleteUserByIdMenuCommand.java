@@ -27,7 +27,6 @@ public class DeleteUserByIdMenuCommand implements MenuCommand {
         Long id = userByUsername.getId();
         userService.deleteUserById(id);
         log.info(String.format(" user {@s} was deleted  ",username));
-        log.info(String.format(" user {@s} was deleted  ",username));
         System.out.println(" User " + username + " was deleted");
 
     }

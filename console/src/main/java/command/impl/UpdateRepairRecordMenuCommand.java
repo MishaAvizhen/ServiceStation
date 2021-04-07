@@ -42,7 +42,6 @@ public class UpdateRepairRecordMenuCommand implements MenuCommand {
                     .build();
             repairRecordService.updateRepairRecord(repairRecordRegistrationDto, recordDescriptionToUpdate);
             log.info(String.format(" Repair Record: \n  {@s} \n was update  ",recordDescriptionToUpdate.toString()));
-            log.debug(String.format(" Repair Record: \n  {@s} \n was update  ",recordDescriptionToUpdate.toString()));
             System.out.println("Repair record for user " + recordDescriptionToUpdate.getRepairRequest().getUser().getUsername() + " was updated");
         } else {
             System.out.println("For username " + username + " user not found!");

@@ -13,10 +13,11 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+import repository.AppointmentRepository;
 import repository.RepairRecordRepository;
 import repository.RepairRequestRepository;
 import repository.UserRepository;
-import service.AppointmentService;
+import service.AppointmentSlotService;
 import service.converters.impl.RepairRequestConverter;
 import service.dto.RepairRequestRegistrationDto;
 
@@ -36,11 +37,16 @@ public class RepairRequestServiceImplTest {
     private RepairRequestRepository repairRequestRepository;
     @Mock
     private RepairRecordRepository repairRecordRepository;
+    @Mock
+    private AppointmentRepository appointmentRepository;
 
     @Mock
     private UserRepository userRepository;
     @Mock
     private AppointmentServiceImpl appointmentService;
+
+    @Mock
+    private AppointmentSlotServiceImpl appointmentSlotService;
 
     @InjectMocks
     private UserServiceImpl userService;
@@ -57,7 +63,7 @@ public class RepairRequestServiceImplTest {
     @Before
     public void setUp() throws Exception {
         repairRequestConverter = new RepairRequestConverter(userService);
-        repairRequestService = new RepairRequestServiceImpl(repairRequestRepository, repairRequestConverter,appointmentService);
+        repairRequestService = new RepairRequestServiceImpl(repairRequestRepository, repairRequestConverter, appointmentService, appointmentSlotService);
         when(userRepository.findByUsername("user")).thenReturn(userTestData.getTestUserByUsername("user"));
         when(repairRequestRepository.findAll()).thenReturn(repairRequestTestData.getAllTestRepairRequest());
         when(repairRecordRepository.findAll()).thenReturn(repairRecordTestData.getAllRepairRecordForTest());

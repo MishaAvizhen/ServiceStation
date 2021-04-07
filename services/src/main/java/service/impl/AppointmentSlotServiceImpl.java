@@ -19,6 +19,7 @@ import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
 import static service.common.LocalDateTimeOperations.convertDateToLocalDateTime;
+import static service.common.LocalDateTimeOperations.convertLocalDateTimeToDate;
 
 @Service
 public class AppointmentSlotServiceImpl implements AppointmentSlotService {
@@ -34,6 +35,9 @@ public class AppointmentSlotServiceImpl implements AppointmentSlotService {
     @Override
     public List<AppointmentSlotDto> getAvailableAppointmentSlotsByDate(Date date) {
         log.info(String.format("get available appointment slot to date: {%s}", date));
+        if (!isTargetDateNotInPast(date)) {
+            throw new IllegalArgumentException("Error!!! Date in the past");
+        }
 
         Date dateWOHours = trancateDateToDays(date);
         WorkingHoursDto workHoursByDate = getWorkHoursByDate(dateWOHours);
@@ -66,6 +70,14 @@ public class AppointmentSlotServiceImpl implements AppointmentSlotService {
         return false;
     }
 
+    private boolean isTargetDateNotInPast(Date targetDate) {
+        Date yesterday = new Date(System.currentTimeMillis() - 24 * 60 * 60 * 1000);
+        if (targetDate.after(yesterday)) {
+            return true;
+        }
+        return false;
+    }
+
 
     @Override
     public List<AppointmentSlotDto> getAvailableAppointmentSlotsByDates(Date start, Date end) {
@@ -76,6 +88,13 @@ public class AppointmentSlotServiceImpl implements AppointmentSlotService {
             currentDate = DateUtils.addDays(currentDate, 1);
         }
         return result;
+    }
+
+    @Override
+    public boolean isAppointmentSlotAvailable(AppointmentSlotDto appointmentSlotDto) {
+        List<AppointmentSlotDto> availableAppointmentSlotsByDate =
+                getAvailableAppointmentSlotsByDate(convertLocalDateTimeToDate(appointmentSlotDto.getStartDate()));
+        return availableAppointmentSlotsByDate.contains(appointmentSlotDto);
     }
 
     private List<User> findAllMasters() {

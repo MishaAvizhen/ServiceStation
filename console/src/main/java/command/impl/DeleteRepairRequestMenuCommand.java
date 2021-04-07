@@ -23,7 +23,6 @@ public class DeleteRepairRequestMenuCommand implements MenuCommand {
         String description = scanner.next();
         repairRequestService.deleteRepairRequestByUsernameAndRepairRequestDescription(username, description);
         log.info(String.format(" Repair request was deleted for {@s} ",username));
-        log.debug(String.format(" Repair request was deleted for {@s} ",username));
         System.out.println(" Repair request for " + username + " was deleted");
 
     }

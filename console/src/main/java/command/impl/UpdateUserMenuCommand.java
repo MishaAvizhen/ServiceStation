@@ -41,7 +41,6 @@ public class UpdateUserMenuCommand implements MenuCommand {
                     .build();
             userService.updateUser(userRegistrationDto, userToUpdate);
             log.info(String.format(" User: \n  {@s} \n was update  ",userToUpdate.toString()));
-            log.debug(String.format(" User: \n  {@s} \n was update  ",userToUpdate.toString()));
 
             System.out.println("User " + updateUsername + " was updated");
         } else {

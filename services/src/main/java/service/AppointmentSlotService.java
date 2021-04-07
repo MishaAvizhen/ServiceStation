@@ -10,4 +10,6 @@ public interface AppointmentSlotService {
     List<AppointmentSlotDto> getAvailableAppointmentSlotsByDate(Date date);
 
     List<AppointmentSlotDto> getAvailableAppointmentSlotsByDates(Date start, Date end);
+
+    boolean isAppointmentSlotAvailable(AppointmentSlotDto appointmentSlotDto);
 }

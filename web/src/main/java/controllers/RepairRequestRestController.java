@@ -17,7 +17,6 @@ import service.RepairRequestService;
 import service.dto.AppointmentSlotDto;
 import service.dto.RepairRequestRegistrationDto;
 
-import javax.management.relation.RelationNotFoundException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -31,6 +30,7 @@ public class RepairRequestRestController {
     private AppointmentSlotService appointmentSlotService;
     private AppointmentSlotDtoToAppointmentSlotWebDtoConverter appointmentSlotDtoToAppointmentSlotWebDtoConverter;
     private RepairRequestFromWebDtoToRegistrationDtoConverter repairRequestFromWebDtoToRegistrationDtoConverter;
+
     @Autowired
     public RepairRequestRestController(RepairRequestService repairRequestService,
                                        RepairRequestFromRegistrationWebDtoToRegistrationDtoConverter repairRequestFromRegistrationWebDtoToRegistrationDtoConverter,
@@ -104,7 +104,6 @@ public class RepairRequestRestController {
     public List<AppointmentSlotWebDto> getAppointmentSlotWebDtos(@RequestParam(value = "targetDate")
                                                                  @DateTimeFormat(pattern = "yyyy-MM-dd")
                                                                          Date targetDate) {
-
         List<AppointmentSlotWebDto> slotWebDtos = new ArrayList<>();
         List<AppointmentSlotDto> availableAppointmentSlotsByDate = appointmentSlotService.getAvailableAppointmentSlotsByDate(targetDate);
         for (AppointmentSlotDto appointmentSlotDto : availableAppointmentSlotsByDate) {
@@ -113,6 +112,5 @@ public class RepairRequestRestController {
         }
         return slotWebDtos;
     }
-
 
 }

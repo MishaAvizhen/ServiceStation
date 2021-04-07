@@ -6,8 +6,6 @@ import entity.User;
 import entity.consts.RepairRequestStatus;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import repository.RepairRecordRepository;
@@ -33,7 +31,6 @@ public class UserServiceImpl implements UserService {
     private PasswordEncoder passwordEncoder;
 
 
-
     @Override
     public List<RepairRecord> getUserRepairRecordList(Long userId) {
         return repairRecordRepository.findAll().stream()
@@ -43,15 +40,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findUserByUsername(String username) {
-        log.info(String.format("Find user with name:  {%s}", username));
-        log.debug(String.format("Find user with name: {%s}", username));
+        log.info(String.format("Find user with name: {%s}", username));
         return userRepository.findByUsername(username);
     }
 
     @Override
     public User findUserById(Long userId) {
         log.info(String.format("Find user with id= {%s}", userId));
-        log.debug(String.format("Find user with id= {%s}", userId));
         Optional<User> optionalUser = userRepository.findById(userId);
         return optionalUser.orElse(null);
     }
@@ -65,7 +60,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public void deleteUserById(Long userId) {
         log.info(String.format("Delete user with id=  {%s}", userId));
-        log.debug(String.format("Delete user with id=  {%s}", userId));
         userRepository.deleteById(userId);
 
     }
@@ -89,16 +83,17 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User registerUser(UserRegistrationDto userRegistrationDto) {
-        log.info(String.format("user with info:{%s} was created ", userRegistrationDto.toString()));
-        log.debug(String.format("user with info:{%s} was created ", userRegistrationDto.toString()));
+
         User existUser = userRepository.findByUsername(userRegistrationDto.getUsername());
 
         if (existUser != null) {
-            throw new IllegalArgumentException("User " + userRegistrationDto.getUsername()+" already exist");
+            log.info(String.format("user with info:{%s} already exist ", userRegistrationDto.toString()));
+            throw new IllegalArgumentException("User " + userRegistrationDto.getUsername() + " already exist");
         }
         UserConverter userConverter = new UserConverter();
         userRegistrationDto.setPassword(encodePassword(userRegistrationDto.getPassword()));
         User user = userConverter.convertToEntity(userRegistrationDto);
+        log.info(String.format("user with info:{%s} was created ", userRegistrationDto.toString()));
         return userRepository.save(user);
 
     }
@@ -106,21 +101,20 @@ public class UserServiceImpl implements UserService {
     @Override
     public User updateUser(UserRegistrationDto userRegistrationDto, User userToUpdate) {
 
-        log.info(String.format("user with info:{%s} was updated ", userRegistrationDto.toString()));
-        log.debug(String.format("user with info:{%s} was updated ", userRegistrationDto.toString()));
         UserConverter userConverter = new UserConverter();
         userRegistrationDto.setPassword(encodePassword(userRegistrationDto.getPassword()));
         User updatedUser = userConverter.convertToExistingEntity(userRegistrationDto, userToUpdate);
         if (updatedUser.getUsername().equals(userRegistrationDto.getUsername())) {
-            throw new IllegalArgumentException("User " + userRegistrationDto.getUsername()+" already exist");
+            log.info(String.format("user with info:{%s} already exist ", userRegistrationDto.toString()));
+            throw new IllegalArgumentException("User " + userRegistrationDto.getUsername() + " already exist");
         }
+        log.info(String.format("user with info:{%s} was updated ", userRegistrationDto.toString()));
         return userRepository.saveAndFlush(updatedUser);
     }
 
-     private String encodePassword (String password) {
-         return passwordEncoder.encode(password);
-     }
-
+    private String encodePassword(String password) {
+        return passwordEncoder.encode(password);
+    }
 
 
 }

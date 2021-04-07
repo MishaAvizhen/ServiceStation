@@ -9,6 +9,7 @@ import repository.AppointmentRepository;
 import repository.RepairRequestRepository;
 import repository.UserRepository;
 import service.AppointmentService;
+import service.AppointmentSlotService;
 import service.common.LocalDateTimeOperations;
 import service.dto.AppointmentSlotDto;
 
@@ -26,6 +27,8 @@ public class AppointmentServiceImpl implements AppointmentService {
     private UserRepository userRepository;
     @Autowired
     private RepairRequestRepository repairRequestRepository;
+    @Autowired
+    private AppointmentSlotService appointmentSlotService;
 
     @Override
     public List<Appointment> findAllAppointment() {
@@ -35,27 +38,33 @@ public class AppointmentServiceImpl implements AppointmentService {
 
     @Override
     public Appointment createAppointment(AppointmentSlotDto appointmentSlotDto, Long userId, Long repairRequestId) {
-
-        log.info(String.format("Appointment with info : {%s} was created \n for user with id: {%s} ", appointmentSlotDto.toString(), userId));
-        log.debug(String.format("Appointment with info : {%s} was created \n for user with id: {%s} ", appointmentSlotDto.toString(), userId));
-        Date startDateInDate = LocalDateTimeOperations.convertLocalDateTimeToDate(appointmentSlotDto.getStartDate());
-        Date endDateInDate = LocalDateTimeOperations.convertLocalDateTimeToDate(appointmentSlotDto.getEndDate());
-        Appointment appointment = new Appointment();
-        appointment.setMaster(appointmentSlotDto.getMaster());
-        appointment.setStartDate(startDateInDate);
-        appointment.setEndDate(endDateInDate);
-        appointment.setSlotStatus(SlotStatus.BUSY);
-        appointment.setClient(userRepository.getOne(userId));
-        appointment.setNotes(" notes...");
-        appointment.setRepairRequest(repairRequestRepository.getOne(repairRequestId));
-        return appointmentRepository.save(appointment);
+        if (!appointmentSlotService.isAppointmentSlotAvailable(appointmentSlotDto)) {
+            throw new IllegalArgumentException("Appointment slot is Busy");
+        }
+        Date startDate = LocalDateTimeOperations.convertLocalDateTimeToDate(appointmentSlotDto.getStartDate());
+        Date endDate = LocalDateTimeOperations.convertLocalDateTimeToDate(appointmentSlotDto.getEndDate());
+        if (startDate.before(new Date()) || endDate.before(new Date())) {
+            log.info(String.format("Appointment was not created, Date {%s} - {%s} incorrect! Date in the  past ", startDate, endDate));
+            throw new IllegalArgumentException("Date incorrect! Date in the  past");
+        } else {
+            Appointment appointment = new Appointment();
+            appointment.setMaster(appointmentSlotDto.getMaster());
+            appointment.setStartDate(startDate);
+            appointment.setEndDate(endDate);
+            appointment.setSlotStatus(SlotStatus.BUSY);
+            appointment.setClient(userRepository.getOne(userId));
+            appointment.setNotes(" notes...");
+            appointment.setRepairRequest(repairRequestRepository.getOne(repairRequestId));
+            log.info(String.format("Appointment with info : {%s}, {%s} was created \n for user with id: {%s} ",
+                    appointmentSlotDto.getStartDate(), appointmentSlotDto.getEndDate(), userId));
+            return appointmentRepository.save(appointment);
+        }
     }
 
     @Override
     public Appointment findAppointmentByRepairRequestId(Long repairRequestId) {
         log.info(String.format("Find appointment for repair request  with id= {%s}", repairRequestId));
-        log.debug(String.format("Find appointment for repair request  with id= {%s}", repairRequestId));
-        Optional<Appointment> appointmentOptional= appointmentRepository.findById(repairRequestId);
-        return  appointmentOptional.orElse(null);
+        Optional<Appointment> appointmentOptional = appointmentRepository.findById(repairRequestId);
+        return appointmentOptional.orElse(null);
     }
 }

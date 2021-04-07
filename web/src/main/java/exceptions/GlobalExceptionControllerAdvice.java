@@ -1,5 +1,7 @@
 package exceptions;
 
+
+import javassist.NotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -9,10 +11,10 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import java.util.Date;
 
 @ControllerAdvice
-public class GlobalExceptionController extends ResponseEntityExceptionHandler {
+public class GlobalExceptionControllerAdvice extends ResponseEntityExceptionHandler {
 
-    @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<ExceptionResponse> resourceNotFound(ResourceNotFoundException ex) {
+    @ExceptionHandler(value = {ResourceNotFoundException.class, NullPointerException.class})
+    public ResponseEntity<ExceptionResponse> resourceNotFound(RuntimeException ex) {
         ExceptionResponse response = buildExceptionResponse(ex, "NOT_FOUND");
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }

@@ -8,11 +8,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import repository.RepairRequestRepository;
 import service.AppointmentService;
+import service.AppointmentSlotService;
 import service.RepairRequestService;
+import service.common.LocalDateTimeOperations;
 import service.converters.impl.RepairRequestConverter;
+import service.dto.AppointmentSlotDto;
 import service.dto.RepairRequestRegistrationDto;
 
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -29,17 +33,22 @@ public class RepairRequestServiceImpl implements RepairRequestService {
 
     private AppointmentService appointmentService;
 
+    private AppointmentSlotService appointmentSlotService;
+
     @Autowired
-    public RepairRequestServiceImpl(RepairRequestRepository repairRequestRepository, RepairRequestConverter repairRequestConverter, AppointmentService appointmentService) {
+    public RepairRequestServiceImpl(RepairRequestRepository repairRequestRepository,
+                                    RepairRequestConverter repairRequestConverter,
+                                    AppointmentService appointmentService,
+                                    AppointmentSlotService appointmentSlotService) {
         this.repairRequestRepository = repairRequestRepository;
         this.repairRequestConverter = repairRequestConverter;
         this.appointmentService = appointmentService;
+        this.appointmentSlotService = appointmentSlotService;
     }
 
     @Override
     public List<RepairRequest> getListOfActiveRepairRequestsOfUser(String username) {
         log.info(String.format("Find active repair request of user: {%s}", username));
-        log.debug(String.format("Find active repair request of user: {%s}", username));
         return repairRequestRepository.findAll().stream()
                 .filter(request -> request.getUser().getUsername().equals(username) &&
                         request.getRepairRequestStatus().equals(RepairRequestStatus.IN_PROGRESS))
@@ -65,17 +74,14 @@ public class RepairRequestServiceImpl implements RepairRequestService {
     @Override
     public RepairRequest findRepairRequestByUsernameAndCarRemark(String username, String carRemark) {
         log.info(String.format("Find  repair request of user: {%s} with car: {%s}", username, carRemark));
-        log.debug(String.format("Find  repair request of user: {%s} with car: {%s}", username, carRemark));
         return repairRequestRepository.findAll().stream()
                 .filter(request -> request.getUser().getUsername().equals(username) && request.getCarRemark().equals(carRemark))
                 .findAny().orElse(null);
     }
 
-
     @Override
     public void deleteRepairRequestByUsernameAndRepairRequestDescription(String username, String repairRequestDescription) {
-        log.info(String.format("delete  repair request of user: {%s} with repair request description: {%s}", username, repairRequestDescription));
-        log.debug(String.format("delete  repair request of user: {%s} with repair request description: {%s}", username, repairRequestDescription));
+
         RepairRequest repairRequest = repairRequestRepository.findAll().stream()
                 .filter(request -> request.getUser().getUsername().equals(username) &&
                         request.getRepairRequestDescription().equals(repairRequestDescription))
@@ -87,29 +93,47 @@ public class RepairRequestServiceImpl implements RepairRequestService {
 
     @Override
     public RepairRequest registerRepairRequest(RepairRequestRegistrationDto repairRequestRegistrationDto) {
-        log.info(String.format("repair request with info : {%s} was created ", repairRequestRegistrationDto.getUsername()));
-        log.debug(String.format("repair request with info : {%s} was created ", repairRequestRegistrationDto.getUsername()));
+        validateDateNotInPast(repairRequestRegistrationDto);
+        validateIsAvailableAppointmentSlot(repairRequestRegistrationDto.getAppointmentSlotDto());
         RepairRequest repairRequest = repairRequestConverter.convertToEntity(repairRequestRegistrationDto);
         RepairRequest createdRequest = repairRequestRepository.save(repairRequest);
         Appointment createdAppointment = appointmentService.createAppointment(repairRequestRegistrationDto.getAppointmentSlotDto(),
                 repairRequest.getUser().getId(), createdRequest.getId());
+
         createdRequest.setAppointments(Collections.singletonList(createdAppointment));
+        log.info(String.format("repair request with info : {%s} was created ", repairRequestRegistrationDto.getUsername()));
+
         return createdRequest;
 
     }
 
     @Override
     public RepairRequest updateRepairRequest(RepairRequestRegistrationDto repairRequestRegistrationDto, RepairRequest repairRequestToUpdate) {
-        log.info(String.format("repair request for {%s} with info : {%s} was updated ", repairRequestRegistrationDto.getUsername(), repairRequestRegistrationDto.getCarRemark()));
-        log.debug(String.format("repair request for {%s} with info : {%s} was updated ", repairRequestRegistrationDto.getUsername(), repairRequestRegistrationDto.getCarRemark()));
         RepairRequest repairRequest = repairRequestConverter.convertToExistingEntity(repairRequestRegistrationDto, repairRequestToUpdate);
+        validateDateNotInPast(repairRequestRegistrationDto);
+        log.info(String.format("repair request for {%s} with info : {%s} was updated ", repairRequestRegistrationDto.getUsername(), repairRequestRegistrationDto.getCarRemark()));
         return repairRequestRepository.save(repairRequest);
+    }
+
+    private void validateDateNotInPast(RepairRequestRegistrationDto repairRequestRegistrationDto) {
+        Date startDate = LocalDateTimeOperations.convertLocalDateTimeToDate(repairRequestRegistrationDto.getAppointmentSlotDto().getStartDate());
+        Date endDate = LocalDateTimeOperations.convertLocalDateTimeToDate(repairRequestRegistrationDto.getAppointmentSlotDto().getStartDate());
+        if (startDate.before(new Date()) || endDate.before(new Date())) {
+            log.info(String.format("repair request with info : {%s} was not created, Date incorrect! Date in the  past ",
+                    repairRequestRegistrationDto.getUsername()));
+            throw new IllegalArgumentException("Date incorrect! Date in the past");
+        }
+    }
+
+    private void validateIsAvailableAppointmentSlot(AppointmentSlotDto appointmentSlotDto) {
+        if (!appointmentSlotService.isAppointmentSlotAvailable(appointmentSlotDto)) {
+            throw new IllegalArgumentException("Slot is not available");
+        }
     }
 
     @Override
     public void deleteRepairRequestById(Long repairRequestId) {
         log.info(String.format("Delete repair Request with id=  {%s}", repairRequestId));
-        log.debug(String.format("Delete repair Request with id=  {%s}", repairRequestId));
         repairRequestRepository.deleteById(repairRequestId);
 
     }
@@ -117,10 +141,7 @@ public class RepairRequestServiceImpl implements RepairRequestService {
     @Override
     public RepairRequest findRepairRequestById(Long repairRequestId) {
         log.info(String.format("Find repair request  with id= {%s}", repairRequestId));
-        log.debug(String.format("Find repair request  with id= {%s}", repairRequestId));
         Optional<RepairRequest> requestOptional = repairRequestRepository.findById(repairRequestId);
         return requestOptional.orElse(null);
     }
-
-
 }

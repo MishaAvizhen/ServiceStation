@@ -23,7 +23,6 @@ public class FindAllUsersMenuCommand implements MenuCommand {
             log.info(String.format(" users:\n{%s}", all.toString()));
         } else {
             log.info(String.format(" users not found"));
-            log.debug(String.format(" users not found"));
         }
     }
 

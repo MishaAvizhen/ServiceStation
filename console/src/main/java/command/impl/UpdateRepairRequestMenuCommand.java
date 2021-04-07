@@ -44,7 +44,6 @@ public class UpdateRepairRequestMenuCommand implements MenuCommand {
                     .build();
             repairRequestService.updateRepairRequest(repairRequestRegistrationDto, repairRequestByUsernameAndCarRemarkToUpdate);
             log.info(String.format(" Repair request: \n  {@s} \n was update  ",repairRequestRegistrationDto.toString()));
-            log.debug(String.format(" Repair request: \n  {@s} \n was update  ",repairRequestRegistrationDto.toString()));
             System.out.println("Repair request for user " + repairRequestByUsernameAndCarRemarkToUpdate.getUser().getUsername() + " was updated");
         } else {
             System.out.println("For username " + username + " user not found!");

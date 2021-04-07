@@ -28,7 +28,6 @@ public class JdbcTemplate {
              Statement statement = connection.createStatement()) {
             ResultSet resultSet = statement.executeQuery(sqlQuery);
             log.info(String.format("Sql query: {%s} ", sqlQuery));
-            log.debug(String.format("Sql query: {%s} ", sqlQuery));
             return resultSetExtractor.extractFromResultSet(resultSet);
         } catch (Exception e) {
             log.error(String.format("Exception: {%s} ", e));
@@ -47,8 +46,6 @@ public class JdbcTemplate {
              Statement statement = connection.createStatement()) {
             statement.executeUpdate(updateQuery);
             log.info(String.format("Sql query: {%s} ", updateQuery));
-            log.debug(String.format("Sql query: {%s} ", updateQuery));
-
         } catch (Exception e) {
             log.error(String.format("Exception: {%s} ", e));
 
@@ -71,7 +68,6 @@ public class JdbcTemplate {
             //Running the script
             sr.runScript(reader);
         } catch (Exception e) {
-            log.debug(String.format("path to script: {%s} ", pathToScript));
             log.error(String.format("Exception: {%s} ", e));
         }
     }
@@ -92,7 +88,6 @@ public class JdbcTemplate {
 
         } catch (Exception e) {
             log.info(String.format("Sql query: {%s} ", sqlQuery));
-            log.debug(String.format("Sql query: {%s} ", sqlQuery));
             log.error(String.format("Exception: {%s} ", e));
         }
         return null;
