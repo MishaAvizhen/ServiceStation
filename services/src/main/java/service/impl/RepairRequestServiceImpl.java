@@ -72,6 +72,15 @@ public class RepairRequestServiceImpl implements RepairRequestService {
     }
 
     @Override
+    public List<RepairRequest> findAllRepairRequestsOfUser(String username) {
+        log.info(String.format("Find  repair requests of user: {%s} ", username));
+        return repairRequestRepository.findAll().stream()
+                .filter(request -> request.getUser().getUsername().equals(username))
+                .collect(toList());
+
+    }
+
+    @Override
     public RepairRequest findRepairRequestByUsernameAndCarRemark(String username, String carRemark) {
         log.info(String.format("Find  repair request of user: {%s} with car: {%s}", username, carRemark));
         return repairRequestRepository.findAll().stream()
@@ -93,6 +102,7 @@ public class RepairRequestServiceImpl implements RepairRequestService {
 
     @Override
     public RepairRequest registerRepairRequest(RepairRequestRegistrationDto repairRequestRegistrationDto) {
+
         validateDateNotInPast(repairRequestRegistrationDto);
         validateIsAvailableAppointmentSlot(repairRequestRegistrationDto.getAppointmentSlotDto());
         RepairRequest repairRequest = repairRequestConverter.convertToEntity(repairRequestRegistrationDto);

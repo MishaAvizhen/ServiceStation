@@ -20,6 +20,9 @@ public interface RepairRecordService {
 
     RepairRecord findRepairRecordByUsernameAndRepairRecordDescription(String username, String repairRecordDescription);
 
+
+    List<RepairRecord> findRepairRecordsByUsername(String username);
+
     void deleteRepairRecordById(Long repairRecordId);
 
 }

@@ -5,14 +5,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Component;
 import security.impl.CustomUserDetailsService;
 
 @Configuration
@@ -27,17 +27,38 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         auth.userDetailsService(customUserDetailsService).passwordEncoder(passwordEncoder());
     }
 
+    @Override
+    public void configure(WebSecurity web) {
+        web.ignoring().antMatchers(HttpMethod.POST, "/api/users/create");
+    }
+
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/api/records/**").hasAnyAuthority((Role.ADMIN.name()),(Role.MASTER.name()) )
+                .antMatchers(HttpMethod.PUT, "/api/users/**").hasAnyAuthority((Role.MASTER.name()),
+                (Role.ADMIN.name()), (Role.USER.name()))
+                .antMatchers(HttpMethod.GET, "/api/users").hasAnyAuthority((Role.ADMIN.name()), (Role.MASTER.name()))
+                .antMatchers(HttpMethod.GET, "/api/users/username").permitAll()
+                .antMatchers("/api/users/{\\\\d+}/price").hasAnyAuthority((Role.ADMIN.name()), (Role.MASTER.name()))
+
+                .antMatchers(HttpMethod.PUT, "/api/requests/**").permitAll()
+                .antMatchers(HttpMethod.POST, "/api/requests/**").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/requests/username").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/requests").hasAnyAuthority((Role.ADMIN.name()), (Role.MASTER.name()))
+
+                .antMatchers(HttpMethod.GET, "/api/records/username").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/records").hasAnyAuthority((Role.ADMIN.name()), (Role.MASTER.name()))
+                .antMatchers(HttpMethod.PUT, "/api/records/**").hasAnyAuthority((Role.ADMIN.name()), (Role.MASTER.name()))
+                .antMatchers(HttpMethod.POST, "/api/records/**").hasAnyAuthority((Role.ADMIN.name()), (Role.MASTER.name()))
+
+                .antMatchers(HttpMethod.DELETE).hasAuthority((Role.ADMIN.name()))
+
                 .anyRequest().authenticated()
                 .and()
                 .httpBasic()
                 .and()
                 .csrf().disable();
-
     }
 
     @Bean

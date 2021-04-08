@@ -100,11 +100,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User updateUser(UserRegistrationDto userRegistrationDto, User userToUpdate) {
-
         UserConverter userConverter = new UserConverter();
         userRegistrationDto.setPassword(encodePassword(userRegistrationDto.getPassword()));
         User updatedUser = userConverter.convertToExistingEntity(userRegistrationDto, userToUpdate);
-        if (updatedUser.getUsername().equals(userRegistrationDto.getUsername())) {
+        User userInDb = userRepository.findByUsername(updatedUser.getUsername());
+        if (userInDb != null) {
             log.info(String.format("user with info:{%s} already exist ", userRegistrationDto.toString()));
             throw new IllegalArgumentException("User " + userRegistrationDto.getUsername() + " already exist");
         }

@@ -13,6 +13,8 @@ public interface RepairRequestService {
 
     List<RepairRequest> findAllRepairRequests();
 
+    List<RepairRequest> findAllRepairRequestsOfUser(String username);
+
     RepairRequest findRepairRequestByUsernameAndCarRemark(String username, String carRemark);
 
     void deleteRepairRequestByUsernameAndRepairRequestDescription(String username, String repairRequestDescription);

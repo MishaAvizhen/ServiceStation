@@ -6,11 +6,13 @@ import entity.User;
 import exceptions.NotContentException;
 import exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import service.UserService;
 import service.dto.UserRegistrationDto;
 
+import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -31,17 +33,11 @@ public class UserRestController {
         return userService.findAllUsers();
     }
 
-    @GetMapping("/{userId}")
-    public User getUserById(@PathVariable Long userId) {
-        User user = userService.findUserById(userId);
-        if (user == null) {
-            throw new ResourceNotFoundException(userId.toString());
-        }
-        return user;
-    }
 
-    @GetMapping("/username/{username}")
-    public User getUserByUsername(@PathVariable String username) {
+
+    @GetMapping("/username")
+    public User getUserByUsername(Principal principal) {
+        String username = principal.getName();
         User user = userService.findUserByUsername(username);
         if (user == null) {
             throw new ResourceNotFoundException(username);
@@ -50,7 +46,7 @@ public class UserRestController {
     }
 
 
-    @DeleteMapping ("/{userId}")
+    @DeleteMapping("/{userId}")
     public void deleteUserById(@PathVariable Long userId) {
         User user = userService.findUserById(userId);
         if (user == null) {
@@ -85,6 +81,15 @@ public class UserRestController {
             throw new ResourceNotFoundException(userId.toString());
         }
         return userService.getSumWorkPriceAndDetailPrice(userId);
+    }
+    @GetMapping("/price")
+    public Long getMySumWorkAndDetailPrice(Principal principal) {
+        String username = principal.getName();
+        User user = userService.findUserByUsername(username);
+        if (user == null) {
+            throw new ResourceNotFoundException(username);
+        }
+        return userService.getSumWorkPriceAndDetailPrice(user.getId());
     }
 
 }

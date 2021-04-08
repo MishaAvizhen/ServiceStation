@@ -17,6 +17,8 @@ import service.dto.RepairRecordRegistrationDto;
 import java.util.List;
 import java.util.Optional;
 
+import static java.util.stream.Collectors.toList;
+
 @Service
 public class RepairRecordServiceImpl implements RepairRecordService {
     private static final Logger log = Logger.getLogger(RepairRecordServiceImpl.class);
@@ -107,6 +109,14 @@ public class RepairRecordServiceImpl implements RepairRecordService {
                         && record.getRepairRecordDescription().equals(repairRecordDescription))
                 .findAny().orElse(null);
 
+    }
+
+    @Override
+    public List<RepairRecord> findRepairRecordsByUsername(String username) {
+        log.info(String.format("Find  repair records of user: {%s} ", username));
+        return repairRecordRepository.findAll().stream()
+                .filter(record -> record.getRepairRequest().getUser().getUsername().equals(username))
+                .collect(toList());
     }
 
     @Override

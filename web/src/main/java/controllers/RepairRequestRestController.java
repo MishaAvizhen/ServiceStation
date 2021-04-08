@@ -7,6 +7,7 @@ import dto.AppointmentSlotWebDto;
 import dto.RepairRequestRegistrationWebDto;
 import dto.RepairRequestWebDto;
 import entity.RepairRequest;
+import entity.User;
 import exceptions.NotContentException;
 import exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,9 +15,11 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 import service.AppointmentSlotService;
 import service.RepairRequestService;
+import service.UserService;
 import service.dto.AppointmentSlotDto;
 import service.dto.RepairRequestRegistrationDto;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -26,6 +29,7 @@ import java.util.stream.Collectors;
 @RequestMapping(value = "/api/requests")
 public class RepairRequestRestController {
     private RepairRequestService repairRequestService;
+    private UserService userService;
     private RepairRequestFromRegistrationWebDtoToRegistrationDtoConverter repairRequestFromRegistrationWebDtoToRegistrationDtoConverter;
     private AppointmentSlotService appointmentSlotService;
     private AppointmentSlotDtoToAppointmentSlotWebDtoConverter appointmentSlotDtoToAppointmentSlotWebDtoConverter;
@@ -33,11 +37,12 @@ public class RepairRequestRestController {
 
     @Autowired
     public RepairRequestRestController(RepairRequestService repairRequestService,
-                                       RepairRequestFromRegistrationWebDtoToRegistrationDtoConverter repairRequestFromRegistrationWebDtoToRegistrationDtoConverter,
+                                       UserService userService, RepairRequestFromRegistrationWebDtoToRegistrationDtoConverter repairRequestFromRegistrationWebDtoToRegistrationDtoConverter,
                                        AppointmentSlotService appointmentSlotService,
                                        AppointmentSlotDtoToAppointmentSlotWebDtoConverter appointmentSlotDtoToAppointmentSlotWebDtoConverter,
                                        RepairRequestFromWebDtoToRegistrationDtoConverter repairRequestFromWebDtoToRegistrationDtoConverter) {
         this.repairRequestService = repairRequestService;
+        this.userService = userService;
         this.repairRequestFromRegistrationWebDtoToRegistrationDtoConverter = repairRequestFromRegistrationWebDtoToRegistrationDtoConverter;
         this.appointmentSlotService = appointmentSlotService;
         this.appointmentSlotDtoToAppointmentSlotWebDtoConverter = appointmentSlotDtoToAppointmentSlotWebDtoConverter;
@@ -58,13 +63,14 @@ public class RepairRequestRestController {
                 .collect(Collectors.toList());
     }
 
-    @GetMapping("/{requestId}")
-    public RepairRequest getRepairRequest(@PathVariable Long requestId) {
-        RepairRequest foundRepairRequest = repairRequestService.findRepairRequestById(requestId);
-        if (foundRepairRequest == null) {
-            throw new ResourceNotFoundException(requestId.toString());
+    @GetMapping("/username")
+    public List<RepairRequest> getAllRepairRequestsOfUser(Principal principal) {
+        String username = principal.getName();
+        List<RepairRequest> allRepairRequestsOfUser = repairRequestService.findAllRepairRequestsOfUser(username);
+        if (allRepairRequestsOfUser == null) {
+            throw new ResourceNotFoundException("Requests of user " + username + " not found");
         }
-        return repairRequestService.findRepairRequestById(requestId);
+        return allRepairRequestsOfUser;
     }
 
     @DeleteMapping("/{requestId}")
@@ -95,6 +101,11 @@ public class RepairRequestRestController {
 
     @PostMapping("/create")
     public RepairRequest getCreatedRepairRequest(@RequestBody RepairRequestRegistrationWebDto repairRequestRegistrationWebDto) {
+        String clientUsername = repairRequestRegistrationWebDto.getClientUsername();
+        User client = userService.findUserByUsername(clientUsername);
+        if (client == null) {
+            throw new ResourceNotFoundException("Client with username " + clientUsername + " not found");
+        }
         RepairRequestRegistrationDto repairRequestRegistrationDto =
                 repairRequestFromRegistrationWebDtoToRegistrationDtoConverter.convertFromSourceDtoToTargetDto(repairRequestRegistrationWebDto);
         return repairRequestService.registerRepairRequest(repairRequestRegistrationDto);

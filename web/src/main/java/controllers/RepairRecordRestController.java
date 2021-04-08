@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import service.RepairRecordService;
 import service.dto.RepairRecordRegistrationDto;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -40,13 +41,14 @@ public class RepairRecordRestController {
                 .collect(Collectors.toList());
     }
 
-    @GetMapping("/{recordId}")
-    public RepairRecord getRepairRecord(@PathVariable Long recordId) {
-        RepairRecord foundRecord = repairRecordService.findRepairRecordById(recordId);
-        if (foundRecord == null) {
-            throw new ResourceNotFoundException(recordId.toString());
+    @GetMapping("/username")
+    public List<RepairRecord> repairRecordsOfUser(Principal principal) {
+        String username = principal.getName();
+        List<RepairRecord> repairRecordsOfUser = repairRecordService.findRepairRecordsByUsername(username);
+        if (repairRecordsOfUser == null) {
+            throw new ResourceNotFoundException("Records of user "+ username+ " not found");
         }
-        return repairRecordService.findRepairRecordById(recordId);
+        return repairRecordsOfUser;
     }
 
     @DeleteMapping("/{recordId}")
