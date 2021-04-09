@@ -1,7 +1,6 @@
 package exceptions;
 
 
-import javassist.NotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -30,7 +29,6 @@ public class GlobalExceptionControllerAdvice extends ResponseEntityExceptionHand
         ExceptionResponse response = buildExceptionResponse(ex, "NO_CONTENT");
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
-
 
     private ExceptionResponse buildExceptionResponse(Exception ex, String errorCode) {
         ExceptionResponse response = new ExceptionResponse();

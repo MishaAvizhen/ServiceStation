@@ -1,6 +1,5 @@
 package dto;
 
-import entity.User;
 import lombok.*;
 
 @Getter

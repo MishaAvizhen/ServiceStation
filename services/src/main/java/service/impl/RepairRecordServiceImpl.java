@@ -74,7 +74,7 @@ public class RepairRecordServiceImpl implements RepairRecordService {
         RepairRecord repairRecord = repairRecordConverter.convertToEntity(repairRecordRegistrationDto);
         RepairRequestStatus repairRequestStatus = repairRecord.getRepairRequest().getRepairRequestStatus();
         if (repairRequestStatus.equals(RepairRequestStatus.PROCESSED)) {
-            log.info(String.format("  repair record with info: {%s} was created ", repairRecordRegistrationDto.toString()));
+            log.info(String.format("  repair record with info: {%s} was not created ", repairRecordRegistrationDto.toString()));
             throw new IllegalArgumentException("Error!!! Status is incorrect");
         }
 

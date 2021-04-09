@@ -103,7 +103,6 @@ public class RepairRequestRegistrationDto {
                 ", carRemark='" + carRemark + '\'' +
                 ", repairRequestDescription='" + repairRequestDescription + '\'' +
                 ", username='" + username + '\'' +
-                ", appointmentSlot='" + appointmentSlotDto.getMaster() + '\'' +
                 '}';
     }
 }

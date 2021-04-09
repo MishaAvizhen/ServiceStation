@@ -16,14 +16,19 @@ import org.springframework.web.bind.annotation.*;
 import service.AppointmentSlotService;
 import service.RepairRequestService;
 import service.UserService;
+import service.VacationService;
+import service.common.LocalDateTimeOperations;
 import service.dto.AppointmentSlotDto;
 import service.dto.RepairRequestRegistrationDto;
+import service.dto.VacationRegistrationDto;
 
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static service.common.LocalDateTimeOperations.convertLocalDateTimeToDate;
 
 @RestController
 @RequestMapping(value = "/api/requests")
@@ -34,19 +39,21 @@ public class RepairRequestRestController {
     private AppointmentSlotService appointmentSlotService;
     private AppointmentSlotDtoToAppointmentSlotWebDtoConverter appointmentSlotDtoToAppointmentSlotWebDtoConverter;
     private RepairRequestFromWebDtoToRegistrationDtoConverter repairRequestFromWebDtoToRegistrationDtoConverter;
+    private VacationService vacationService;
 
     @Autowired
     public RepairRequestRestController(RepairRequestService repairRequestService,
                                        UserService userService, RepairRequestFromRegistrationWebDtoToRegistrationDtoConverter repairRequestFromRegistrationWebDtoToRegistrationDtoConverter,
                                        AppointmentSlotService appointmentSlotService,
                                        AppointmentSlotDtoToAppointmentSlotWebDtoConverter appointmentSlotDtoToAppointmentSlotWebDtoConverter,
-                                       RepairRequestFromWebDtoToRegistrationDtoConverter repairRequestFromWebDtoToRegistrationDtoConverter) {
+                                       RepairRequestFromWebDtoToRegistrationDtoConverter repairRequestFromWebDtoToRegistrationDtoConverter, VacationService vacationService) {
         this.repairRequestService = repairRequestService;
         this.userService = userService;
         this.repairRequestFromRegistrationWebDtoToRegistrationDtoConverter = repairRequestFromRegistrationWebDtoToRegistrationDtoConverter;
         this.appointmentSlotService = appointmentSlotService;
         this.appointmentSlotDtoToAppointmentSlotWebDtoConverter = appointmentSlotDtoToAppointmentSlotWebDtoConverter;
         this.repairRequestFromWebDtoToRegistrationDtoConverter = repairRequestFromWebDtoToRegistrationDtoConverter;
+        this.vacationService = vacationService;
     }
 
     @GetMapping
@@ -111,7 +118,20 @@ public class RepairRequestRestController {
         return repairRequestService.registerRepairRequest(repairRequestRegistrationDto);
     }
 
-    @GetMapping("/appointments")
+    @PostMapping("/vacation")
+    public RepairRequest getCreatedRepairRequestForVacation(@RequestBody VacationRegistrationDto vacationRegistrationDto) {
+        String masterName = vacationRegistrationDto.getMasterName();
+        Date startDate = vacationRegistrationDto.getStartDate();
+        Date endDate = vacationRegistrationDto.getEndDate();
+        User master = userService.findUserByUsername(masterName);
+        if (master == null) {
+            throw new ResourceNotFoundException("Master with username " + masterName + " not found");
+        }
+
+        return vacationService.registerVacationRequest(masterName, startDate, endDate);
+    }
+
+    @GetMapping("/availableSlots")
     public List<AppointmentSlotWebDto> getAppointmentSlotWebDtos(@RequestParam(value = "targetDate")
                                                                  @DateTimeFormat(pattern = "yyyy-MM-dd")
                                                                          Date targetDate) {

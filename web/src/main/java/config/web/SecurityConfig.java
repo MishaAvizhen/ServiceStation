@@ -42,10 +42,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET, "/api/users/username").permitAll()
                 .antMatchers("/api/users/{\\\\d+}/price").hasAnyAuthority((Role.ADMIN.name()), (Role.MASTER.name()))
 
+                .antMatchers(HttpMethod.POST, "/api/requests/vacation").hasAnyAuthority((Role.ADMIN.name()), (Role.MASTER.name()))
+                .antMatchers(HttpMethod.GET, "/api/requests").hasAnyAuthority((Role.ADMIN.name()), (Role.MASTER.name()))
                 .antMatchers(HttpMethod.PUT, "/api/requests/**").permitAll()
                 .antMatchers(HttpMethod.POST, "/api/requests/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/api/requests/username").permitAll()
-                .antMatchers(HttpMethod.GET, "/api/requests").hasAnyAuthority((Role.ADMIN.name()), (Role.MASTER.name()))
 
                 .antMatchers(HttpMethod.GET, "/api/records/username").permitAll()
                 .antMatchers(HttpMethod.GET, "/api/records").hasAnyAuthority((Role.ADMIN.name()), (Role.MASTER.name()))

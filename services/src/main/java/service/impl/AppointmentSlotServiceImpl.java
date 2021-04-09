@@ -39,6 +39,16 @@ public class AppointmentSlotServiceImpl implements AppointmentSlotService {
             throw new IllegalArgumentException("Error!!! Date in the past");
         }
 
+        List<AppointmentSlotDto> appointmentSlotDtos = getAllAppointmentSlotsByDate(date);
+        List<Appointment> allAppointments = appointmentRepository.findAll();
+        return appointmentSlotDtos.stream()
+                .filter(appointmentSlotDto ->
+                        allAppointments.stream()
+                                .noneMatch(appointment -> isAppointmentSlotEqualsToAppointment(appointmentSlotDto, appointment)))
+                .collect(Collectors.toList());
+    }
+
+    private List<AppointmentSlotDto> getAllAppointmentSlotsByDate(Date date) {
         Date dateWOHours = trancateDateToDays(date);
         WorkingHoursDto workHoursByDate = getWorkHoursByDate(dateWOHours);
         Date startWorkDate = DateUtils.addHours(dateWOHours, workHoursByDate.getStartWorkHour());
@@ -53,12 +63,7 @@ public class AppointmentSlotServiceImpl implements AppointmentSlotService {
                 appointmentSlotDtos.add(new AppointmentSlotDto(master, intervalsByHour.getKey(), intervalsByHour.getValue()));
             }
         }
-        List<Appointment> allAppointments = appointmentRepository.findAll();
-        return appointmentSlotDtos.stream()
-                .filter(appointmentSlotDto ->
-                        allAppointments.stream()
-                                .noneMatch(appointment -> isAppointmentSlotEqualsToAppointment(appointmentSlotDto, appointment)))
-                .collect(Collectors.toList());
+        return appointmentSlotDtos;
     }
 
     private boolean isAppointmentSlotEqualsToAppointment(AppointmentSlotDto appointmentSlotDto, Appointment appointment) {
@@ -80,11 +85,12 @@ public class AppointmentSlotServiceImpl implements AppointmentSlotService {
 
 
     @Override
-    public List<AppointmentSlotDto> getAvailableAppointmentSlotsByDates(Date start, Date end) {
+    public List<AppointmentSlotDto> getAllAppointmentSlotsByDates(Date start, Date end) {
+        log.info(String.format("get available appointment slot to dates: {%s} - {%s}", start, end));
         Date currentDate = start;
         List<AppointmentSlotDto> result = new ArrayList<>();
         while (currentDate.before(end)) {
-            result.addAll(getAvailableAppointmentSlotsByDate(currentDate));
+            result.addAll(getAllAppointmentSlotsByDate(currentDate));
             currentDate = DateUtils.addDays(currentDate, 1);
         }
         return result;

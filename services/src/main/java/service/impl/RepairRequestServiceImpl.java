@@ -15,10 +15,7 @@ import service.converters.impl.RepairRequestConverter;
 import service.dto.AppointmentSlotDto;
 import service.dto.RepairRequestRegistrationDto;
 
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
@@ -101,43 +98,66 @@ public class RepairRequestServiceImpl implements RepairRequestService {
     }
 
     @Override
-    public RepairRequest registerRepairRequest(RepairRequestRegistrationDto repairRequestRegistrationDto) {
+    public RepairRequest registerRepairRequest(RepairRequestRegistrationDto repairRequestRegistrationDtoWOSlots,
+                                               List<AppointmentSlotDto> appointmentSlotDtos) {
+        if (appointmentSlotDtos.isEmpty()) {
+            throw new IllegalArgumentException("Slots is empty!!! ");
+        }
+        validateAppointmentSlotDateNotInPast(appointmentSlotDtos);
+        validateIsAvailableAppointmentSlot(appointmentSlotDtos);
 
-        validateDateNotInPast(repairRequestRegistrationDto);
-        validateIsAvailableAppointmentSlot(repairRequestRegistrationDto.getAppointmentSlotDto());
-        RepairRequest repairRequest = repairRequestConverter.convertToEntity(repairRequestRegistrationDto);
+        RepairRequest repairRequest = repairRequestConverter.convertToEntity(repairRequestRegistrationDtoWOSlots);
         RepairRequest createdRequest = repairRequestRepository.save(repairRequest);
-        Appointment createdAppointment = appointmentService.createAppointment(repairRequestRegistrationDto.getAppointmentSlotDto(),
-                repairRequest.getUser().getId(), createdRequest.getId());
-
-        createdRequest.setAppointments(Collections.singletonList(createdAppointment));
-        log.info(String.format("repair request with info : {%s} was created ", repairRequestRegistrationDto.getUsername()));
+        List<Appointment> createdAppointments = new ArrayList<>();
+        for (AppointmentSlotDto appointmentSlotDto : appointmentSlotDtos) {
+            Appointment createdAppointment = appointmentService.createAppointment(appointmentSlotDto,
+                    repairRequest.getUser().getId(), createdRequest.getId());
+            createdAppointments.add(createdAppointment);
+        }
+        createdRequest.setAppointments(createdAppointments);
+        log.info(String.format("repair request with info : {%s} was created ", repairRequestRegistrationDtoWOSlots.getUsername()));
 
         return createdRequest;
 
     }
 
     @Override
+    public RepairRequest registerRepairRequest(RepairRequestRegistrationDto repairRequestRegistrationDto) {
+
+        return registerRepairRequest(repairRequestRegistrationDto, Collections.singletonList(repairRequestRegistrationDto.getAppointmentSlotDto()));
+    }
+
+    @Override
     public RepairRequest updateRepairRequest(RepairRequestRegistrationDto repairRequestRegistrationDto, RepairRequest repairRequestToUpdate) {
         RepairRequest repairRequest = repairRequestConverter.convertToExistingEntity(repairRequestRegistrationDto, repairRequestToUpdate);
-        validateDateNotInPast(repairRequestRegistrationDto);
+        validateAppointmentSlotDateNotInPast(repairRequestRegistrationDto.getAppointmentSlotDto());
         log.info(String.format("repair request for {%s} with info : {%s} was updated ", repairRequestRegistrationDto.getUsername(), repairRequestRegistrationDto.getCarRemark()));
         return repairRequestRepository.save(repairRequest);
     }
 
-    private void validateDateNotInPast(RepairRequestRegistrationDto repairRequestRegistrationDto) {
-        Date startDate = LocalDateTimeOperations.convertLocalDateTimeToDate(repairRequestRegistrationDto.getAppointmentSlotDto().getStartDate());
-        Date endDate = LocalDateTimeOperations.convertLocalDateTimeToDate(repairRequestRegistrationDto.getAppointmentSlotDto().getStartDate());
+    private void validateAppointmentSlotDateNotInPast(AppointmentSlotDto appointmentSlotDto) {
+        Date startDate = LocalDateTimeOperations.convertLocalDateTimeToDate(appointmentSlotDto.getStartDate());
+        Date endDate = LocalDateTimeOperations.convertLocalDateTimeToDate(appointmentSlotDto.getEndDate());
         if (startDate.before(new Date()) || endDate.before(new Date())) {
-            log.info(String.format("repair request with info : {%s} was not created, Date incorrect! Date in the  past ",
-                    repairRequestRegistrationDto.getUsername()));
             throw new IllegalArgumentException("Date incorrect! Date in the past");
+        }
+    }
+
+    private void validateAppointmentSlotDateNotInPast(Collection<AppointmentSlotDto> appointmentSlotDtos) {
+        for (AppointmentSlotDto appointmentSlotDto : appointmentSlotDtos) {
+            validateAppointmentSlotDateNotInPast(appointmentSlotDto);
         }
     }
 
     private void validateIsAvailableAppointmentSlot(AppointmentSlotDto appointmentSlotDto) {
         if (!appointmentSlotService.isAppointmentSlotAvailable(appointmentSlotDto)) {
             throw new IllegalArgumentException("Slot is not available");
+        }
+    }
+
+    private void validateIsAvailableAppointmentSlot(Collection<AppointmentSlotDto> appointmentSlotDtos) {
+        for (AppointmentSlotDto appointmentSlotDto : appointmentSlotDtos) {
+            validateIsAvailableAppointmentSlot(appointmentSlotDto);
         }
     }
 

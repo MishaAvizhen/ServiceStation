@@ -1,7 +1,6 @@
 package service.impl;
 
 import entity.Appointment;
-import entity.consts.SlotStatus;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -51,7 +50,7 @@ public class AppointmentServiceImpl implements AppointmentService {
             appointment.setMaster(appointmentSlotDto.getMaster());
             appointment.setStartDate(startDate);
             appointment.setEndDate(endDate);
-            appointment.setSlotStatus(SlotStatus.BUSY);
+            appointment.setSlotStatus(appointmentSlotDto.getSlotStatus());
             appointment.setClient(userRepository.getOne(userId));
             appointment.setNotes(" notes...");
             appointment.setRepairRequest(repairRequestRepository.getOne(repairRequestId));

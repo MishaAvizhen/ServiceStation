@@ -2,6 +2,8 @@ package service.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import entity.User;
+import entity.consts.SlotStatus;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -14,13 +16,15 @@ public class AppointmentSlotDto {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
     private LocalDateTime endDate;
 
+    private SlotStatus slotStatus = SlotStatus.BUSY;
+
+    public AppointmentSlotDto() {
+    }
+
     public AppointmentSlotDto(User master, LocalDateTime startDate, LocalDateTime endDate) {
         this.master = master;
         this.startDate = startDate;
         this.endDate = endDate;
-    }
-
-    public AppointmentSlotDto() {
     }
 
     public User getMaster() {
@@ -47,12 +51,21 @@ public class AppointmentSlotDto {
         this.endDate = endDate;
     }
 
+    public SlotStatus getSlotStatus() {
+        return slotStatus;
+    }
+
+    public void setSlotStatus(SlotStatus slotStatus) {
+        this.slotStatus = slotStatus;
+    }
+
     @Override
     public String toString() {
         return "AppointmentSlotDto{" +
                 "master=" + master +
                 ", startDate=" + startDate +
                 ", endDate=" + endDate +
+                ", slotStatus=" + slotStatus +
                 '}';
     }
 

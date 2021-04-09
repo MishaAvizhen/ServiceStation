@@ -1,6 +1,7 @@
 package service;
 
 import entity.RepairRequest;
+import service.dto.AppointmentSlotDto;
 import service.dto.RepairRequestRegistrationDto;
 
 import java.util.List;
@@ -20,6 +21,9 @@ public interface RepairRequestService {
     void deleteRepairRequestByUsernameAndRepairRequestDescription(String username, String repairRequestDescription);
 
     RepairRequest registerRepairRequest(RepairRequestRegistrationDto repairRequestRegistrationDto);
+
+    RepairRequest registerRepairRequest(RepairRequestRegistrationDto repairRequestRegistrationDtoWOSlots,
+                                        List<AppointmentSlotDto> appointmentSlotDtos);
 
     RepairRequest updateRepairRequest(RepairRequestRegistrationDto repairRequestRegistrationDto, RepairRequest repairRequestToUpdate);
 
