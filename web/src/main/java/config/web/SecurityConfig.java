@@ -48,10 +48,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, "/api/requests/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/api/requests/username").permitAll()
 
-                .antMatchers(HttpMethod.GET, "/api/records/username").permitAll()
                 .antMatchers(HttpMethod.GET, "/api/records").hasAnyAuthority((Role.ADMIN.name()), (Role.MASTER.name()))
                 .antMatchers(HttpMethod.PUT, "/api/records/**").hasAnyAuthority((Role.ADMIN.name()), (Role.MASTER.name()))
                 .antMatchers(HttpMethod.POST, "/api/records/**").hasAnyAuthority((Role.ADMIN.name()), (Role.MASTER.name()))
+                .antMatchers(HttpMethod.GET, "/api/records/username").permitAll()
 
                 .antMatchers(HttpMethod.DELETE).hasAuthority((Role.ADMIN.name()))
 

@@ -101,7 +101,6 @@ public class RepairRequestRestController {
         } else {
             RepairRequestRegistrationDto repairRequestRegistrationDto =
                     repairRequestFromWebDtoToRegistrationDtoConverter.convertFromSourceDtoToTargetDto(repairRequestWebDto);
-
             return repairRequestService.updateRepairRequest(repairRequestRegistrationDto, repairRequestToUpdate);
         }
     }
@@ -131,14 +130,14 @@ public class RepairRequestRestController {
         return vacationService.registerVacationRequest(masterName, startDate, endDate);
     }
 
-    @GetMapping("/availableSlots")
-    public List<AppointmentSlotWebDto> getAppointmentSlotWebDtos(@RequestParam(value = "targetDate")
-                                                                 @DateTimeFormat(pattern = "yyyy-MM-dd")
-                                                                         Date targetDate) {
+    @GetMapping("/slots")
+    public List<AppointmentSlotWebDto> getAvailableSlotsOnTargetDate(@RequestParam(value = "targetDate")
+                                                                 @DateTimeFormat(pattern = "yyyy-MM-dd") Date targetDate) {
         List<AppointmentSlotWebDto> slotWebDtos = new ArrayList<>();
         List<AppointmentSlotDto> availableAppointmentSlotsByDate = appointmentSlotService.getAvailableAppointmentSlotsByDate(targetDate);
         for (AppointmentSlotDto appointmentSlotDto : availableAppointmentSlotsByDate) {
-            AppointmentSlotWebDto appointmentSlotWebDto = appointmentSlotDtoToAppointmentSlotWebDtoConverter.convertFromSourceDtoToTargetDto(appointmentSlotDto);
+            AppointmentSlotWebDto appointmentSlotWebDto =
+                    appointmentSlotDtoToAppointmentSlotWebDtoConverter.convertFromSourceDtoToTargetDto(appointmentSlotDto);
             slotWebDtos.add(appointmentSlotWebDto);
         }
         return slotWebDtos;

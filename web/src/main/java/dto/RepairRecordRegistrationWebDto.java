@@ -5,7 +5,6 @@ import lombok.*;
 
 @Getter
 @Setter
-@ToString(callSuper = true)
 @NoArgsConstructor
 @AllArgsConstructor
 public class RepairRecordRegistrationWebDto {

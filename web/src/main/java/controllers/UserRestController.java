@@ -33,8 +33,6 @@ public class UserRestController {
         return userService.findAllUsers();
     }
 
-
-
     @GetMapping("/username")
     public User getUserByUsername(Principal principal) {
         String username = principal.getName();
@@ -62,9 +60,7 @@ public class UserRestController {
         if (userToUpdate == null) {
             throw new ResourceNotFoundException("User with id " + userWebDto.getUserId() + " not found");
         } else {
-
             UserRegistrationDto userRegistrationDto = registrationDto.convertFromSourceDtoToTargetDto(userWebDto);
-
             return userService.updateUser(userRegistrationDto, userToUpdate);
         }
     }
@@ -82,6 +78,7 @@ public class UserRestController {
         }
         return userService.getSumWorkPriceAndDetailPrice(userId);
     }
+
     @GetMapping("/price")
     public Long getMySumWorkAndDetailPrice(Principal principal) {
         String username = principal.getName();
