@@ -2,9 +2,11 @@ package service.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import entity.consts.RepairRequestStatus;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiModel;
 
 import java.util.Date;
-
+@ApiModel(description = "Repair request entity ")
 public class RepairRequestRegistrationDto {
     private Date dateOfRequest;
     private RepairRequestStatus repairRequestStatus;

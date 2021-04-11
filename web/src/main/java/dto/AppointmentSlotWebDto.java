@@ -2,6 +2,8 @@ package dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import entity.User;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiModel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,6 +15,7 @@ import java.util.Date;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@ApiModel(description = "Appointment slot entity for web ")
 public class AppointmentSlotWebDto {
     private User master;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'",

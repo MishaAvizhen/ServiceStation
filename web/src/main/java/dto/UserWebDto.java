@@ -1,12 +1,15 @@
 package dto;
 
 import entity.consts.Role;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiModel;
 import lombok.*;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@ApiModel(description = "User entity")
 
 public class UserWebDto {
     private Long userId;

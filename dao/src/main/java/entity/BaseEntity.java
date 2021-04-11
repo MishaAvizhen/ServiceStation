@@ -1,5 +1,6 @@
 package entity;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 
 import javax.persistence.GeneratedValue;
@@ -20,6 +21,7 @@ public class BaseEntity implements Serializable {
     private static final long serialVersionUID = -2883330545357288318L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @ApiModelProperty(notes = "The database generated  ID")
     private Long id;
 
 }

@@ -1,5 +1,9 @@
 package service.dto;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiModel;
+
+@ApiModel(description = "Repair record entity ")
 public class RepairRecordRegistrationDto {
 
     private String repairRecordDescription;

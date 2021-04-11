@@ -2,7 +2,10 @@ package service.dto;
 
 
 import entity.consts.Role;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiModel;
 
+@ApiModel(description = "User entity")
 public class UserRegistrationDto {
     private String username;
     private String password;

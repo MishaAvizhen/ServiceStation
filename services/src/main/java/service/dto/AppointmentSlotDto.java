@@ -3,11 +3,13 @@ package service.dto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import entity.User;
 import entity.consts.SlotStatus;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiModel;
 import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
-
+@ApiModel(description = "Appointment slot entity ")
 public class AppointmentSlotDto {
     private User master;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")

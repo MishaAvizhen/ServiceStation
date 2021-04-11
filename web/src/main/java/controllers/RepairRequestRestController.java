@@ -10,6 +10,10 @@ import entity.RepairRequest;
 import entity.User;
 import exceptions.NotContentException;
 import exceptions.ResourceNotFoundException;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
@@ -28,10 +32,18 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static service.common.LocalDateTimeOperations.convertLocalDateTimeToDate;
 
 @RestController
 @RequestMapping(value = "/api/requests")
+@ApiResponses(value = {
+        @ApiResponse(code = 200, message = "Successfully retrieved list"),
+        @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
+        @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
+        @ApiResponse(code = 404, message = "The resource you were trying to reach is not found"),
+        @ApiResponse(code = 409, message = "The request could not be completed due to a conflict with the current state of the target resource."),
+        @ApiResponse(code = 500, message = "Server ERROR. Something go wrong")
+})
+@Api(value = "Service station", description = "Repair request controller")
 public class RepairRequestRestController {
     private RepairRequestService repairRequestService;
     private UserService userService;
@@ -57,6 +69,7 @@ public class RepairRequestRestController {
     }
 
     @GetMapping
+    @ApiOperation(value = "Get all repair requests. Filter by username, carRemark, status")
     public List<RepairRequest> getAllRepairRequests(@RequestParam(value = "username", required = false) String username,
                                                     @RequestParam(value = "carRemark", required = false) String carRemark,
                                                     @RequestParam(value = "requestId", required = false) String requestId,
@@ -71,6 +84,7 @@ public class RepairRequestRestController {
     }
 
     @GetMapping("/username")
+    @ApiOperation(value = "Get all repair requests of current user")
     public List<RepairRequest> getAllRepairRequestsOfUser(Principal principal) {
         String username = principal.getName();
         List<RepairRequest> allRepairRequestsOfUser = repairRequestService.findAllRepairRequestsOfUser(username);
@@ -81,6 +95,7 @@ public class RepairRequestRestController {
     }
 
     @DeleteMapping("/{requestId}")
+    @ApiOperation(value = "Delete repair request")
     public void deleteRepairRequestById(@PathVariable Long requestId) {
         RepairRequest requestToDelete = repairRequestService.findRepairRequestById(requestId);
         if (requestToDelete == null) {
@@ -92,6 +107,7 @@ public class RepairRequestRestController {
     }
 
     @PutMapping("/{requestId}")
+    @ApiOperation(value = "Update repair request")
     public RepairRequest getUpdatedRepairRequest(@PathVariable Long requestId,
                                                  @RequestBody RepairRequestWebDto repairRequestWebDto) {
         RepairRequest repairRequestToUpdate = repairRequestService.findRepairRequestById(requestId);
@@ -106,6 +122,7 @@ public class RepairRequestRestController {
     }
 
     @PostMapping("/create")
+    @ApiOperation(value = "Create repair request")
     public RepairRequest getCreatedRepairRequest(@RequestBody RepairRequestRegistrationWebDto repairRequestRegistrationWebDto) {
         String clientUsername = repairRequestRegistrationWebDto.getClientUsername();
         User client = userService.findUserByUsername(clientUsername);
@@ -118,6 +135,7 @@ public class RepairRequestRestController {
     }
 
     @PostMapping("/vacation")
+    @ApiOperation(value = "Create repair request for vacation for master")
     public RepairRequest getCreatedRepairRequestForVacation(@RequestBody VacationRegistrationDto vacationRegistrationDto) {
         String masterName = vacationRegistrationDto.getMasterName();
         Date startDate = vacationRegistrationDto.getStartDate();
@@ -131,6 +149,7 @@ public class RepairRequestRestController {
     }
 
     @GetMapping("/slots")
+    @ApiOperation(value = "Get available slots for repair request of some date")
     public List<AppointmentSlotWebDto> getAvailableSlotsOnTargetDate(@RequestParam(value = "targetDate")
                                                                  @DateTimeFormat(pattern = "yyyy-MM-dd") Date targetDate) {
         List<AppointmentSlotWebDto> slotWebDtos = new ArrayList<>();

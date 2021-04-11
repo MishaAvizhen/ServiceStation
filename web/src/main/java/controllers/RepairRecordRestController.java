@@ -7,6 +7,10 @@ import dto.RepairRecordRegistrationWebDto;
 import entity.RepairRecord;
 import exceptions.NotContentException;
 import exceptions.ResourceNotFoundException;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.springframework.web.bind.annotation.*;
 import service.RepairRecordService;
 import service.dto.RepairRecordRegistrationDto;
@@ -17,6 +21,15 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(value = "/api/records")
+@ApiResponses(value = {
+        @ApiResponse(code = 200, message = "Successfully retrieved list"),
+        @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
+        @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
+        @ApiResponse(code = 404, message = "The resource you were trying to reach is not found"),
+        @ApiResponse(code = 409, message = "The request could not be completed due to a conflict with the current state of the target resource."),
+        @ApiResponse(code = 500, message = "Server ERROR. Something go wrong")
+})
+@Api(value = "Service station", description = "Repair record controller")
 public class RepairRecordRestController {
     private RepairRecordService repairRecordService;
     private RepairRecordFromRegistrationWebDtoToRegistrationDtoConverter repairRecordFromRegistrationWebDtoToRegistrationDtoConverter;
@@ -29,6 +42,7 @@ public class RepairRecordRestController {
     }
 
     @GetMapping
+    @ApiOperation(value = "Get all repair records. Filter by username, carRemark")
     public List<RepairRecord> getAllRepairRecords(@RequestParam(value = "username", required = false) String username,
                                                   @RequestParam(value = "carRemark", required = false) String carRemark,
                                                   @RequestParam(value = "recordId", required = false) String repairRecordId) {
@@ -42,6 +56,7 @@ public class RepairRecordRestController {
     }
 
     @GetMapping("/username")
+    @ApiOperation(value = "Get all repair records of current user")
     public List<RepairRecord> repairRecordsOfUser(Principal principal) {
         String username = principal.getName();
         List<RepairRecord> repairRecordsOfUser = repairRecordService.findRepairRecordsByUsername(username);
@@ -52,6 +67,7 @@ public class RepairRecordRestController {
     }
 
     @DeleteMapping("/{recordId}")
+    @ApiOperation(value = "Delete repair record")
     public void deleteRepairRecordById(@PathVariable Long recordId) {
         RepairRecord recordToDelete = repairRecordService.findRepairRecordById(recordId);
         if (recordToDelete == null) {
@@ -62,6 +78,7 @@ public class RepairRecordRestController {
     }
 
     @PutMapping("/{recordId}")
+    @ApiOperation(value = "Update repair record")
     public RepairRecord getUpdatedRepairRecord(@RequestBody RepairRecordDtoToUpdate repairRecordDtoToUpdate,
                                                @PathVariable Long recordId) {
         RepairRecord repairRecordToUpdate = repairRecordService.findRepairRecordById(recordId);
@@ -75,6 +92,7 @@ public class RepairRecordRestController {
     }
 
     @PostMapping("/create")
+    @ApiOperation(value = "Create repair record")
     public RepairRecord getCreatedRepairRecord(@RequestBody RepairRecordRegistrationWebDto repairRecordRegistrationWebDto) {
         RepairRecordRegistrationDto repairRecordRegistrationDto =
                 repairRecordFromRegistrationWebDtoToRegistrationDtoConverter.convertFromSourceDtoToTargetDto(repairRecordRegistrationWebDto);
