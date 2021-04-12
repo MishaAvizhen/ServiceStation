@@ -9,7 +9,7 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@ApiModel(description = "User entity")
+@ApiModel(description = "User entity for web")
 
 public class UserWebDto {
     private Long userId;

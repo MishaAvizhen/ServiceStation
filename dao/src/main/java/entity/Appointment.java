@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import entity.consts.SlotStatus;
+import io.swagger.annotations.ApiModel;
 import lombok.*;
 
 import javax.persistence.*;
@@ -18,6 +19,7 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+@ApiModel(description = "Create appointment time slot ")
 public class Appointment extends BaseEntity {
     @JsonIgnore
     @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.MERGE})

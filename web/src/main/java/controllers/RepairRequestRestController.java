@@ -21,7 +21,6 @@ import service.AppointmentSlotService;
 import service.RepairRequestService;
 import service.UserService;
 import service.VacationService;
-import service.common.LocalDateTimeOperations;
 import service.dto.AppointmentSlotDto;
 import service.dto.RepairRequestRegistrationDto;
 import service.dto.VacationRegistrationDto;
@@ -43,7 +42,7 @@ import java.util.stream.Collectors;
         @ApiResponse(code = 409, message = "The request could not be completed due to a conflict with the current state of the target resource."),
         @ApiResponse(code = 500, message = "Server ERROR. Something go wrong")
 })
-@Api(value = "Service station", description = "Repair request controller")
+@Api(tags = " Repair request controller", description = " Operations with repair request ")
 public class RepairRequestRestController {
     private RepairRequestService repairRequestService;
     private UserService userService;
@@ -151,7 +150,7 @@ public class RepairRequestRestController {
     @GetMapping("/slots")
     @ApiOperation(value = "Get available slots for repair request of some date")
     public List<AppointmentSlotWebDto> getAvailableSlotsOnTargetDate(@RequestParam(value = "targetDate")
-                                                                 @DateTimeFormat(pattern = "yyyy-MM-dd") Date targetDate) {
+                                                                     @DateTimeFormat(pattern = "yyyy-MM-dd") Date targetDate) {
         List<AppointmentSlotWebDto> slotWebDtos = new ArrayList<>();
         List<AppointmentSlotDto> availableAppointmentSlotsByDate = appointmentSlotService.getAvailableAppointmentSlotsByDate(targetDate);
         for (AppointmentSlotDto appointmentSlotDto : availableAppointmentSlotsByDate) {

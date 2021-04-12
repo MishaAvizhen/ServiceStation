@@ -27,7 +27,7 @@ import java.util.List;
         @ApiResponse(code = 409, message = "The request could not be completed due to a conflict with the current state of the target resource."),
         @ApiResponse(code = 500, message = "Server ERROR. Something go wrong")
 })
-@Api( description = "User controller")
+@Api(tags=" User controller", description= " Operations with user ")
 public class UserRestController {
     private UserService userService;
     private UserWebDtoToUserRegistrationDtoConverter registrationDto;

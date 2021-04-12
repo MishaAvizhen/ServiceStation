@@ -29,7 +29,7 @@ import java.util.stream.Collectors;
         @ApiResponse(code = 409, message = "The request could not be completed due to a conflict with the current state of the target resource."),
         @ApiResponse(code = 500, message = "Server ERROR. Something go wrong")
 })
-@Api(value = "Service station", description = "Repair record controller")
+@Api(tags=" Repair record controller", description= " Operations with repair record ")
 public class RepairRecordRestController {
     private RepairRecordService repairRecordService;
     private RepairRecordFromRegistrationWebDtoToRegistrationDtoConverter repairRecordFromRegistrationWebDtoToRegistrationDtoConverter;

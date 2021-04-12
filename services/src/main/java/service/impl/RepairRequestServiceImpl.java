@@ -128,10 +128,14 @@ public class RepairRequestServiceImpl implements RepairRequestService {
     }
 
     @Override
-    public RepairRequest updateRepairRequest(RepairRequestRegistrationDto repairRequestRegistrationDto, RepairRequest repairRequestToUpdate) {
-        RepairRequest repairRequest = repairRequestConverter.convertToExistingEntity(repairRequestRegistrationDto, repairRequestToUpdate);
+    public RepairRequest updateRepairRequest(RepairRequestRegistrationDto repairRequestRegistrationDto,
+                                             RepairRequest repairRequestToUpdate) {
+
+        RepairRequest repairRequest = repairRequestConverter.convertToExistingEntity(repairRequestRegistrationDto,
+                repairRequestToUpdate);
         validateAppointmentSlotDateNotInPast(repairRequestRegistrationDto.getAppointmentSlotDto());
-        log.info(String.format("repair request for {%s} with info : {%s} was updated ", repairRequestRegistrationDto.getUsername(), repairRequestRegistrationDto.getCarRemark()));
+        log.info(String.format("repair request for {%s} with info : {%s} was updated ",
+                repairRequestRegistrationDto.getUsername(), repairRequestRegistrationDto.getCarRemark()));
         return repairRequestRepository.save(repairRequest);
     }
 
