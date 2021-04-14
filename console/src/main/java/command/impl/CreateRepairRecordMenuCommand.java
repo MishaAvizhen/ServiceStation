@@ -14,7 +14,7 @@ import java.util.Scanner;
 
 @Component
 public class CreateRepairRecordMenuCommand implements MenuCommand {
-    private static final Logger log = Logger.getLogger(CreateAppointmentMenuCommand.class);
+    private static final Logger log = Logger.getLogger(CreateRepairRecordMenuCommand.class);
     @Autowired
     private RepairRequestService repairRequestService;
     @Autowired

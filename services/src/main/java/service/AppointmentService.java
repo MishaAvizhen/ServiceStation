@@ -9,6 +9,7 @@ public interface AppointmentService {
 
     List<Appointment> findAllAppointment();
 
-    Appointment createAppointment(AppointmentSlotDto appointmentSlotDto, Long userId);
+    Appointment createAppointment(AppointmentSlotDto appointmentSlotDto, Long userId, Long repairRequestId);
 
+    Appointment findAppointmentByRepairRequestId(Long repairRequestId);
 }

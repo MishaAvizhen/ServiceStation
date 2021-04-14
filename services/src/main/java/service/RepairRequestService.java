@@ -17,7 +17,12 @@ public interface RepairRequestService {
 
     void deleteRepairRequestByUsernameAndRepairRequestDescription(String username, String repairRequestDescription);
 
-    void registerRepairRequest(RepairRequestRegistrationDto repairRequestRegistrationDto);
+    RepairRequest registerRepairRequest(RepairRequestRegistrationDto repairRequestRegistrationDto);
 
-    void updateRepairRequest(RepairRequestRegistrationDto repairRequestRegistrationDto, RepairRequest repairRequestToUpdate);
+    RepairRequest updateRepairRequest(RepairRequestRegistrationDto repairRequestRegistrationDto, RepairRequest repairRequestToUpdate);
+
+    void deleteRepairRequestById(Long repairRequestId);
+
+    RepairRequest findRepairRequestById(Long repairRequestId);
+
 }

@@ -69,25 +69,31 @@ public class UserServiceImpl implements UserService {
     @Override
     public Long getSumWorkPriceAndDetailPrice(Long userId) {
         User userDaoById = userRepository.findOne(userId);
-        String username = userDaoById.getUsername();
-        return repairRecordRepository.findAll().stream()
-                .filter(e -> e.getRepairRequest().getUser().getUsername().equals(username))
-                .map(record -> record.getDetailPrice() + record.getWorkPrice())
-                .reduce(0L, (sumPrice, repRecPrice) -> sumPrice + repRecPrice);
+        if (userDaoById == null) {
+            log.error(String.format("user with id :{%s} not found ", userId));
+            throw new RuntimeException("user not found");
+        } else {
+            String username = userDaoById.getUsername();
+            return repairRecordRepository.findAll().stream()
+                    .filter(e -> e.getRepairRequest().getUser().getUsername().equals(username))
+                    .map(record -> record.getDetailPrice() + record.getWorkPrice())
+                    .reduce(0L, (sumPrice, repRecPrice) -> sumPrice + repRecPrice);
+        }
+
     }
 
     @Override
-    public void registerUser(UserRegistrationDto userRegistrationDto) {
+    public User registerUser(UserRegistrationDto userRegistrationDto) {
         log.info(String.format("user with info:{%s} was created ", userRegistrationDto.toString()));
         log.debug(String.format("user with info:{%s} was created ", userRegistrationDto.toString()));
         UserConverter userConverter = new UserConverter();
         User user = userConverter.convertToEntity(userRegistrationDto);
-        userRepository.save(user);
+        return userRepository.save(user);
 
     }
 
     @Override
-    public void updateUser(UserRegistrationDto userRegistrationDto, User userToUpdate) {
+    public User updateUser(UserRegistrationDto userRegistrationDto, User userToUpdate) {
         User byUsername = userRepository.findByUsername(userToUpdate.getUsername());
         if (byUsername == null) {
             log.error(String.format("user with username:{%s} not found ", userToUpdate.getUsername()));
@@ -97,7 +103,7 @@ public class UserServiceImpl implements UserService {
         log.debug(String.format("user with info:{%s} was updated ", userRegistrationDto.toString()));
         UserConverter userConverter = new UserConverter();
         User updatedUser = userConverter.convertToExistingEntity(userRegistrationDto, userToUpdate);
-        userRepository.saveAndFlush(updatedUser);
+        return userRepository.saveAndFlush(updatedUser);
 
     }
 

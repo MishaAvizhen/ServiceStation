@@ -21,9 +21,9 @@ public interface UserService {
 
     Long getSumWorkPriceAndDetailPrice(Long userId);
 
-    void registerUser(UserRegistrationDto userRegistrationDto);
+    User registerUser(UserRegistrationDto userRegistrationDto);
 
-    void updateUser(UserRegistrationDto userRegistrationDto, User userToUpdate);
+    User updateUser(UserRegistrationDto userRegistrationDto, User userToUpdate);
 
 
 }

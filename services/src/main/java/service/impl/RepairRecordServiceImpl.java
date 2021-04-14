@@ -40,6 +40,13 @@ public class RepairRecordServiceImpl implements RepairRecordService {
         return repairRecordRepository.findAll();
     }
 
+    @Override
+    public RepairRecord findRepairRecordById(Long repairRecordId) {
+        log.info(String.format("Find repair record  with id= {%s}", repairRecordId));
+        log.debug(String.format("Find repair record  with id= {%s}", repairRecordId));
+        return repairRecordRepository.findOne(repairRecordId);
+    }
+
 
     @Override
     public void deleteRepairRecordByUsernameAndRepairRecordDescription(String username, String repairRecordDescription) {
@@ -56,21 +63,22 @@ public class RepairRecordServiceImpl implements RepairRecordService {
     }
 
     @Override
-    public void registerRepairRecord(RepairRecordRegistrationDto repairRecordRegistrationDto) {
+    public RepairRecord registerRepairRecord(RepairRecordRegistrationDto repairRecordRegistrationDto) {
         log.info(String.format("  repair record with info: {%s} was created ", repairRecordRegistrationDto.toString()));
         log.debug(String.format("  repair record with info: {%s} was created ", repairRecordRegistrationDto.toString()));
         RepairRecord repairRecord = repairRecordConverter.convertToEntity(repairRecordRegistrationDto);
-        repairRecordRepository.save(repairRecord);
+        RepairRecord record = repairRecordRepository.save(repairRecord);
         repairRecord.getRepairRequest().setRepairRequestStatus(RepairRequestStatus.PROCESSED);
         repairRequestRepository.save(repairRecord.getRepairRequest());
+        return record;
     }
 
     @Override
-    public void updateRepairRecord(RepairRecordRegistrationDto repairRecordRegistrationDto, RepairRecord repairRecordToUpdate) {
+    public RepairRecord updateRepairRecord(RepairRecordRegistrationDto repairRecordRegistrationDto, RepairRecord repairRecordToUpdate) {
         log.info(String.format("  repair record with info: {%s} was updated ", repairRecordRegistrationDto.toString()));
         log.debug(String.format("  repair record with info: {%s} was updated ", repairRecordRegistrationDto.toString()));
         RepairRecord repairRecord = repairRecordConverter.convertToExistingEntity(repairRecordRegistrationDto, repairRecordToUpdate);
-        repairRecordRepository.saveAndFlush(repairRecord);
+        return repairRecordRepository.saveAndFlush(repairRecord);
     }
 
     @Override
@@ -83,5 +91,12 @@ public class RepairRecordServiceImpl implements RepairRecordService {
                         && record.getRepairRecordDescription().equals(repairRecordDescription))
                 .findAny().orElse(null);
 
+    }
+
+    @Override
+    public void deleteRepairRecordById(Long repairRecordId) {
+        log.info(String.format("Delete repair record with id=  {%s}", repairRecordId));
+        log.debug(String.format("Delete repair record with id=  {%s}", repairRecordId));
+        repairRecordRepository.delete(repairRecordId);
     }
 }

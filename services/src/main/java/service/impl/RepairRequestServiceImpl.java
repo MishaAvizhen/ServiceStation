@@ -1,17 +1,18 @@
 package service.impl;
 
+import entity.Appointment;
 import entity.RepairRequest;
-import entity.User;
 import entity.consts.RepairRequestStatus;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import repository.RepairRequestRepository;
+import service.AppointmentService;
 import service.RepairRequestService;
-import service.UserService;
 import service.converters.impl.RepairRequestConverter;
 import service.dto.RepairRequestRegistrationDto;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,10 +26,13 @@ public class RepairRequestServiceImpl implements RepairRequestService {
 
     private RepairRequestConverter repairRequestConverter;
 
+    private AppointmentService appointmentService;
+
     @Autowired
-    public RepairRequestServiceImpl(RepairRequestRepository repairRequestRepository, RepairRequestConverter repairRequestConverter) {
+    public RepairRequestServiceImpl(RepairRequestRepository repairRequestRepository, RepairRequestConverter repairRequestConverter, AppointmentService appointmentService) {
         this.repairRequestRepository = repairRequestRepository;
         this.repairRequestConverter = repairRequestConverter;
+        this.appointmentService = appointmentService;
     }
 
     @Override
@@ -81,20 +85,39 @@ public class RepairRequestServiceImpl implements RepairRequestService {
     }
 
     @Override
-    public void registerRepairRequest(RepairRequestRegistrationDto repairRequestRegistrationDto) {
+    public RepairRequest registerRepairRequest(RepairRequestRegistrationDto repairRequestRegistrationDto) {
         log.info(String.format("repair request with info : {%s} was created ", repairRequestRegistrationDto.getUsername()));
         log.debug(String.format("repair request with info : {%s} was created ", repairRequestRegistrationDto.getUsername()));
         RepairRequest repairRequest = repairRequestConverter.convertToEntity(repairRequestRegistrationDto);
-        repairRequestRepository.save(repairRequest);
+        RepairRequest createdRequest = repairRequestRepository.save(repairRequest);
+        Appointment createdAppointment = appointmentService.createAppointment(repairRequestRegistrationDto.getAppointmentSlotDto(),
+                repairRequest.getUser().getId(), createdRequest.getId());
+        createdRequest.setAppointments(Collections.singletonList(createdAppointment));
+        return createdRequest;
 
     }
 
     @Override
-    public void updateRepairRequest(RepairRequestRegistrationDto repairRequestRegistrationDto, RepairRequest repairRequestToUpdate) {
+    public RepairRequest updateRepairRequest(RepairRequestRegistrationDto repairRequestRegistrationDto, RepairRequest repairRequestToUpdate) {
         log.info(String.format("repair request for {%s} with info : {%s} was updated ", repairRequestRegistrationDto.getUsername(), repairRequestRegistrationDto.getCarRemark()));
         log.debug(String.format("repair request for {%s} with info : {%s} was updated ", repairRequestRegistrationDto.getUsername(), repairRequestRegistrationDto.getCarRemark()));
         RepairRequest repairRequest = repairRequestConverter.convertToExistingEntity(repairRequestRegistrationDto, repairRequestToUpdate);
-        repairRequestRepository.save(repairRequest);
+        return repairRequestRepository.save(repairRequest);
+    }
+
+    @Override
+    public void deleteRepairRequestById(Long repairRequestId) {
+        log.info(String.format("Delete repair Request with id=  {%s}", repairRequestId));
+        log.debug(String.format("Delete repair Request with id=  {%s}", repairRequestId));
+        repairRequestRepository.delete(repairRequestId);
+
+    }
+
+    @Override
+    public RepairRequest findRepairRequestById(Long repairRequestId) {
+        log.info(String.format("Find repair request  with id= {%s}", repairRequestId));
+        log.debug(String.format("Find repair request  with id= {%s}", repairRequestId));
+        return repairRequestRepository.findOne(repairRequestId);
     }
 
 

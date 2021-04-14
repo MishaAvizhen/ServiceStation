@@ -26309,3 +26309,111 @@
 2021-03-20 13:50:46 DEBUG LogicalConnectionImpl:264 - Released JDBC connection
 2021-03-20 13:50:46 INFO  FindUserByUsernameMenuCommand:23 -  users:
 {[User(super=BaseEntity(id=1), username=admin, password=1, phoneNumber=+375291111111, email=admin@mail.ru, role=ADMIN), User(super=BaseEntity(id=2), username=master, password=1, phoneNumber=+375292222222, email=master@mail.ru, role=MASTER), User(super=BaseEntity(id=3), username=user, password=1, phoneNumber=+3752933333333, email=user@mail.ru, role=USER), User(super=BaseEntity(id=4), username=misha, password=1, phoneNumber=+375294444444, email=misha@mail.ru, role=USER), User(super=BaseEntity(id=5), username=sasha, password=1, phoneNumber=+375295555555, email=sasha@mail.ru, role=USER), User(super=BaseEntity(id=6), username=masterBob, password=1, phoneNumber=+375296666666, email=masterBob@mail.ru, role=MASTER)]}
+2021-03-26 18:08:02 INFO  AppointmentServiceImpl:29 - Find all appointments
+2021-03-26 18:08:02 INFO  RepairRecordServiceImpl:46 - delete  repair record of user: {user} with repair record description: {test repair record description}
+2021-03-26 18:08:02 DEBUG RepairRecordServiceImpl:47 - delete  repair record of user: {user} with repair record description: {test repair record description}
+2021-03-26 18:08:02 INFO  RepairRecordServiceImpl:60 -   repair record with info: {RepairRecordRegistrationDto{repairRecordDescription='test record description new', detailPrice=101, workPrice=323, otherNotes='test other notes', repairRequestId=1}} was created 
+2021-03-26 18:08:02 DEBUG RepairRecordServiceImpl:61 -   repair record with info: {RepairRecordRegistrationDto{repairRecordDescription='test record description new', detailPrice=101, workPrice=323, otherNotes='test other notes', repairRequestId=1}} was created 
+2021-03-26 18:08:02 INFO  RepairRecordServiceImpl:39 - Find all repair records
+2021-03-26 18:08:02 INFO  RepairRecordServiceImpl:78 -   repair record for user: {userToDelete} 
+ and description: {test repair record description} find 
+2021-03-26 18:08:02 DEBUG RepairRecordServiceImpl:79 -   repair record for user: {userToDelete} 
+ and description: {test repair record description} find 
+2021-03-26 18:08:02 INFO  RepairRequestServiceImpl:36 - Find active repair request of user: {userToUpdate}
+2021-03-26 18:08:02 DEBUG RepairRequestServiceImpl:37 - Find active repair request of user: {userToUpdate}
+2021-03-26 18:08:02 INFO  RepairRequestServiceImpl:94 - repair request for {userToUpdate} with info : {testCar update!} was updated 
+2021-03-26 18:08:02 DEBUG RepairRequestServiceImpl:95 - repair request for {userToUpdate} with info : {testCar update!} was updated 
+2021-03-26 18:08:02 INFO  UserServiceImpl:43 - Find user with name:  {userToUpdate}
+2021-03-26 18:08:02 DEBUG UserServiceImpl:44 - Find user with name: {userToUpdate}
+2021-03-26 18:08:02 INFO  RepairRequestServiceImpl:85 - repair request with info : {user} was created 
+2021-03-26 18:08:02 DEBUG RepairRequestServiceImpl:86 - repair request with info : {user} was created 
+2021-03-26 18:08:02 INFO  UserServiceImpl:43 - Find user with name:  {user}
+2021-03-26 18:08:02 DEBUG UserServiceImpl:44 - Find user with name: {user}
+2021-03-26 18:08:02 INFO  RepairRequestServiceImpl:56 - Find all repair request
+2021-03-26 18:08:02 INFO  RepairRequestServiceImpl:62 - Find  repair request of user: {userToDelete} with car: {testCar}
+2021-03-26 18:08:02 DEBUG RepairRequestServiceImpl:63 - Find  repair request of user: {userToDelete} with car: {testCar}
+2021-03-26 18:08:02 INFO  RepairRequestServiceImpl:72 - delete  repair request of user: {userToDelete} with repair request description: {repair request description}
+2021-03-26 18:08:02 DEBUG RepairRequestServiceImpl:73 - delete  repair request of user: {userToDelete} with repair request description: {repair request description}
+2021-03-26 18:08:02 INFO  RepairRequestServiceImpl:47 - Find list of active repair request
+2021-03-26 18:08:02 INFO  UserServiceImpl:81 - user with info:{UserRegistrationDto{username='registerUser', password='null', phoneNumber='null', email='null', role=null}} was created 
+2021-03-26 18:08:02 DEBUG UserServiceImpl:82 - user with info:{UserRegistrationDto{username='registerUser', password='null', phoneNumber='null', email='null', role=null}} was created 
+2021-03-26 18:08:03 INFO  UserServiceImpl:43 - Find user with name:  {user}
+2021-03-26 18:08:03 DEBUG UserServiceImpl:44 - Find user with name: {user}
+2021-03-26 18:08:03 INFO  UserServiceImpl:96 - user with info:{UserRegistrationDto{username='userToDelete', password='1', phoneNumber='37522222222', email='1userToDelete@mail.ru', role=USER}} was updated 
+2021-03-26 18:08:03 DEBUG UserServiceImpl:97 - user with info:{UserRegistrationDto{username='userToDelete', password='1', phoneNumber='37522222222', email='1userToDelete@mail.ru', role=USER}} was updated 
+2021-03-26 18:08:03 ERROR UserServiceImpl:93 - user with username:{notExistingUser} not found 
+2021-03-26 18:08:03 INFO  UserServiceImpl:63 - Delete user with id=  {3}
+2021-03-26 18:08:03 DEBUG UserServiceImpl:64 - Delete user with id=  {3}
+2021-03-26 18:08:03 INFO  UserServiceImpl:57 - Find all users
+2021-03-26 18:19:44 INFO  AppointmentServiceImpl:29 - Find all appointments
+2021-03-26 18:19:44 INFO  RepairRecordServiceImpl:46 - delete  repair record of user: {user} with repair record description: {test repair record description}
+2021-03-26 18:19:44 DEBUG RepairRecordServiceImpl:47 - delete  repair record of user: {user} with repair record description: {test repair record description}
+2021-03-26 18:19:44 INFO  RepairRecordServiceImpl:60 -   repair record with info: {RepairRecordRegistrationDto{repairRecordDescription='test record description new', detailPrice=101, workPrice=323, otherNotes='test other notes', repairRequestId=1}} was created 
+2021-03-26 18:19:44 DEBUG RepairRecordServiceImpl:61 -   repair record with info: {RepairRecordRegistrationDto{repairRecordDescription='test record description new', detailPrice=101, workPrice=323, otherNotes='test other notes', repairRequestId=1}} was created 
+2021-03-26 18:19:44 INFO  RepairRecordServiceImpl:39 - Find all repair records
+2021-03-26 18:19:44 INFO  RepairRecordServiceImpl:78 -   repair record for user: {userToDelete} 
+ and description: {test repair record description} find 
+2021-03-26 18:19:44 DEBUG RepairRecordServiceImpl:79 -   repair record for user: {userToDelete} 
+ and description: {test repair record description} find 
+2021-03-26 18:19:44 INFO  RepairRequestServiceImpl:36 - Find active repair request of user: {userToUpdate}
+2021-03-26 18:19:44 DEBUG RepairRequestServiceImpl:37 - Find active repair request of user: {userToUpdate}
+2021-03-26 18:19:44 INFO  RepairRequestServiceImpl:94 - repair request for {userToUpdate} with info : {testCar update!} was updated 
+2021-03-26 18:19:44 DEBUG RepairRequestServiceImpl:95 - repair request for {userToUpdate} with info : {testCar update!} was updated 
+2021-03-26 18:19:44 INFO  UserServiceImpl:43 - Find user with name:  {userToUpdate}
+2021-03-26 18:19:44 DEBUG UserServiceImpl:44 - Find user with name: {userToUpdate}
+2021-03-26 18:19:44 INFO  RepairRequestServiceImpl:85 - repair request with info : {user} was created 
+2021-03-26 18:19:44 DEBUG RepairRequestServiceImpl:86 - repair request with info : {user} was created 
+2021-03-26 18:19:44 INFO  UserServiceImpl:43 - Find user with name:  {user}
+2021-03-26 18:19:44 DEBUG UserServiceImpl:44 - Find user with name: {user}
+2021-03-26 18:19:44 INFO  RepairRequestServiceImpl:56 - Find all repair request
+2021-03-26 18:19:44 INFO  RepairRequestServiceImpl:62 - Find  repair request of user: {userToDelete} with car: {testCar}
+2021-03-26 18:19:44 DEBUG RepairRequestServiceImpl:63 - Find  repair request of user: {userToDelete} with car: {testCar}
+2021-03-26 18:19:44 INFO  RepairRequestServiceImpl:72 - delete  repair request of user: {userToDelete} with repair request description: {repair request description}
+2021-03-26 18:19:44 DEBUG RepairRequestServiceImpl:73 - delete  repair request of user: {userToDelete} with repair request description: {repair request description}
+2021-03-26 18:19:44 INFO  RepairRequestServiceImpl:47 - Find list of active repair request
+2021-03-26 18:19:44 INFO  UserServiceImpl:81 - user with info:{UserRegistrationDto{username='registerUser', password='null', phoneNumber='null', email='null', role=null}} was created 
+2021-03-26 18:19:44 DEBUG UserServiceImpl:82 - user with info:{UserRegistrationDto{username='registerUser', password='null', phoneNumber='null', email='null', role=null}} was created 
+2021-03-26 18:19:44 INFO  UserServiceImpl:43 - Find user with name:  {user}
+2021-03-26 18:19:44 DEBUG UserServiceImpl:44 - Find user with name: {user}
+2021-03-26 18:19:44 INFO  UserServiceImpl:96 - user with info:{UserRegistrationDto{username='userToDelete', password='1', phoneNumber='37522222222', email='1userToDelete@mail.ru', role=USER}} was updated 
+2021-03-26 18:19:44 DEBUG UserServiceImpl:97 - user with info:{UserRegistrationDto{username='userToDelete', password='1', phoneNumber='37522222222', email='1userToDelete@mail.ru', role=USER}} was updated 
+2021-03-26 18:19:44 ERROR UserServiceImpl:93 - user with username:{notExistingUser} not found 
+2021-03-26 18:19:44 INFO  UserServiceImpl:63 - Delete user with id=  {3}
+2021-03-26 18:19:44 DEBUG UserServiceImpl:64 - Delete user with id=  {3}
+2021-03-26 18:19:44 INFO  UserServiceImpl:57 - Find all users
+2021-03-27 20:04:59 INFO  AppointmentServiceImpl:29 - Find all appointments
+2021-03-27 20:04:59 INFO  RepairRecordServiceImpl:46 - delete  repair record of user: {user} with repair record description: {test repair record description}
+2021-03-27 20:04:59 DEBUG RepairRecordServiceImpl:47 - delete  repair record of user: {user} with repair record description: {test repair record description}
+2021-03-27 20:04:59 INFO  RepairRecordServiceImpl:60 -   repair record with info: {RepairRecordRegistrationDto{repairRecordDescription='test record description new', detailPrice=101, workPrice=323, otherNotes='test other notes', repairRequestId=1}} was created 
+2021-03-27 20:04:59 DEBUG RepairRecordServiceImpl:61 -   repair record with info: {RepairRecordRegistrationDto{repairRecordDescription='test record description new', detailPrice=101, workPrice=323, otherNotes='test other notes', repairRequestId=1}} was created 
+2021-03-27 20:04:59 INFO  RepairRecordServiceImpl:39 - Find all repair records
+2021-03-27 20:04:59 INFO  RepairRecordServiceImpl:78 -   repair record for user: {userToDelete} 
+ and description: {test repair record description} find 
+2021-03-27 20:04:59 DEBUG RepairRecordServiceImpl:79 -   repair record for user: {userToDelete} 
+ and description: {test repair record description} find 
+2021-03-27 20:04:59 INFO  RepairRequestServiceImpl:36 - Find active repair request of user: {userToUpdate}
+2021-03-27 20:04:59 DEBUG RepairRequestServiceImpl:37 - Find active repair request of user: {userToUpdate}
+2021-03-27 20:04:59 INFO  RepairRequestServiceImpl:94 - repair request for {userToUpdate} with info : {testCar update!} was updated 
+2021-03-27 20:04:59 DEBUG RepairRequestServiceImpl:95 - repair request for {userToUpdate} with info : {testCar update!} was updated 
+2021-03-27 20:04:59 INFO  UserServiceImpl:43 - Find user with name:  {userToUpdate}
+2021-03-27 20:04:59 DEBUG UserServiceImpl:44 - Find user with name: {userToUpdate}
+2021-03-27 20:04:59 INFO  RepairRequestServiceImpl:85 - repair request with info : {user} was created 
+2021-03-27 20:04:59 DEBUG RepairRequestServiceImpl:86 - repair request with info : {user} was created 
+2021-03-27 20:04:59 INFO  UserServiceImpl:43 - Find user with name:  {user}
+2021-03-27 20:04:59 DEBUG UserServiceImpl:44 - Find user with name: {user}
+2021-03-27 20:04:59 INFO  RepairRequestServiceImpl:56 - Find all repair request
+2021-03-27 20:04:59 INFO  RepairRequestServiceImpl:62 - Find  repair request of user: {userToDelete} with car: {testCar}
+2021-03-27 20:04:59 DEBUG RepairRequestServiceImpl:63 - Find  repair request of user: {userToDelete} with car: {testCar}
+2021-03-27 20:04:59 INFO  RepairRequestServiceImpl:72 - delete  repair request of user: {userToDelete} with repair request description: {repair request description}
+2021-03-27 20:04:59 DEBUG RepairRequestServiceImpl:73 - delete  repair request of user: {userToDelete} with repair request description: {repair request description}
+2021-03-27 20:04:59 INFO  RepairRequestServiceImpl:47 - Find list of active repair request
+2021-03-27 20:04:59 INFO  UserServiceImpl:81 - user with info:{UserRegistrationDto{username='registerUser', password='null', phoneNumber='null', email='null', role=null}} was created 
+2021-03-27 20:04:59 DEBUG UserServiceImpl:82 - user with info:{UserRegistrationDto{username='registerUser', password='null', phoneNumber='null', email='null', role=null}} was created 
+2021-03-27 20:04:59 INFO  UserServiceImpl:43 - Find user with name:  {user}
+2021-03-27 20:04:59 DEBUG UserServiceImpl:44 - Find user with name: {user}
+2021-03-27 20:04:59 INFO  UserServiceImpl:96 - user with info:{UserRegistrationDto{username='userToDelete', password='1', phoneNumber='37522222222', email='1userToDelete@mail.ru', role=USER}} was updated 
+2021-03-27 20:04:59 DEBUG UserServiceImpl:97 - user with info:{UserRegistrationDto{username='userToDelete', password='1', phoneNumber='37522222222', email='1userToDelete@mail.ru', role=USER}} was updated 
+2021-03-27 20:04:59 ERROR UserServiceImpl:93 - user with username:{notExistingUser} not found 
+2021-03-27 20:04:59 INFO  UserServiceImpl:63 - Delete user with id=  {3}
+2021-03-27 20:04:59 DEBUG UserServiceImpl:64 - Delete user with id=  {3}
+2021-03-27 20:04:59 INFO  UserServiceImpl:57 - Find all users

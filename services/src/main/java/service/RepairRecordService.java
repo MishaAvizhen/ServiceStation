@@ -10,11 +10,16 @@ public interface RepairRecordService {
 
     List<RepairRecord> findAllRepairRecords();
 
+    RepairRecord findRepairRecordById(Long repairRecordId);
+
     void deleteRepairRecordByUsernameAndRepairRecordDescription(String username, String repairRecordDescription);
 
-    void registerRepairRecord(RepairRecordRegistrationDto repairRecordRegistrationDto);
+    RepairRecord registerRepairRecord(RepairRecordRegistrationDto repairRecordRegistrationDto);
 
-    void updateRepairRecord(RepairRecordRegistrationDto repairRecordRegistrationDto, RepairRecord repairRecordToUpdate);
+    RepairRecord updateRepairRecord(RepairRecordRegistrationDto repairRecordRegistrationDto, RepairRecord repairRecordToUpdate);
 
     RepairRecord findRepairRecordByUsernameAndRepairRecordDescription(String username, String repairRecordDescription);
+
+    void deleteRepairRecordById(Long repairRecordId);
+
 }
