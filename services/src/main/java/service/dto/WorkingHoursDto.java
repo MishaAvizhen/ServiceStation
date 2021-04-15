@@ -10,6 +10,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 public class WorkingHoursDto {
+
     private int startWorkHour;
     private int endWorkHour;
 

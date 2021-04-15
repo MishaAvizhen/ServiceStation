@@ -49,7 +49,7 @@ public class AppointmentSlotServiceImpl implements AppointmentSlotService {
     }
 
     private List<AppointmentSlotDto> getAllAppointmentSlotsByDate(Date date) {
-        Date dateWOHours = trancateDateToDays(date);
+        Date dateWOHours = truncateDateToDays(date);
         WorkingHoursDto workHoursByDate = getWorkHoursByDate(dateWOHours);
         Date startWorkDate = DateUtils.addHours(dateWOHours, workHoursByDate.getStartWorkHour());
         Date endWorkDate = DateUtils.addHours(dateWOHours, workHoursByDate.getEndWorkHour());
@@ -67,20 +67,14 @@ public class AppointmentSlotServiceImpl implements AppointmentSlotService {
     }
 
     private boolean isAppointmentSlotEqualsToAppointment(AppointmentSlotDto appointmentSlotDto, Appointment appointment) {
-        if (appointmentSlotDto.getMaster().equals(appointment.getMaster()) &&
+        return appointmentSlotDto.getMaster().equals(appointment.getMaster()) &&
                 appointmentSlotDto.getStartDate().equals(convertDateToLocalDateTime(appointment.getStartDate())) &&
-                appointmentSlotDto.getEndDate().equals(convertDateToLocalDateTime(appointment.getEndDate()))) {
-            return true;
-        }
-        return false;
+                appointmentSlotDto.getEndDate().equals(convertDateToLocalDateTime(appointment.getEndDate()));
     }
 
     private boolean isTargetDateNotInPast(Date targetDate) {
         Date yesterday = new Date(System.currentTimeMillis() - 24 * 60 * 60 * 1000);
-        if (targetDate.after(yesterday)) {
-            return true;
-        }
-        return false;
+        return targetDate.after(yesterday);
     }
 
 
@@ -118,7 +112,7 @@ public class AppointmentSlotServiceImpl implements AppointmentSlotService {
         return result;
     }
 
-    private Date trancateDateToDays(Date dateTime) {
+    private Date truncateDateToDays(Date dateTime) {
         return DateUtils.truncate(dateTime, Calendar.DATE);
     }
 

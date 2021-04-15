@@ -10,6 +10,7 @@ import lombok.*;
 @AllArgsConstructor
 @ApiModel(description = "Repair record entity for web to update")
 public class RepairRecordDtoToUpdate {
+    // TODO можно убрать т.к есть в url
     private Long repairRecordId;
     private String repairRecordDescription;
     private Long detailPrice;

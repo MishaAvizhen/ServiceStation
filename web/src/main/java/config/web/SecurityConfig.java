@@ -19,6 +19,7 @@ import security.impl.CustomUserDetailsService;
 @EnableWebSecurity
 @ComponentScan("security")
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
     @Autowired
     private CustomUserDetailsService customUserDetailsService;
 
@@ -31,7 +32,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public void configure(WebSecurity web) {
         web.ignoring().antMatchers(HttpMethod.POST, "/api/users/create");
     }
-
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -66,6 +66,4 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
-
 }

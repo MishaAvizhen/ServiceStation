@@ -43,9 +43,6 @@ public class WebConfig {
                 .apiInfo(apiInfo())
                 .consumes(DEFAULT_PRODUCES_AND_CONSUMES)
                 .produces(DEFAULT_PRODUCES_AND_CONSUMES);
-
-
-
     }
 
     private ApiInfo apiInfo() {
@@ -54,7 +51,5 @@ public class WebConfig {
                 .contact(new Contact("Misha Avizhen", null, "misha33379@mail.ru"))
                 .description("Service Station")
                 .build();
-
-
     }
 }

@@ -33,6 +33,5 @@ public class RepairRequestFromRegistrationWebDtoToRegistrationDtoConverter imple
                 .setUsername(sourceDto.getClientUsername())
                 .setAppointmentSlotDto(appointmentSlotDto)
                 .build();
-
     }
 }

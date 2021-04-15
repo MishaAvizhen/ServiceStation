@@ -14,5 +14,4 @@ public class LocalDateTimeOperations {
     public static LocalDateTime convertDateToLocalDateTime(Date date) {
         return LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault());
     }
-
 }

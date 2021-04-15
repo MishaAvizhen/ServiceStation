@@ -1,6 +1,5 @@
 package service.dto;
 
-import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModel;
 
 @ApiModel(description = "Repair record entity ")
@@ -19,7 +18,6 @@ public class RepairRecordRegistrationDto {
         this.detailPrice = builder.detailPrice;
         this.repairRecordDescription = builder.repairRecordDescription;
     }
-
 
     public String getRepairRecordDescription() {
         return repairRecordDescription;
@@ -79,7 +77,6 @@ public class RepairRecordRegistrationDto {
 
         public RepairRecordRegistrationDto build() {
             return new RepairRecordRegistrationDto(this);
-
         }
     }
 

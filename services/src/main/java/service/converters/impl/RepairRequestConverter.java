@@ -32,7 +32,6 @@ public class RepairRequestConverter implements Converter<RepairRequest, RepairRe
         entity.setRepairRequestDescription(dto.getRepairRequestDescription());
         entity.setUser(userByUsername);
         entity.setRepairRequestStatus(dto.getRepairRequestStatus());
-
         return entity;
     }
 
@@ -46,5 +45,4 @@ public class RepairRequestConverter implements Converter<RepairRequest, RepairRe
                 .setUsername(entity.getUser().getUsername())
                 .build();
     }
-
 }

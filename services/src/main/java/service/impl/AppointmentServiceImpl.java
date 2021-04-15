@@ -14,10 +14,8 @@ import service.dto.AppointmentSlotDto;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 @Service
-
 public class AppointmentServiceImpl implements AppointmentService {
     private static final Logger log = Logger.getLogger(AppointmentServiceImpl.class);
     @Autowired
@@ -30,8 +28,9 @@ public class AppointmentServiceImpl implements AppointmentService {
     private AppointmentSlotService appointmentSlotService;
 
     @Override
+    // TODO добавить в контроллер
     public List<Appointment> findAllAppointment() {
-        log.info(String.format("Find all appointments"));
+        log.info("Find all appointments");
         return appointmentRepository.findAll();
     }
 
@@ -46,6 +45,7 @@ public class AppointmentServiceImpl implements AppointmentService {
             log.info(String.format("Appointment was not created, Date {%s} - {%s} incorrect! Date in the  past ", startDate, endDate));
             throw new IllegalArgumentException("Date incorrect! Date in the  past");
         } else {
+            // TODO перенести в конвертер
             Appointment appointment = new Appointment();
             appointment.setMaster(appointmentSlotDto.getMaster());
             appointment.setStartDate(startDate);
@@ -54,16 +54,9 @@ public class AppointmentServiceImpl implements AppointmentService {
             appointment.setClient(userRepository.getOne(userId));
             appointment.setNotes(" notes...");
             appointment.setRepairRequest(repairRequestRepository.getOne(repairRequestId));
-            log.info(String.format("Appointment with info : {%s}, {%s} was created \n for user with id: {%s} ",
+            log.info(String.format("Appointment with info: {%s}, {%s} was created for user with id: {%s} ",
                     appointmentSlotDto.getStartDate(), appointmentSlotDto.getEndDate(), userId));
             return appointmentRepository.save(appointment);
         }
-    }
-
-    @Override
-    public Appointment findAppointmentByRepairRequestId(Long repairRequestId) {
-        log.info(String.format("Find appointment for repair request  with id= {%s}", repairRequestId));
-        Optional<Appointment> appointmentOptional = appointmentRepository.findById(repairRequestId);
-        return appointmentOptional.orElse(null);
     }
 }

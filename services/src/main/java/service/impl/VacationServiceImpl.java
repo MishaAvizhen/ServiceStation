@@ -23,7 +23,6 @@ public class VacationServiceImpl implements VacationService {
     private RepairRequestService repairRequestService;
     private AppointmentSlotService appointmentSlotService;
 
-
     @Autowired
     public VacationServiceImpl(RepairRequestService repairRequestService, AppointmentSlotService appointmentSlotService) {
         this.repairRequestService = repairRequestService;
@@ -31,6 +30,7 @@ public class VacationServiceImpl implements VacationService {
     }
 
     @Override
+    // TODO так делать не стоит
     public RepairRequest registerVacationRequest(String masterUsername, Date start, Date end) {
         List<AppointmentSlotDto> availableAppointmentSlotsByDates = getVacationSlots(masterUsername, start, end);
         RepairRequestRegistrationDto repairRequestRegistrationDto = new RepairRequestRegistrationDto.Builder()
@@ -57,5 +57,4 @@ public class VacationServiceImpl implements VacationService {
         }
         return result;
     }
-
 }

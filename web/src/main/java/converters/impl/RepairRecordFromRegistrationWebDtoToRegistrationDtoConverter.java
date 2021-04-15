@@ -6,9 +6,9 @@ import org.springframework.stereotype.Component;
 import service.dto.RepairRecordRegistrationDto;
 
 @Component
+// TODO сделать название короче
 public class RepairRecordFromRegistrationWebDtoToRegistrationDtoConverter implements
         ConverterFromFirstDtoToSecond<RepairRecordRegistrationWebDto, RepairRecordRegistrationDto>{
-
 
     @Override
     public RepairRecordRegistrationDto convertFromSourceDtoToTargetDto(RepairRecordRegistrationWebDto sourceDto) {

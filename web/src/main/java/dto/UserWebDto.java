@@ -12,6 +12,7 @@ import lombok.*;
 @ApiModel(description = "User entity for web")
 
 public class UserWebDto {
+
     private Long userId;
     private String username;
     private String password;

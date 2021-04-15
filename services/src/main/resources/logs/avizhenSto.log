@@ -26489,3 +26489,5 @@
 2021-04-01 19:45:05 INFO  UserServiceImpl:63 - Delete user with id=  {3}
 2021-04-01 19:45:05 DEBUG UserServiceImpl:64 - Delete user with id=  {3}
 2021-04-01 19:45:05 INFO  UserServiceImpl:57 - Find all users
+2021-04-14 18:28:44 INFO  RepairRequestServiceImpl:66 - Find all repair request
+2021-04-14 18:47:19 INFO  AppointmentSlotServiceImpl:37 - get available appointment slot to date: {Thu Apr 22 00:00:00 MSK 2021}

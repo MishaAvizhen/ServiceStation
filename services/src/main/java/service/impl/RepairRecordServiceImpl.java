@@ -29,7 +29,6 @@ public class RepairRecordServiceImpl implements RepairRecordService {
 
     private RepairRecordConverter repairRecordConverter;
 
-
     @Autowired
     public RepairRecordServiceImpl(RepairRecordRepository repairRecordRepository,
                                    RepairRequestRepository repairRequestRepository,
@@ -41,7 +40,7 @@ public class RepairRecordServiceImpl implements RepairRecordService {
 
     @Override
     public List<RepairRecord> findAllRepairRecords() {
-        log.info(String.format("Find all repair records"));
+        log.info("Find all repair records");
         return repairRecordRepository.findAll();
     }
 
@@ -61,7 +60,6 @@ public class RepairRecordServiceImpl implements RepairRecordService {
                 .findFirst().orElse(null);
         if (repairRecord != null) {
             repairRecordRepository.delete(repairRecord);
-
         }
     }
 
@@ -83,7 +81,6 @@ public class RepairRecordServiceImpl implements RepairRecordService {
         log.info(String.format("  repair record with info: {%s} was created ", repairRecordRegistrationDto.toString()));
         repairRequestRepository.save(repairRecord.getRepairRequest());
         return record;
-
     }
 
     @Override
@@ -103,17 +100,17 @@ public class RepairRecordServiceImpl implements RepairRecordService {
     @Override
     public RepairRecord findRepairRecordByUsernameAndRepairRecordDescription(String username, String repairRecordDescription) {
         log.info(String.format("  repair record for user: {%s} \n and description: {%s} find ", username, repairRecordDescription));
-
+        // TODO вынести в sql
         return repairRecordRepository.findAll().stream()
                 .filter(record -> record.getRepairRequest().getUser().getUsername().equals(username)
                         && record.getRepairRecordDescription().equals(repairRecordDescription))
                 .findAny().orElse(null);
-
     }
 
     @Override
     public List<RepairRecord> findRepairRecordsByUsername(String username) {
         log.info(String.format("Find  repair records of user: {%s} ", username));
+        // TODO перенести на уровень sql
         return repairRecordRepository.findAll().stream()
                 .filter(record -> record.getRepairRequest().getUser().getUsername().equals(username))
                 .collect(toList());

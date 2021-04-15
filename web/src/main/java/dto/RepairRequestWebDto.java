@@ -15,6 +15,7 @@ import java.util.Date;
 @AllArgsConstructor
 @ApiModel(description = "Repair request entity")
 public class RepairRequestWebDto {
+
     private Long requestId;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
     private Date dateOfRequest;

@@ -17,6 +17,7 @@ import java.util.Date;
 @AllArgsConstructor
 @ApiModel(description = "Appointment slot entity for web ")
 public class AppointmentSlotWebDto {
+
     private User master;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'",
             timezone = JsonFormat.DEFAULT_TIMEZONE)

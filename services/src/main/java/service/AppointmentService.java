@@ -11,5 +11,4 @@ public interface AppointmentService {
 
     Appointment createAppointment(AppointmentSlotDto appointmentSlotDto, Long userId, Long repairRequestId);
 
-    Appointment findAppointmentByRepairRequestId(Long repairRequestId);
 }

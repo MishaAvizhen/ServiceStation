@@ -55,16 +55,15 @@ public class RepairRequestServiceImpl implements RepairRequestService {
 
     @Override
     public List<RepairRequest> getListOfAllActiveRepairRequests() {
-        log.info(String.format("Find list of active repair request"));
+        log.info("Find list of active repair request");
         return repairRequestRepository.findAll().stream()
                 .filter(request -> request.getRepairRequestStatus().equals(RepairRequestStatus.IN_PROGRESS))
                 .collect(toList());
-
     }
 
     @Override
     public List<RepairRequest> findAllRepairRequests() {
-        log.info(String.format("Find all repair request"));
+        log.info("Find all repair request");
         return repairRequestRepository.findAll();
     }
 
@@ -74,7 +73,6 @@ public class RepairRequestServiceImpl implements RepairRequestService {
         return repairRequestRepository.findAll().stream()
                 .filter(request -> request.getUser().getUsername().equals(username))
                 .collect(toList());
-
     }
 
     @Override
@@ -116,21 +114,17 @@ public class RepairRequestServiceImpl implements RepairRequestService {
         }
         createdRequest.setAppointments(createdAppointments);
         log.info(String.format("repair request with info : {%s} was created ", repairRequestRegistrationDtoWOSlots.getUsername()));
-
         return createdRequest;
-
     }
 
     @Override
     public RepairRequest registerRepairRequest(RepairRequestRegistrationDto repairRequestRegistrationDto) {
-
         return registerRepairRequest(repairRequestRegistrationDto, Collections.singletonList(repairRequestRegistrationDto.getAppointmentSlotDto()));
     }
 
     @Override
     public RepairRequest updateRepairRequest(RepairRequestRegistrationDto repairRequestRegistrationDto,
                                              RepairRequest repairRequestToUpdate) {
-
         RepairRequest repairRequest = repairRequestConverter.convertToExistingEntity(repairRequestRegistrationDto,
                 repairRequestToUpdate);
         validateAppointmentSlotDateNotInPast(repairRequestRegistrationDto.getAppointmentSlotDto());
@@ -169,7 +163,6 @@ public class RepairRequestServiceImpl implements RepairRequestService {
     public void deleteRepairRequestById(Long repairRequestId) {
         log.info(String.format("Delete repair Request with id=  {%s}", repairRequestId));
         repairRequestRepository.deleteById(repairRequestId);
-
     }
 
     @Override

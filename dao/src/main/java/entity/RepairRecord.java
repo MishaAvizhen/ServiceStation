@@ -17,6 +17,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+// Зачем тут свагер ?
 @ApiModel
 public class RepairRecord extends BaseEntity {
     @Column(name = "repair_record_description")
@@ -29,6 +30,7 @@ public class RepairRecord extends BaseEntity {
     private Long workPrice;
     @Column(name = "other_notes")
     private String otherNotes;
+    // TODO зачем тут эта аннотация ?
     @JsonIgnore
     @OneToOne(cascade = {CascadeType.REFRESH, CascadeType.MERGE})
     @JoinColumn(name = "repair_request_id")

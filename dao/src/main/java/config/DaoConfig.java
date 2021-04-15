@@ -60,6 +60,7 @@ public class DaoConfig {
     }
 
     @Bean
+    // TODO разобраться зачем это нужно ?
     public JpaTransactionManager transactionManager() {
         JpaTransactionManager transactionManager = new JpaTransactionManager();
         transactionManager.setEntityManagerFactory(entityManagerFactory().getObject());

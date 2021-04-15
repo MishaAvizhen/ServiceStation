@@ -11,6 +11,7 @@ import lombok.*;
 @AllArgsConstructor
 @ApiModel(description = "Repair record entity for web registration")
 public class RepairRecordRegistrationWebDto {
+
     private String repairRecordDescription;
     private Long detailPrice;
     private Long workPrice;

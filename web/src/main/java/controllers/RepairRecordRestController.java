@@ -48,31 +48,36 @@ public class RepairRecordRestController {
                                                   @RequestParam(value = "recordId", required = false) String repairRecordId) {
 
         List<RepairRecord> allRepairRecords = repairRecordService.findAllRepairRecords();
+        // TODO перенести в сервисы, обернуть параметры в Dto
         return allRepairRecords.stream()
                 .filter(repairRecord -> username == null || username.equals(repairRecord.getRepairRequest().getUser().getUsername()))
                 .filter(repairRecord -> carRemark == null || carRemark.equals(repairRecord.getRepairRequest().getCarRemark()))
                 .filter(repairRecord -> repairRecordId == null || repairRecordId.equals(repairRecord.getId().toString()))
                 .collect(Collectors.toList());
     }
-
+    // TODO переименовать username -> my/profile ...
     @GetMapping("/username")
     @ApiOperation(value = "Get all repair records of current user")
     public List<RepairRecord> repairRecordsOfUser(Principal principal) {
         String username = principal.getName();
         List<RepairRecord> repairRecordsOfUser = repairRecordService.findRepairRecordsByUsername(username);
+        // TODO apache common - CollectionUtils.isNotEmpty()
         if (repairRecordsOfUser == null) {
             throw new ResourceNotFoundException("Records of user "+ username+ " not found");
         }
         return repairRecordsOfUser;
     }
 
+    // TODO упростить до id
     @DeleteMapping("/{recordId}")
     @ApiOperation(value = "Delete repair record")
     public void deleteRepairRecordById(@PathVariable Long recordId) {
         RepairRecord recordToDelete = repairRecordService.findRepairRecordById(recordId);
+        // TODO убрать проверку
         if (recordToDelete == null) {
             throw new NotContentException(recordId.toString());
         } else {
+            // TODO аналогично убрать дублирование
             repairRecordService.deleteRepairRecordById(recordId);
         }
     }
@@ -82,6 +87,7 @@ public class RepairRecordRestController {
     public RepairRecord getUpdatedRepairRecord(@RequestBody RepairRecordDtoToUpdate repairRecordDtoToUpdate,
                                                @PathVariable Long recordId) {
         RepairRecord repairRecordToUpdate = repairRecordService.findRepairRecordById(recordId);
+        // TODO перенести в сервис
         if (repairRecordToUpdate == null) {
             throw new ResourceNotFoundException("RepairRecord to update with id " + repairRecordDtoToUpdate.getRepairRecordId() + " not found");
         } else {
@@ -90,7 +96,7 @@ public class RepairRecordRestController {
             return repairRecordService.updateRepairRecord(repairRecordRegistrationDto, repairRecordToUpdate);
         }
     }
-
+    // TODO create излишен
     @PostMapping("/create")
     @ApiOperation(value = "Create repair record")
     public RepairRecord getCreatedRepairRecord(@RequestBody RepairRecordRegistrationWebDto repairRecordRegistrationWebDto) {

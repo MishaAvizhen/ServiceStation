@@ -29,13 +29,13 @@ import java.util.List;
 })
 @Api(tags=" User controller", description= " Operations with user ")
 public class UserRestController {
+
     private UserService userService;
     private UserWebDtoToUserRegistrationDtoConverter registrationDto;
 
     @Autowired
     public UserRestController(UserService userService, UserWebDtoToUserRegistrationDtoConverter registrationDto) {
         this.userService = userService;
-
         this.registrationDto = registrationDto;
     }
 
@@ -55,7 +55,6 @@ public class UserRestController {
         }
         return user;
     }
-
 
     @DeleteMapping("/{userId}")
     @ApiOperation(value = "Delete user")
@@ -106,5 +105,4 @@ public class UserRestController {
         }
         return userService.getSumWorkPriceAndDetailPrice(user.getId());
     }
-
 }

@@ -10,6 +10,7 @@ import lombok.*;
 @AllArgsConstructor
 @ApiModel(description = "Repair request entity for web registration")
 public class RepairRequestRegistrationWebDto {
+
     private String clientUsername;
     private String repairRequestDescription;
     private String carRemark;

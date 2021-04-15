@@ -31,7 +31,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
-
 @RestController
 @RequestMapping(value = "/api/requests")
 @ApiResponses(value = {
@@ -101,7 +100,6 @@ public class RepairRequestRestController {
             throw new NotContentException(requestId.toString());
         } else {
             repairRequestService.deleteRepairRequestById(requestId);
-
         }
     }
 
@@ -112,7 +110,6 @@ public class RepairRequestRestController {
         RepairRequest repairRequestToUpdate = repairRequestService.findRepairRequestById(requestId);
         if (repairRequestToUpdate == null) {
             throw new ResourceNotFoundException("RepairRequest to update with id " + repairRequestWebDto.getRequestId() + " not found");
-
         } else {
             RepairRequestRegistrationDto repairRequestRegistrationDto =
                     repairRequestFromWebDtoToRegistrationDtoConverter.convertFromSourceDtoToTargetDto(repairRequestWebDto);
@@ -136,6 +133,7 @@ public class RepairRequestRestController {
     @PostMapping("/vacation")
     @ApiOperation(value = "Create repair request for vacation for master")
     public RepairRequest getCreatedRepairRequestForVacation(@RequestBody VacationRegistrationDto vacationRegistrationDto) {
+        // TODO перенсти в сервисы
         String masterName = vacationRegistrationDto.getMasterName();
         Date startDate = vacationRegistrationDto.getStartDate();
         Date endDate = vacationRegistrationDto.getEndDate();
@@ -153,6 +151,7 @@ public class RepairRequestRestController {
                                                                      @DateTimeFormat(pattern = "yyyy-MM-dd") Date targetDate) {
         List<AppointmentSlotWebDto> slotWebDtos = new ArrayList<>();
         List<AppointmentSlotDto> availableAppointmentSlotsByDate = appointmentSlotService.getAvailableAppointmentSlotsByDate(targetDate);
+        // TODO переписать на стрим
         for (AppointmentSlotDto appointmentSlotDto : availableAppointmentSlotsByDate) {
             AppointmentSlotWebDto appointmentSlotWebDto =
                     appointmentSlotDtoToAppointmentSlotWebDtoConverter.convertFromSourceDtoToTargetDto(appointmentSlotDto);
@@ -160,5 +159,4 @@ public class RepairRequestRestController {
         }
         return slotWebDtos;
     }
-
 }

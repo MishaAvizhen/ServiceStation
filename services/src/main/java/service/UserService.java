@@ -1,16 +1,12 @@
 package service;
 
 
-import entity.RepairRecord;
 import entity.User;
 import service.dto.UserRegistrationDto;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface UserService {
-
-    List<RepairRecord> getUserRepairRecordList(Long userId);
 
     User findUserByUsername(String username);
 

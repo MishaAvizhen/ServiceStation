@@ -2,14 +2,12 @@ package converters.impl;
 
 import converters.ConverterFromFirstDtoToSecond;
 import dto.RepairRecordDtoToUpdate;
-import dto.RepairRecordWebDto;
 import org.springframework.stereotype.Component;
 import service.dto.RepairRecordRegistrationDto;
-import service.dto.RepairRequestRegistrationDto;
 
 @Component
 public class RepairRecordFromDtoToUpdateToRegistrationDtoConverter implements
-        ConverterFromFirstDtoToSecond<RepairRecordDtoToUpdate,RepairRecordRegistrationDto>{
+        ConverterFromFirstDtoToSecond<RepairRecordDtoToUpdate, RepairRecordRegistrationDto> {
 
     @Override
     public RepairRecordRegistrationDto convertFromSourceDtoToTargetDto(RepairRecordDtoToUpdate sourceDto) {

@@ -1,9 +1,7 @@
 package service.impl;
 
 
-import entity.RepairRecord;
 import entity.User;
-import entity.consts.RepairRequestStatus;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -17,8 +15,6 @@ import service.dto.UserRegistrationDto;
 import java.util.List;
 import java.util.Optional;
 
-import static java.util.stream.Collectors.toList;
-
 @Service
 public class UserServiceImpl implements UserService {
     private static final Logger log = Logger.getLogger(UserServiceImpl.class);
@@ -29,14 +25,6 @@ public class UserServiceImpl implements UserService {
     private RepairRecordRepository repairRecordRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
-
-
-    @Override
-    public List<RepairRecord> getUserRepairRecordList(Long userId) {
-        return repairRecordRepository.findAll().stream()
-                .filter(record -> record.getRepairRequest().getRepairRequestStatus().equals(RepairRequestStatus.PROCESSED))
-                .collect(toList());
-    }
 
     @Override
     public User findUserByUsername(String username) {
@@ -53,7 +41,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> findAllUsers() {
-        log.info(String.format("Find all users"));
+        log.info("Find all users");
         return userRepository.findAll();
     }
 
@@ -78,7 +66,6 @@ public class UserServiceImpl implements UserService {
                     .map(record -> record.getDetailPrice() + record.getWorkPrice())
                     .reduce(0L, (sumPrice, repRecPrice) -> sumPrice + repRecPrice);
         }
-
     }
 
     @Override
@@ -90,12 +77,12 @@ public class UserServiceImpl implements UserService {
             log.info(String.format("user with info:{%s} already exist ", userRegistrationDto.toString()));
             throw new IllegalArgumentException("User " + userRegistrationDto.getUsername() + " already exist");
         }
+        // TODO создавать классы через спринг
         UserConverter userConverter = new UserConverter();
         userRegistrationDto.setPassword(encodePassword(userRegistrationDto.getPassword()));
         User user = userConverter.convertToEntity(userRegistrationDto);
         log.info(String.format("user with info:{%s} was created ", userRegistrationDto.toString()));
         return userRepository.save(user);
-
     }
 
     @Override
@@ -115,6 +102,4 @@ public class UserServiceImpl implements UserService {
     private String encodePassword(String password) {
         return passwordEncoder.encode(password);
     }
-
-
 }

@@ -85,7 +85,6 @@ public class UserRegistrationDto {
 
         public UserRegistrationDto build() {
             return new UserRegistrationDto(this);
-
         }
     }
 

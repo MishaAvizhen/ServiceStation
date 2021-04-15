@@ -1,6 +1,10 @@
-package exceptions;
+package exceptions.handler;
 
 
+import exceptions.ExceptionResponse;
+import exceptions.NotContentException;
+import exceptions.ResourceAlreadyExists;
+import exceptions.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -10,6 +14,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import java.util.Date;
 
 @ControllerAdvice
+// TODO разобраться что такое ResponseEntityExceptionHandler
 public class GlobalExceptionControllerAdvice extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(value = {ResourceNotFoundException.class, NullPointerException.class})

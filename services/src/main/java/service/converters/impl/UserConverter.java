@@ -3,7 +3,6 @@ package service.converters.impl;
 import entity.User;
 import service.converters.Converter;
 import service.dto.UserRegistrationDto;
-
 public class UserConverter implements Converter<User, UserRegistrationDto> {
     public UserConverter() {
     }

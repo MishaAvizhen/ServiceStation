@@ -1,3 +1,4 @@
+// TODO enums
 package entity.consts;
 
 public enum Role {

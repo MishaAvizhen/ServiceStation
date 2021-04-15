@@ -50,5 +50,4 @@ public class RepairRecordConverter implements Converter<RepairRecord, RepairReco
                 .setDetailPrice(entity.getDetailPrice())
                 .build();
     }
-
 }

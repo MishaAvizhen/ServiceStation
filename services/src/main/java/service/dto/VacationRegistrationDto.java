@@ -14,6 +14,7 @@ import java.util.Date;
 @NoArgsConstructor
 @ApiModel(description = "Vacation entity for master")
 public class VacationRegistrationDto {
+
     private String masterName;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd",
             timezone = JsonFormat.DEFAULT_TIMEZONE)
