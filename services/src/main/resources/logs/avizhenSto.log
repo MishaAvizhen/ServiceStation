@@ -26491,3 +26491,18 @@
 2021-04-01 19:45:05 INFO  UserServiceImpl:57 - Find all users
 2021-04-14 18:28:44 INFO  RepairRequestServiceImpl:66 - Find all repair request
 2021-04-14 18:47:19 INFO  AppointmentSlotServiceImpl:37 - get available appointment slot to date: {Thu Apr 22 00:00:00 MSK 2021}
+2021-04-15 10:57:47 INFO  AppointmentSlotServiceImpl:37 - get available appointment slot to date: {Sat Apr 17 00:00:00 MSK 2021}
+2021-04-15 10:59:52 INFO  AppointmentSlotServiceImpl:37 - get available appointment slot to date: {Wed Apr 14 00:00:00 MSK 2021}
+2021-04-15 10:59:59 INFO  AppointmentSlotServiceImpl:37 - get available appointment slot to date: {Mon Apr 19 00:00:00 MSK 2021}
+2021-04-15 11:04:13 INFO  AppointmentSlotServiceImpl:37 - get available appointment slot to date: {Thu Apr 22 00:00:00 MSK 2021}
+2021-04-15 12:19:07 INFO  RepairRecordServiceImpl:115 - Find  repair records of user: {admin} 
+2021-04-15 12:19:22 INFO  RepairRecordServiceImpl:115 - Find  repair records of user: {user} 
+2021-04-15 12:19:29 INFO  RepairRecordServiceImpl:115 - Find  repair records of user: {misha} 
+2021-04-15 14:44:35 INFO  RepairRecordServiceImpl:115 - Find  repair records of user: {admin} 
+2021-04-15 14:44:59 INFO  RepairRecordServiceImpl:115 - Find  repair records of user: {user} 
+2021-04-15 14:45:45 INFO  RepairRecordServiceImpl:115 - Find  repair records of user: {misha} 
+2021-04-15 15:10:05 INFO  RepairRecordServiceImpl:103 - Find  repair records of user: {misha} 
+2021-04-15 15:33:40 INFO  AppointmentSlotServiceImpl:37 - get available appointment slot to date: {Thu Apr 22 00:00:00 MSK 2021}
+2021-04-15 15:39:38 INFO  AppointmentSlotServiceImpl:37 - get available appointment slot to date: {Thu Apr 22 00:00:00 MSK 2021}
+2021-04-15 15:42:26 INFO  AppointmentSlotServiceImpl:37 - get available appointment slot to date: {Thu Apr 22 00:00:00 MSK 2021}
+2021-04-15 15:43:10 INFO  AppointmentSlotServiceImpl:37 - get available appointment slot to date: {Thu Apr 22 00:00:00 MSK 2021}

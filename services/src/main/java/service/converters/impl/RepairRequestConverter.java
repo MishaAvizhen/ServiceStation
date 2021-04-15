@@ -3,12 +3,12 @@ package service.converters.impl;
 import entity.RepairRequest;
 import entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import service.UserService;
 import service.converters.Converter;
 import service.dto.RepairRequestRegistrationDto;
 
-@Service
+@Component
 public class RepairRequestConverter implements Converter<RepairRequest, RepairRequestRegistrationDto> {
 
     private UserService userService;

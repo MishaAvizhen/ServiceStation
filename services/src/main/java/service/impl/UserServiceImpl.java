@@ -20,6 +20,8 @@ public class UserServiceImpl implements UserService {
     private static final Logger log = Logger.getLogger(UserServiceImpl.class);
 
     @Autowired
+    private UserConverter userConverter;
+    @Autowired
     private UserRepository userRepository;
     @Autowired
     private RepairRecordRepository repairRecordRepository;
@@ -78,7 +80,6 @@ public class UserServiceImpl implements UserService {
             throw new IllegalArgumentException("User " + userRegistrationDto.getUsername() + " already exist");
         }
         // TODO создавать классы через спринг
-        UserConverter userConverter = new UserConverter();
         userRegistrationDto.setPassword(encodePassword(userRegistrationDto.getPassword()));
         User user = userConverter.convertToEntity(userRegistrationDto);
         log.info(String.format("user with info:{%s} was created ", userRegistrationDto.toString()));
@@ -87,7 +88,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User updateUser(UserRegistrationDto userRegistrationDto, User userToUpdate) {
-        UserConverter userConverter = new UserConverter();
         userRegistrationDto.setPassword(encodePassword(userRegistrationDto.getPassword()));
         User updatedUser = userConverter.convertToExistingEntity(userRegistrationDto, userToUpdate);
         User userInDb = userRepository.findByUsername(updatedUser.getUsername());

@@ -13,6 +13,7 @@ import service.RepairRequestService;
 import service.common.LocalDateTimeOperations;
 import service.converters.impl.RepairRequestConverter;
 import service.dto.AppointmentSlotDto;
+import service.dto.RepairRequestFilterDto;
 import service.dto.RepairRequestRegistrationDto;
 
 import java.util.*;
@@ -170,5 +171,16 @@ public class RepairRequestServiceImpl implements RepairRequestService {
         log.info(String.format("Find repair request  with id= {%s}", repairRequestId));
         Optional<RepairRequest> requestOptional = repairRequestRepository.findById(repairRequestId);
         return requestOptional.orElse(null);
+    }
+
+    @Override
+    public List<RepairRequest> filterRepairRequest(RepairRequestFilterDto filterDto) {
+        List<RepairRequest> allRepairRequests = repairRequestRepository.findAll();
+        return allRepairRequests.stream()
+                .filter(repairRequest -> filterDto.getUsername() == null || filterDto.getUsername().equals(repairRequest.getUser().getUsername()))
+                .filter(repairRequest -> filterDto.getCarRemark() == null || filterDto.getCarRemark().equals(repairRequest.getCarRemark()))
+                .filter(repairRequest -> filterDto.getId() == null || filterDto.getId().equals(repairRequest.getId().toString()))
+                .filter(repairRequest -> filterDto.getStatus() == null || filterDto.getStatus().equals(repairRequest.getRepairRequestStatus().toString()))
+                .collect(Collectors.toList());
     }
 }

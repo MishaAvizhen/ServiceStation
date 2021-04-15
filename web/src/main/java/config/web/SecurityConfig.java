@@ -13,15 +13,16 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import security.impl.CustomUserDetailsService;
+import service.impl.CustomUserDetailsServiceImpl;
+
 
 @Configuration
 @EnableWebSecurity
-@ComponentScan("security")
+@ComponentScan("service")
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    private CustomUserDetailsService customUserDetailsService;
+    private CustomUserDetailsServiceImpl customUserDetailsService ;
 
     @Override
     public void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -30,7 +31,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) {
-        web.ignoring().antMatchers(HttpMethod.POST, "/api/users/create");
+        web.ignoring().antMatchers(HttpMethod.POST, "/api/users");
     }
 
     @Override
@@ -39,19 +40,22 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.PUT, "/api/users/**").hasAnyAuthority((Role.MASTER.name()),
                 (Role.ADMIN.name()), (Role.USER.name()))
                 .antMatchers(HttpMethod.GET, "/api/users").hasAnyAuthority((Role.ADMIN.name()), (Role.MASTER.name()))
-                .antMatchers(HttpMethod.GET, "/api/users/username").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/users/profile").permitAll()
                 .antMatchers("/api/users/{\\\\d+}/price").hasAnyAuthority((Role.ADMIN.name()), (Role.MASTER.name()))
 
-                .antMatchers(HttpMethod.POST, "/api/requests/vacation").hasAnyAuthority((Role.ADMIN.name()), (Role.MASTER.name()))
+                .antMatchers(HttpMethod.POST, "/api/requests/vacation").hasAnyAuthority((Role.ADMIN.name()),
+                (Role.MASTER.name()))
                 .antMatchers(HttpMethod.GET, "/api/requests").hasAnyAuthority((Role.ADMIN.name()), (Role.MASTER.name()))
                 .antMatchers(HttpMethod.PUT, "/api/requests/**").permitAll()
                 .antMatchers(HttpMethod.POST, "/api/requests/**").permitAll()
-                .antMatchers(HttpMethod.GET, "/api/requests/username").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/requests/profile").permitAll()
 
                 .antMatchers(HttpMethod.GET, "/api/records").hasAnyAuthority((Role.ADMIN.name()), (Role.MASTER.name()))
                 .antMatchers(HttpMethod.PUT, "/api/records/**").hasAnyAuthority((Role.ADMIN.name()), (Role.MASTER.name()))
                 .antMatchers(HttpMethod.POST, "/api/records/**").hasAnyAuthority((Role.ADMIN.name()), (Role.MASTER.name()))
-                .antMatchers(HttpMethod.GET, "/api/records/username").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/records/profile").permitAll()
+
+                .antMatchers(HttpMethod.GET, "/api/appointments/**").permitAll()
 
                 .antMatchers(HttpMethod.DELETE).hasAuthority((Role.ADMIN.name()))
 

@@ -21,15 +21,15 @@ import java.util.Date;
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @ApiModel(description = "Create appointment time slot ")
 public class Appointment extends BaseEntity {
-    @JsonIgnore
+
     @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.MERGE})
     @JoinColumn(name = "client_id")
     private User client;
-    @JsonIgnore
+
     @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.MERGE})
     @JoinColumn(name = "master_id")
     private User master;
-    @JsonIgnore
+
     @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.MERGE})
     @JoinColumn(name = "repair_request_id")
     @ToString.Exclude

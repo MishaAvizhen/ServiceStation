@@ -1,35 +1,28 @@
 package controllers;
 
-import converters.impl.AppointmentSlotDtoToAppointmentSlotWebDtoConverter;
 import converters.impl.RepairRequestFromRegistrationWebDtoToRegistrationDtoConverter;
 import converters.impl.RepairRequestFromWebDtoToRegistrationDtoConverter;
-import dto.AppointmentSlotWebDto;
 import dto.RepairRequestRegistrationWebDto;
 import dto.RepairRequestWebDto;
 import entity.RepairRequest;
 import entity.User;
-import exceptions.NotContentException;
 import exceptions.ResourceNotFoundException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
-import service.AppointmentSlotService;
 import service.RepairRequestService;
 import service.UserService;
 import service.VacationService;
-import service.dto.AppointmentSlotDto;
+import service.dto.RepairRequestFilterDto;
 import service.dto.RepairRequestRegistrationDto;
 import service.dto.VacationRegistrationDto;
 
 import java.security.Principal;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(value = "/api/requests")
@@ -46,22 +39,17 @@ public class RepairRequestRestController {
     private RepairRequestService repairRequestService;
     private UserService userService;
     private RepairRequestFromRegistrationWebDtoToRegistrationDtoConverter repairRequestFromRegistrationWebDtoToRegistrationDtoConverter;
-    private AppointmentSlotService appointmentSlotService;
-    private AppointmentSlotDtoToAppointmentSlotWebDtoConverter appointmentSlotDtoToAppointmentSlotWebDtoConverter;
     private RepairRequestFromWebDtoToRegistrationDtoConverter repairRequestFromWebDtoToRegistrationDtoConverter;
     private VacationService vacationService;
 
     @Autowired
     public RepairRequestRestController(RepairRequestService repairRequestService,
                                        UserService userService, RepairRequestFromRegistrationWebDtoToRegistrationDtoConverter repairRequestFromRegistrationWebDtoToRegistrationDtoConverter,
-                                       AppointmentSlotService appointmentSlotService,
-                                       AppointmentSlotDtoToAppointmentSlotWebDtoConverter appointmentSlotDtoToAppointmentSlotWebDtoConverter,
-                                       RepairRequestFromWebDtoToRegistrationDtoConverter repairRequestFromWebDtoToRegistrationDtoConverter, VacationService vacationService) {
+                                       RepairRequestFromWebDtoToRegistrationDtoConverter repairRequestFromWebDtoToRegistrationDtoConverter,
+                                       VacationService vacationService) {
         this.repairRequestService = repairRequestService;
         this.userService = userService;
         this.repairRequestFromRegistrationWebDtoToRegistrationDtoConverter = repairRequestFromRegistrationWebDtoToRegistrationDtoConverter;
-        this.appointmentSlotService = appointmentSlotService;
-        this.appointmentSlotDtoToAppointmentSlotWebDtoConverter = appointmentSlotDtoToAppointmentSlotWebDtoConverter;
         this.repairRequestFromWebDtoToRegistrationDtoConverter = repairRequestFromWebDtoToRegistrationDtoConverter;
         this.vacationService = vacationService;
     }
@@ -70,18 +58,14 @@ public class RepairRequestRestController {
     @ApiOperation(value = "Get all repair requests. Filter by username, carRemark, status")
     public List<RepairRequest> getAllRepairRequests(@RequestParam(value = "username", required = false) String username,
                                                     @RequestParam(value = "carRemark", required = false) String carRemark,
-                                                    @RequestParam(value = "requestId", required = false) String requestId,
+                                                    @RequestParam(value = "id", required = false) String id,
                                                     @RequestParam(value = "status", required = false) String status) {
-        List<RepairRequest> allRepairRequests = repairRequestService.findAllRepairRequests();
-        return allRepairRequests.stream()
-                .filter(repairRequest -> username == null || username.equals(repairRequest.getUser().getUsername()))
-                .filter(repairRequest -> carRemark == null || carRemark.equals(repairRequest.getCarRemark()))
-                .filter(repairRequest -> requestId == null || requestId.equals(repairRequest.getId().toString()))
-                .filter(repairRequest -> status == null || status.equals(repairRequest.getRepairRequestStatus().toString()))
-                .collect(Collectors.toList());
+
+        RepairRequestFilterDto repairRequestFilterDto = new RepairRequestFilterDto(id, username, carRemark, status);
+        return repairRequestService.filterRepairRequest(repairRequestFilterDto);
     }
 
-    @GetMapping("/username")
+    @GetMapping("/profile")
     @ApiOperation(value = "Get all repair requests of current user")
     public List<RepairRequest> getAllRepairRequestsOfUser(Principal principal) {
         String username = principal.getName();
@@ -92,32 +76,28 @@ public class RepairRequestRestController {
         return allRepairRequestsOfUser;
     }
 
-    @DeleteMapping("/{requestId}")
+    @DeleteMapping("/{id}")
     @ApiOperation(value = "Delete repair request")
-    public void deleteRepairRequestById(@PathVariable Long requestId) {
-        RepairRequest requestToDelete = repairRequestService.findRepairRequestById(requestId);
-        if (requestToDelete == null) {
-            throw new NotContentException(requestId.toString());
-        } else {
-            repairRequestService.deleteRepairRequestById(requestId);
-        }
+    public void deleteRepairRequestById(@PathVariable Long id) {
+        repairRequestService.deleteRepairRequestById(id);
+
     }
 
-    @PutMapping("/{requestId}")
+    @PutMapping("/{id}")
     @ApiOperation(value = "Update repair request")
-    public RepairRequest getUpdatedRepairRequest(@PathVariable Long requestId,
+    public RepairRequest getUpdatedRepairRequest(@PathVariable Long id,
                                                  @RequestBody RepairRequestWebDto repairRequestWebDto) {
-        RepairRequest repairRequestToUpdate = repairRequestService.findRepairRequestById(requestId);
+        RepairRequest repairRequestToUpdate = repairRequestService.findRepairRequestById(id);
         if (repairRequestToUpdate == null) {
             throw new ResourceNotFoundException("RepairRequest to update with id " + repairRequestWebDto.getRequestId() + " not found");
         } else {
             RepairRequestRegistrationDto repairRequestRegistrationDto =
-                    repairRequestFromWebDtoToRegistrationDtoConverter.convertFromSourceDtoToTargetDto(repairRequestWebDto);
+                    repairRequestFromWebDtoToRegistrationDtoConverter.convertToServiceDto(repairRequestWebDto);
             return repairRequestService.updateRepairRequest(repairRequestRegistrationDto, repairRequestToUpdate);
         }
     }
 
-    @PostMapping("/create")
+    @PostMapping
     @ApiOperation(value = "Create repair request")
     public RepairRequest getCreatedRepairRequest(@RequestBody RepairRequestRegistrationWebDto repairRequestRegistrationWebDto) {
         String clientUsername = repairRequestRegistrationWebDto.getClientUsername();
@@ -126,7 +106,7 @@ public class RepairRequestRestController {
             throw new ResourceNotFoundException("Client with username " + clientUsername + " not found");
         }
         RepairRequestRegistrationDto repairRequestRegistrationDto =
-                repairRequestFromRegistrationWebDtoToRegistrationDtoConverter.convertFromSourceDtoToTargetDto(repairRequestRegistrationWebDto);
+                repairRequestFromRegistrationWebDtoToRegistrationDtoConverter.convertToServiceDto(repairRequestRegistrationWebDto);
         return repairRequestService.registerRepairRequest(repairRequestRegistrationDto);
     }
 
@@ -145,18 +125,4 @@ public class RepairRequestRestController {
         return vacationService.registerVacationRequest(masterName, startDate, endDate);
     }
 
-    @GetMapping("/slots")
-    @ApiOperation(value = "Get available slots for repair request of some date")
-    public List<AppointmentSlotWebDto> getAvailableSlotsOnTargetDate(@RequestParam(value = "targetDate")
-                                                                     @DateTimeFormat(pattern = "yyyy-MM-dd") Date targetDate) {
-        List<AppointmentSlotWebDto> slotWebDtos = new ArrayList<>();
-        List<AppointmentSlotDto> availableAppointmentSlotsByDate = appointmentSlotService.getAvailableAppointmentSlotsByDate(targetDate);
-        // TODO переписать на стрим
-        for (AppointmentSlotDto appointmentSlotDto : availableAppointmentSlotsByDate) {
-            AppointmentSlotWebDto appointmentSlotWebDto =
-                    appointmentSlotDtoToAppointmentSlotWebDtoConverter.convertFromSourceDtoToTargetDto(appointmentSlotDto);
-            slotWebDtos.add(appointmentSlotWebDto);
-        }
-        return slotWebDtos;
-    }
 }

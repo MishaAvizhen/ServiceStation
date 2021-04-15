@@ -3,7 +3,6 @@ package entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 
@@ -17,8 +16,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-// Зачем тут свагер ?
-@ApiModel
+
 public class RepairRecord extends BaseEntity {
     @Column(name = "repair_record_description")
     private String repairRecordDescription;
@@ -31,7 +29,6 @@ public class RepairRecord extends BaseEntity {
     @Column(name = "other_notes")
     private String otherNotes;
     // TODO зачем тут эта аннотация ?
-    @JsonIgnore
     @OneToOne(cascade = {CascadeType.REFRESH, CascadeType.MERGE})
     @JoinColumn(name = "repair_request_id")
     @ToString.Exclude

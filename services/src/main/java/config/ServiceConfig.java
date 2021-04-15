@@ -9,7 +9,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 @Import(DaoConfig.class)
-@ComponentScan("service")
+@ComponentScan({"service", "converters"})
 public class ServiceConfig {
 
     @Bean

@@ -2,6 +2,7 @@ package service;
 
 
 import entity.RepairRecord;
+import service.dto.RepairRecordFilterDto;
 import service.dto.RepairRecordRegistrationDto;
 
 import java.util.List;
@@ -18,10 +19,10 @@ public interface RepairRecordService {
 
     RepairRecord updateRepairRecord(RepairRecordRegistrationDto repairRecordRegistrationDto, RepairRecord repairRecordToUpdate);
 
-    RepairRecord findRepairRecordByUsernameAndRepairRecordDescription(String username, String repairRecordDescription);
-
     List<RepairRecord> findRepairRecordsByUsername(String username);
 
-    void deleteRepairRecordById(Long repairRecordId);
+    void deleteById(Long id);
+
+    List<RepairRecord> filterRepairRecord(RepairRecordFilterDto filterDto);
 
 }

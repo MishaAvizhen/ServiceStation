@@ -49,35 +49,11 @@ public class RepairRecordServiceImplTest {
         repairRecordService = new RepairRecordServiceImpl(repairRecordRepository, repairRequestRepository, repairRecordConverter);
     }
 
-
-    private RepairRecord findRepairRecordByUsernameAndRepairRecordDescription(String username, String repairRecordDescription) {
-        for (RepairRecord repairRecord : repairRecordTestData.getAllRepairRecordForTest()) {
-            if (repairRecord.getRepairRequest().getUser().getUsername().equals(username) &&
-                    repairRecord.getRepairRecordDescription().equals(repairRecordDescription)) {
-                return repairRecord;
-            }
-        }
-        return null;
-    }
-
     @Test
     public void findAllRepairRecords() throws Exception {
         when(repairRecordRepository.findAll()).thenReturn(repairRecordTestData.getAllRepairRecordForTest());
         List<RepairRecord> actualRepairRecordList = repairRecordService.findAllRepairRecords();
         Assert.assertEquals(repairRecordTestData.getAllRepairRecordForTest().size(), actualRepairRecordList.size());
-
-    }
-
-    @Test
-    public void findRepairRecordByUsernameAndRepairRecordDescription() throws Exception {
-        String username = "userToDelete";
-        String repairRecordDescription = "test repair record description";
-        when(repairRecordRepository.findAll()).thenReturn(repairRecordTestData.getAllRepairRecordForTest());
-        RepairRecord actualRepairRecord = repairRecordService.findRepairRecordByUsernameAndRepairRecordDescription(username, repairRecordDescription);
-        RepairRecord expectedRepairRecord = findRepairRecordByUsernameAndRepairRecordDescription(username, repairRecordDescription);
-        Assert.assertEquals("Repair record not found", expectedRepairRecord, actualRepairRecord);
-        Assert.assertNotNull("user or repair record description  not found", actualRepairRecord);
-
     }
 
     @Test
@@ -91,7 +67,6 @@ public class RepairRecordServiceImplTest {
         repairRecordService.deleteRepairRecordByUsernameAndRepairRecordDescription(username, repairRecordDescription);
         RepairRecord repairRecordToDeleteAfterDelete = repairRecordTestData.getRepairRecordById(repairRecordId);
         Assert.assertNull(" repair record was not delete", repairRecordToDeleteAfterDelete);
-
     }
 
     @Test
@@ -158,8 +133,5 @@ public class RepairRecordServiceImplTest {
         Assert.assertNotEquals("repair record description wasn't update", repairRecordDescription, repairRecordAfterUpdate.getRepairRecordDescription());
         Assert.assertEquals("Status was updated", repairRequestStatus, status);
         Assert.assertEquals("User was updated", repairRecordAfterUpdate.getRepairRequest().getUser().getUsername(), usernameToUpdate);
-
-
     }
-
 }

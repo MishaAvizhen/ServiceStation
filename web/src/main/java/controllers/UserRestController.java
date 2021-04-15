@@ -27,7 +27,7 @@ import java.util.List;
         @ApiResponse(code = 409, message = "The request could not be completed due to a conflict with the current state of the target resource."),
         @ApiResponse(code = 500, message = "Server ERROR. Something go wrong")
 })
-@Api(tags=" User controller", description= " Operations with user ")
+@Api(tags = " User controller", description = " Operations with user ")
 public class UserRestController {
 
     private UserService userService;
@@ -74,12 +74,12 @@ public class UserRestController {
         if (userToUpdate == null) {
             throw new ResourceNotFoundException("User with id " + userWebDto.getUserId() + " not found");
         } else {
-            UserRegistrationDto userRegistrationDto = registrationDto.convertFromSourceDtoToTargetDto(userWebDto);
+            UserRegistrationDto userRegistrationDto = registrationDto.convertToServiceDto(userWebDto);
             return userService.updateUser(userRegistrationDto, userToUpdate);
         }
     }
 
-    @PostMapping("/create")
+    @PostMapping
     @ApiOperation(value = "Create user")
     public User getCreatedUser(@RequestBody UserRegistrationDto userRegistrationDto) {
         return userService.registerUser(userRegistrationDto);

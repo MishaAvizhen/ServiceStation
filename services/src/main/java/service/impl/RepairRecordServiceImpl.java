@@ -12,12 +12,12 @@ import repository.RepairRecordRepository;
 import repository.RepairRequestRepository;
 import service.RepairRecordService;
 import service.converters.impl.RepairRecordConverter;
+import service.dto.RepairRecordFilterDto;
 import service.dto.RepairRecordRegistrationDto;
 
 import java.util.List;
 import java.util.Optional;
-
-import static java.util.stream.Collectors.toList;
+import java.util.stream.Collectors;
 
 @Service
 public class RepairRecordServiceImpl implements RepairRecordService {
@@ -97,30 +97,31 @@ public class RepairRecordServiceImpl implements RepairRecordService {
         return repairRecordRepository.saveAndFlush(repairRecord);
     }
 
-    @Override
-    public RepairRecord findRepairRecordByUsernameAndRepairRecordDescription(String username, String repairRecordDescription) {
-        log.info(String.format("  repair record for user: {%s} \n and description: {%s} find ", username, repairRecordDescription));
-        // TODO вынести в sql
-        return repairRecordRepository.findAll().stream()
-                .filter(record -> record.getRepairRequest().getUser().getUsername().equals(username)
-                        && record.getRepairRecordDescription().equals(repairRecordDescription))
-                .findAny().orElse(null);
-    }
 
     @Override
     public List<RepairRecord> findRepairRecordsByUsername(String username) {
         log.info(String.format("Find  repair records of user: {%s} ", username));
+        return repairRecordRepository.findByUsername(username);
         // TODO перенести на уровень sql
-        return repairRecordRepository.findAll().stream()
-                .filter(record -> record.getRepairRequest().getUser().getUsername().equals(username))
-                .collect(toList());
     }
 
     @Override
-    public void deleteRepairRecordById(Long repairRecordId) {
-        log.info(String.format("Delete repair record with id=  {%s}", repairRecordId));
-        RepairRecord repairRecordAfterUpdate = repairRecordRepository.getOne(repairRecordId);
+    public void deleteById(Long id) {
+        log.info(String.format("Delete repair record with id=  {%s}", id));
+        RepairRecord repairRecordAfterUpdate = repairRecordRepository.getOne(id);
         repairRecordAfterUpdate.getRepairRequest().setRepairRequestStatus(RepairRequestStatus.IN_PROGRESS);
-        repairRecordRepository.deleteById(repairRecordId);
+        repairRecordRepository.deleteById(id);
+    }
+
+    @Override
+    public List<RepairRecord> filterRepairRecord(RepairRecordFilterDto filterDto) {
+        List<RepairRecord> allRepairRecords = repairRecordRepository.findAll();
+        return allRepairRecords.stream()
+                .filter(repairRecord -> filterDto.getUsername() == null ||
+                        filterDto.getUsername().equals(repairRecord.getRepairRequest().getUser().getUsername()))
+                .filter(repairRecord -> filterDto.getCarRemark() == null ||
+                        filterDto.getCarRemark().equals(repairRecord.getRepairRequest().getCarRemark()))
+                .filter(repairRecord -> filterDto.getId() == null || filterDto.getId().equals(repairRecord.getId().toString()))
+                .collect(Collectors.toList());
     }
 }

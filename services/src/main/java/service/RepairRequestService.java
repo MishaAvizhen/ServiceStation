@@ -2,6 +2,7 @@ package service;
 
 import entity.RepairRequest;
 import service.dto.AppointmentSlotDto;
+import service.dto.RepairRequestFilterDto;
 import service.dto.RepairRequestRegistrationDto;
 
 import java.util.List;
@@ -30,5 +31,7 @@ public interface RepairRequestService {
     void deleteRepairRequestById(Long repairRequestId);
 
     RepairRequest findRepairRequestById(Long repairRequestId);
+
+    List<RepairRequest> filterRepairRequest(RepairRequestFilterDto filterDto);
 
 }

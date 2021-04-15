@@ -40,7 +40,7 @@ public class RepairRequest extends BaseEntity {
     @JsonIgnore
     @OneToOne(cascade = {CascadeType.REFRESH}, mappedBy = "repairRequest", fetch = FetchType.EAGER)
     private RepairRecord repairRecord;
-
+    @JsonIgnore
     @OneToMany(cascade = {CascadeType.REFRESH}, mappedBy = "repairRequest", fetch = FetchType.EAGER)
     private List<Appointment> appointments;
 

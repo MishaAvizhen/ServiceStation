@@ -1,8 +1,11 @@
 package service.converters.impl;
 
 import entity.User;
+import org.springframework.stereotype.Component;
 import service.converters.Converter;
 import service.dto.UserRegistrationDto;
+
+@Component
 public class UserConverter implements Converter<User, UserRegistrationDto> {
     public UserConverter() {
     }

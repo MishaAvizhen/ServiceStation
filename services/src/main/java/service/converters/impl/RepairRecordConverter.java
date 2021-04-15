@@ -3,14 +3,14 @@ package service.converters.impl;
 import entity.RepairRecord;
 import entity.RepairRequest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import repository.RepairRequestRepository;
 import service.converters.Converter;
 import service.dto.RepairRecordRegistrationDto;
 
 import java.util.Optional;
 
-@Service
+@Component
 public class RepairRecordConverter implements Converter<RepairRecord, RepairRecordRegistrationDto> {
 
     private RepairRequestRepository repairRequestRepository;
