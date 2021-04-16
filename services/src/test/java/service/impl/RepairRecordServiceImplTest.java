@@ -46,7 +46,7 @@ public class RepairRecordServiceImplTest {
     @Before
     public void setUp() throws Exception {
         repairRecordConverter = new RepairRecordConverter(repairRequestRepository);
-        repairRecordService = new RepairRecordServiceImpl(repairRecordRepository, repairRequestRepository, repairRecordConverter);
+        repairRecordService = new RepairRecordServiceImpl(repairRecordRepository, repairRequestRepository, repairRecordConverter, repairRequestService);
     }
 
     @Test
@@ -123,7 +123,7 @@ public class RepairRecordServiceImplTest {
                 .setRepairRecordDescription(newRepairRecordDescription)
                 .setWorkPrice(newWorkPrice)
                 .setRepairRequest(repairRequestId)
-                .build(), repairRecordByIdToUpdate);
+                .build(), repairRecordId);
         RepairRecord repairRecordAfterUpdate = repairRecordTestData.getRepairRecordById(repairRecordId);
 
         RepairRequestStatus status = repairRecordAfterUpdate.getRepairRequest().getRepairRequestStatus();

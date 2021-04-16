@@ -20,7 +20,7 @@ public interface UserService {
 
     User registerUser(UserRegistrationDto userRegistrationDto);
 
-    User updateUser(UserRegistrationDto userRegistrationDto, User userToUpdate);
+    User updateUser(UserRegistrationDto userRegistrationDto, Long userId);
 
 
 }

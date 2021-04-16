@@ -17,7 +17,6 @@ import repository.AppointmentRepository;
 import repository.RepairRecordRepository;
 import repository.RepairRequestRepository;
 import repository.UserRepository;
-import service.AppointmentSlotService;
 import service.converters.impl.RepairRequestConverter;
 import service.dto.RepairRequestRegistrationDto;
 
@@ -63,7 +62,7 @@ public class RepairRequestServiceImplTest {
     @Before
     public void setUp() throws Exception {
         repairRequestConverter = new RepairRequestConverter(userService);
-        repairRequestService = new RepairRequestServiceImpl(repairRequestRepository, repairRequestConverter, appointmentService, appointmentSlotService);
+        repairRequestService = new RepairRequestServiceImpl(repairRequestRepository, userService, repairRequestConverter, appointmentService, appointmentSlotService);
         when(userRepository.findByUsername("user")).thenReturn(userTestData.getTestUserByUsername("user"));
         when(repairRequestRepository.findAll()).thenReturn(repairRequestTestData.getAllTestRepairRequest());
         when(repairRecordRepository.findAll()).thenReturn(repairRecordTestData.getAllRepairRecordForTest());
@@ -184,7 +183,7 @@ public class RepairRequestServiceImplTest {
                 .setDateOfRequest(new Date())
                 .setCarRemark(newCarRemark)
                 .setUsername(usernameToUpdate)
-                .build(), repairRequestToUpdate);
+                .build(), repairRequestId);
         RepairRequest updatedRepairRequest = repairRequestTestData.getRepairRequestById(repairRequestId);
         Assert.assertNotEquals("car remark wasn't update", carRemark, updatedRepairRequest.getCarRemark());
         Assert.assertNotEquals("repair request description wasn't update", repairRequestDescription, updatedRepairRequest.getRepairRequestDescription());

@@ -1,6 +1,7 @@
 package service.impl;
 
 
+import com.google.common.base.Preconditions;
 import entity.User;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,8 @@ import repository.UserRepository;
 import service.UserService;
 import service.converters.impl.UserConverter;
 import service.dto.UserRegistrationDto;
+import service.exceptions.NotContentException;
+import service.exceptions.ResourceNotFoundException;
 
 import java.util.List;
 import java.util.Optional;
@@ -31,6 +34,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findUserByUsername(String username) {
         log.info(String.format("Find user with name: {%s}", username));
+        User user = userRepository.findByUsername(username);
+        if (user == null) {
+            throw new ResourceNotFoundException(username);
+        }
         return userRepository.findByUsername(username);
     }
 
@@ -38,7 +45,7 @@ public class UserServiceImpl implements UserService {
     public User findUserById(Long userId) {
         log.info(String.format("Find user with id= {%s}", userId));
         Optional<User> optionalUser = userRepository.findById(userId);
-        return optionalUser.orElse(null);
+        return optionalUser.orElseThrow(() -> new ResourceNotFoundException(userId.toString()));
     }
 
     @Override
@@ -50,6 +57,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public void deleteUserById(Long userId) {
         log.info(String.format("Delete user with id=  {%s}", userId));
+        User user = findUserById(userId);
+        if (user == null) {
+            throw new NotContentException(userId.toString());
+        }
         userRepository.deleteById(userId);
 
     }
@@ -59,8 +70,8 @@ public class UserServiceImpl implements UserService {
         Optional<User> userOptional = userRepository.findById(userId);
         User user = userOptional.orElse(null);
         if (user == null) {
-            log.error(String.format("user with id :{%s} not found ", userId));
-            throw new RuntimeException("user not found");
+            log.info(String.format("user with id :{%s} not found ", userId));
+            throw new ResourceNotFoundException(userId.toString());
         } else {
             String username = user.getUsername();
             return repairRecordRepository.findAll().stream()
@@ -74,7 +85,6 @@ public class UserServiceImpl implements UserService {
     public User registerUser(UserRegistrationDto userRegistrationDto) {
 
         User existUser = userRepository.findByUsername(userRegistrationDto.getUsername());
-
         if (existUser != null) {
             log.info(String.format("user with info:{%s} already exist ", userRegistrationDto.toString()));
             throw new IllegalArgumentException("User " + userRegistrationDto.getUsername() + " already exist");
@@ -87,11 +97,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User updateUser(UserRegistrationDto userRegistrationDto, User userToUpdate) {
+    public User updateUser(UserRegistrationDto userRegistrationDto, Long userId) {
         userRegistrationDto.setPassword(encodePassword(userRegistrationDto.getPassword()));
+        User userToUpdate = findUserById(userId);
+        Preconditions.checkNotNull(userToUpdate, "User to update with id " + userId + " not found");
         User updatedUser = userConverter.convertToExistingEntity(userRegistrationDto, userToUpdate);
         User userInDb = userRepository.findByUsername(updatedUser.getUsername());
-        if (userInDb != null) {
+        if (userInDb != null && !userInDb.equals(updatedUser)) {
             log.info(String.format("user with info:{%s} already exist ", userRegistrationDto.toString()));
             throw new IllegalArgumentException("User " + userRegistrationDto.getUsername() + " already exist");
         }

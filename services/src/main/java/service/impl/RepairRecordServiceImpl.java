@@ -8,12 +8,15 @@ import entity.consts.RepairRequestStatus;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import repository.RepairRecordRepository;
 import repository.RepairRequestRepository;
 import service.RepairRecordService;
+import service.RepairRequestService;
 import service.converters.impl.RepairRecordConverter;
 import service.dto.RepairRecordFilterDto;
 import service.dto.RepairRecordRegistrationDto;
+import service.exceptions.ResourceNotFoundException;
 
 import java.util.List;
 import java.util.Optional;
@@ -29,13 +32,16 @@ public class RepairRecordServiceImpl implements RepairRecordService {
 
     private RepairRecordConverter repairRecordConverter;
 
+    private RepairRequestService repairRequestService;
+
     @Autowired
     public RepairRecordServiceImpl(RepairRecordRepository repairRecordRepository,
                                    RepairRequestRepository repairRequestRepository,
-                                   RepairRecordConverter repairRecordConverter) {
+                                   RepairRecordConverter repairRecordConverter, RepairRequestService repairRequestService) {
         this.repairRecordRepository = repairRecordRepository;
         this.repairRequestRepository = repairRequestRepository;
         this.repairRecordConverter = repairRecordConverter;
+        this.repairRequestService = repairRequestService;
     }
 
     @Override
@@ -48,7 +54,7 @@ public class RepairRecordServiceImpl implements RepairRecordService {
     public RepairRecord findRepairRecordById(Long repairRecordId) {
         log.info(String.format("Find repair record  with id= {%s}", repairRecordId));
         Optional<RepairRecord> recordOptional = repairRecordRepository.findById(repairRecordId);
-        return recordOptional.orElse(null);
+        return recordOptional.orElseThrow(() -> new ResourceNotFoundException(repairRecordId.toString()));
     }
 
     @Override
@@ -72,10 +78,9 @@ public class RepairRecordServiceImpl implements RepairRecordService {
         RepairRecord repairRecord = repairRecordConverter.convertToEntity(repairRecordRegistrationDto);
         RepairRequestStatus repairRequestStatus = repairRecord.getRepairRequest().getRepairRequestStatus();
         if (repairRequestStatus.equals(RepairRequestStatus.PROCESSED)) {
-            log.info(String.format("  repair record with info: {%s} was not created ", repairRecordRegistrationDto.toString()));
+            log.info(String.format("  repair record with info: {%s} was not created, status is PROCESSED ", repairRecordRegistrationDto.toString()));
             throw new IllegalArgumentException("Error!!! Status is incorrect");
         }
-
         RepairRecord record = repairRecordRepository.save(repairRecord);
         repairRecord.getRepairRequest().setRepairRequestStatus(RepairRequestStatus.PROCESSED);
         log.info(String.format("  repair record with info: {%s} was created ", repairRecordRegistrationDto.toString()));
@@ -84,13 +89,19 @@ public class RepairRecordServiceImpl implements RepairRecordService {
     }
 
     @Override
-    public RepairRecord updateRepairRecord(RepairRecordRegistrationDto repairRecordRegistrationDto, RepairRecord repairRecordToUpdate) {
-        Long id = repairRecordToUpdate.getRepairRequest().getId();
-        Long repairRequestToCompare = repairRecordRegistrationDto.getRepairRequestId();
+    public RepairRecord updateRepairRecord(RepairRecordRegistrationDto repairRecordRegistrationDto, Long id) {
 
-        if (!id.equals(repairRequestToCompare)) {
-            log.info(String.format("Requests id are not equals, {%s} != {%s}", id, repairRequestToCompare));
-            throw new IllegalArgumentException("Requests id are not equals");
+        RepairRecord repairRecordToUpdate = findRepairRecordById(id);
+        Long repairRequestToCompare = repairRecordRegistrationDto.getRepairRequestId();
+        RepairRequest repairRequest = repairRequestService.findRepairRequestById(repairRequestToCompare);
+        Long requestIdToCompareInDb = repairRecordToUpdate.getRepairRequest().getId();
+
+        Preconditions.checkNotNull(repairRecordToUpdate, "RepairRecord to update with id " + repairRecordToUpdate.getId() + " not found");
+        Preconditions.checkNotNull(repairRequest, "RepairRequest to update with id " + repairRequestToCompare + " not found");
+        // TODO перенести в сервис
+        if (!requestIdToCompareInDb.equals(repairRequestToCompare)) {
+            log.info(String.format("Requests id are not equals, {%s} != {%s}", requestIdToCompareInDb, repairRequestToCompare));
+            throw new IllegalArgumentException(String.format("Requests id {%s} != {%s} ", requestIdToCompareInDb, repairRequestToCompare));
         }
         log.info(String.format("  repair record with info: {%s} was updated ", repairRecordRegistrationDto.toString()));
         RepairRecord repairRecord = repairRecordConverter.convertToExistingEntity(repairRecordRegistrationDto, repairRecordToUpdate);
@@ -101,6 +112,11 @@ public class RepairRecordServiceImpl implements RepairRecordService {
     @Override
     public List<RepairRecord> findRepairRecordsByUsername(String username) {
         log.info(String.format("Find  repair records of user: {%s} ", username));
+        List<RepairRecord> repairRecordsOfUser = repairRecordRepository.findByUsername(username);
+        // TODO apache common - CollectionUtils.isNotEmpty()
+        if (CollectionUtils.isEmpty(repairRecordsOfUser)) {
+            throw new ResourceNotFoundException(username);
+        }
         return repairRecordRepository.findByUsername(username);
         // TODO перенести на уровень sql
     }

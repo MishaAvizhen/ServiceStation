@@ -1,6 +1,7 @@
 package service.impl;
 
 import entity.RepairRequest;
+import entity.User;
 import entity.consts.RepairRequestStatus;
 import entity.consts.SlotStatus;
 import org.apache.log4j.Logger;
@@ -8,9 +9,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import service.AppointmentSlotService;
 import service.RepairRequestService;
+import service.UserService;
 import service.VacationService;
 import service.dto.AppointmentSlotDto;
 import service.dto.RepairRequestRegistrationDto;
+import service.dto.VacationRegistrationDto;
+import service.exceptions.ResourceNotFoundException;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -22,27 +26,36 @@ public class VacationServiceImpl implements VacationService {
 
     private RepairRequestService repairRequestService;
     private AppointmentSlotService appointmentSlotService;
+    private UserService userService;
 
     @Autowired
-    public VacationServiceImpl(RepairRequestService repairRequestService, AppointmentSlotService appointmentSlotService) {
+    public VacationServiceImpl(RepairRequestService repairRequestService, AppointmentSlotService appointmentSlotService, UserService userService) {
         this.repairRequestService = repairRequestService;
         this.appointmentSlotService = appointmentSlotService;
+        this.userService = userService;
     }
 
     @Override
     // TODO так делать не стоит
-    public RepairRequest registerVacationRequest(String masterUsername, Date start, Date end) {
-        List<AppointmentSlotDto> availableAppointmentSlotsByDates = getVacationSlots(masterUsername, start, end);
+    public RepairRequest registerVacationRequest(VacationRegistrationDto vacationRegistrationDto) {
+        String masterName = vacationRegistrationDto.getMasterName();
+        Date startDate = vacationRegistrationDto.getStartDate();
+        Date endDate = vacationRegistrationDto.getEndDate();
+        User master = userService.findUserByUsername(masterName);
+        if (master == null) {
+            throw new ResourceNotFoundException("Master with username " + masterName + " not found");
+        }
+        List<AppointmentSlotDto> availableAppointmentSlotsByDates = getVacationSlots(masterName, startDate, endDate);
         RepairRequestRegistrationDto repairRequestRegistrationDto = new RepairRequestRegistrationDto.Builder()
                 .setCarRemark("vacation")
                 .setRepairRequestDescription("vacation")
-                .setUsername(masterUsername)
+                .setUsername(masterName)
                 .setDateOfRequest(new Date())
                 .setRepairRequestStatus(RepairRequestStatus.IN_PROGRESS)
                 .build();
         RepairRequest repairRequest = repairRequestService.registerRepairRequest(repairRequestRegistrationDto, availableAppointmentSlotsByDates);
         log.info(String.format("Vacation for master: {%s}, start date: {%s} - end date: {%s} was created ",
-                repairRequestRegistrationDto.getUsername(), start, end));
+                repairRequestRegistrationDto.getUsername(), startDate, endDate));
         return repairRequest;
     }
 

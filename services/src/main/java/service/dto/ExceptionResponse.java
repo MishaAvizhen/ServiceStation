@@ -1,10 +1,9 @@
-package exceptions;
+package service.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
 import java.util.Date;
 
 @Getter

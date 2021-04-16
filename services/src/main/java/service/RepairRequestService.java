@@ -26,7 +26,7 @@ public interface RepairRequestService {
     RepairRequest registerRepairRequest(RepairRequestRegistrationDto repairRequestRegistrationDtoWOSlots,
                                         List<AppointmentSlotDto> appointmentSlotDtos);
 
-    RepairRequest updateRepairRequest(RepairRequestRegistrationDto repairRequestRegistrationDto, RepairRequest repairRequestToUpdate);
+    RepairRequest updateRepairRequest(RepairRequestRegistrationDto repairRequestRegistrationDto, Long id);
 
     void deleteRepairRequestById(Long repairRequestId);
 

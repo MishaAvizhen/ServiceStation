@@ -72,7 +72,7 @@ public class UserServiceImplTest {
         try {
             User notExistingUser = new User();
             notExistingUser.setUsername("notExistingUser");
-            userService.updateUser(new UserRegistrationDto.Builder().build(), notExistingUser);
+            userService.updateUser(new UserRegistrationDto.Builder().build(), notExistingUser.getId());
         } catch (Exception e) {
             Assert.assertEquals("user not found", e.getMessage());
         }
@@ -93,7 +93,7 @@ public class UserServiceImplTest {
                 .setUsername(userToUpdate.getUsername())
                 .setPhoneNumber(newPhoneNumber)
                 .setRole(userToUpdate.getRole())
-                .build(), userToUpdate);
+                .build(), userToUpdate.getId());
         User updatedUser = userTestData.getTestUserByUsername(usernameToUpdate);
         Assert.assertNotEquals("email wasn't update", email, updatedUser.getEmail());
         Assert.assertNotEquals("phoneNumber wasn't update", phoneNumber, updatedUser.getPhoneNumber());

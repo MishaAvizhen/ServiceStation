@@ -1,6 +1,6 @@
 package controllers;
 
-import converters.impl.AppointmentSlotDtoToAppointmentSlotWebDtoConverter;
+import converters.impl.AppointmentSlotWebConverter;
 import dto.AppointmentSlotWebDto;
 import entity.Appointment;
 import io.swagger.annotations.Api;
@@ -15,12 +15,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import service.AppointmentService;
 import service.AppointmentSlotService;
+import service.dto.AppointmentFilterDto;
 import service.dto.AppointmentSlotDto;
 
 import java.util.Date;
 import java.util.List;
-
-import static java.util.stream.Collectors.toList;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(value = "/api/appointments")
@@ -36,20 +36,23 @@ import static java.util.stream.Collectors.toList;
 public class AppointmentRestController {
     private AppointmentService appointmentService;
     private AppointmentSlotService appointmentSlotService;
-    private AppointmentSlotDtoToAppointmentSlotWebDtoConverter appointmentSlotDtoToAppointmentSlotWebDtoConverter;
+    private AppointmentSlotWebConverter appointmentSlotWebConverter;
 
     @Autowired
     public AppointmentRestController(AppointmentService appointmentService, AppointmentSlotService appointmentSlotService,
-                                     AppointmentSlotDtoToAppointmentSlotWebDtoConverter appointmentSlotDtoToAppointmentSlotWebDtoConverter) {
+                                     AppointmentSlotWebConverter appointmentSlotWebConverter) {
         this.appointmentService = appointmentService;
         this.appointmentSlotService = appointmentSlotService;
-        this.appointmentSlotDtoToAppointmentSlotWebDtoConverter = appointmentSlotDtoToAppointmentSlotWebDtoConverter;
+        this.appointmentSlotWebConverter = appointmentSlotWebConverter;
     }
 
     @GetMapping
     @ApiOperation(value = "Get all appointments")
-    public List<Appointment> getAllAppointments() {
-        return appointmentService.findAllAppointment();
+    public List<Appointment> getAllAppointments(@RequestParam(value = "masterName", required = false) String masterName,
+                                                @RequestParam(value = "username", required = false) String username,
+                                                @RequestParam(value = "status", required = false) String status) {
+        AppointmentFilterDto appointmentFilterDto = new AppointmentFilterDto(masterName, username, status);
+        return appointmentService.filterAppointments(appointmentFilterDto);
     }
 
     @GetMapping("/slots")
@@ -59,7 +62,7 @@ public class AppointmentRestController {
         List<AppointmentSlotDto> availableAppointmentSlotsByDate = appointmentSlotService.getAvailableAppointmentSlotsByDate(targetDate);
         // TODO переписать на стрим
         return availableAppointmentSlotsByDate.stream()
-                .map(appointmentSlotDto -> appointmentSlotDtoToAppointmentSlotWebDtoConverter.convertToServiceDto(appointmentSlotDto))
-                .collect(toList());
+                .map(appointmentSlotDto -> appointmentSlotWebConverter.convertToServiceDto(appointmentSlotDto))
+                .collect(Collectors.toList());
     }
 }

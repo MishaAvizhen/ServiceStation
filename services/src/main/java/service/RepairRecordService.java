@@ -17,7 +17,7 @@ public interface RepairRecordService {
 
     RepairRecord registerRepairRecord(RepairRecordRegistrationDto repairRecordRegistrationDto);
 
-    RepairRecord updateRepairRecord(RepairRecordRegistrationDto repairRecordRegistrationDto, RepairRecord repairRecordToUpdate);
+    RepairRecord updateRepairRecord(RepairRecordRegistrationDto repairRecordRegistrationDto, Long id);
 
     List<RepairRecord> findRepairRecordsByUsername(String username);
 

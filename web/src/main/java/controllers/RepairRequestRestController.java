@@ -1,12 +1,8 @@
 package controllers;
 
-import converters.impl.RepairRequestFromRegistrationWebDtoToRegistrationDtoConverter;
-import converters.impl.RepairRequestFromWebDtoToRegistrationDtoConverter;
+import converters.impl.RepairRequestWebConverter;
 import dto.RepairRequestRegistrationWebDto;
-import dto.RepairRequestWebDto;
 import entity.RepairRequest;
-import entity.User;
-import exceptions.ResourceNotFoundException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -14,14 +10,12 @@ import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import service.RepairRequestService;
-import service.UserService;
 import service.VacationService;
 import service.dto.RepairRequestFilterDto;
 import service.dto.RepairRequestRegistrationDto;
 import service.dto.VacationRegistrationDto;
 
 import java.security.Principal;
-import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -37,20 +31,15 @@ import java.util.List;
 @Api(tags = " Repair request controller", description = " Operations with repair request ")
 public class RepairRequestRestController {
     private RepairRequestService repairRequestService;
-    private UserService userService;
-    private RepairRequestFromRegistrationWebDtoToRegistrationDtoConverter repairRequestFromRegistrationWebDtoToRegistrationDtoConverter;
-    private RepairRequestFromWebDtoToRegistrationDtoConverter repairRequestFromWebDtoToRegistrationDtoConverter;
+    private RepairRequestWebConverter repairRequestWebConverter;
     private VacationService vacationService;
 
     @Autowired
     public RepairRequestRestController(RepairRequestService repairRequestService,
-                                       UserService userService, RepairRequestFromRegistrationWebDtoToRegistrationDtoConverter repairRequestFromRegistrationWebDtoToRegistrationDtoConverter,
-                                       RepairRequestFromWebDtoToRegistrationDtoConverter repairRequestFromWebDtoToRegistrationDtoConverter,
+                                       RepairRequestWebConverter repairRequestWebConverter,
                                        VacationService vacationService) {
         this.repairRequestService = repairRequestService;
-        this.userService = userService;
-        this.repairRequestFromRegistrationWebDtoToRegistrationDtoConverter = repairRequestFromRegistrationWebDtoToRegistrationDtoConverter;
-        this.repairRequestFromWebDtoToRegistrationDtoConverter = repairRequestFromWebDtoToRegistrationDtoConverter;
+        this.repairRequestWebConverter = repairRequestWebConverter;
         this.vacationService = vacationService;
     }
 
@@ -69,11 +58,7 @@ public class RepairRequestRestController {
     @ApiOperation(value = "Get all repair requests of current user")
     public List<RepairRequest> getAllRepairRequestsOfUser(Principal principal) {
         String username = principal.getName();
-        List<RepairRequest> allRepairRequestsOfUser = repairRequestService.findAllRepairRequestsOfUser(username);
-        if (allRepairRequestsOfUser == null) {
-            throw new ResourceNotFoundException("Requests of user " + username + " not found");
-        }
-        return allRepairRequestsOfUser;
+        return repairRequestService.findAllRepairRequestsOfUser(username);
     }
 
     @DeleteMapping("/{id}")
@@ -86,27 +71,17 @@ public class RepairRequestRestController {
     @PutMapping("/{id}")
     @ApiOperation(value = "Update repair request")
     public RepairRequest getUpdatedRepairRequest(@PathVariable Long id,
-                                                 @RequestBody RepairRequestWebDto repairRequestWebDto) {
-        RepairRequest repairRequestToUpdate = repairRequestService.findRepairRequestById(id);
-        if (repairRequestToUpdate == null) {
-            throw new ResourceNotFoundException("RepairRequest to update with id " + repairRequestWebDto.getRequestId() + " not found");
-        } else {
-            RepairRequestRegistrationDto repairRequestRegistrationDto =
-                    repairRequestFromWebDtoToRegistrationDtoConverter.convertToServiceDto(repairRequestWebDto);
-            return repairRequestService.updateRepairRequest(repairRequestRegistrationDto, repairRequestToUpdate);
-        }
+                                                 @RequestBody RepairRequestRegistrationWebDto repairRequestRegistrationWebDto) {
+        RepairRequestRegistrationDto repairRequestRegistrationDto =
+                repairRequestWebConverter.convertToServiceDto(repairRequestRegistrationWebDto);
+        return repairRequestService.updateRepairRequest(repairRequestRegistrationDto, id);
     }
 
     @PostMapping
     @ApiOperation(value = "Create repair request")
     public RepairRequest getCreatedRepairRequest(@RequestBody RepairRequestRegistrationWebDto repairRequestRegistrationWebDto) {
-        String clientUsername = repairRequestRegistrationWebDto.getClientUsername();
-        User client = userService.findUserByUsername(clientUsername);
-        if (client == null) {
-            throw new ResourceNotFoundException("Client with username " + clientUsername + " not found");
-        }
         RepairRequestRegistrationDto repairRequestRegistrationDto =
-                repairRequestFromRegistrationWebDtoToRegistrationDtoConverter.convertToServiceDto(repairRequestRegistrationWebDto);
+                repairRequestWebConverter.convertToServiceDto(repairRequestRegistrationWebDto);
         return repairRequestService.registerRepairRequest(repairRequestRegistrationDto);
     }
 
@@ -114,15 +89,7 @@ public class RepairRequestRestController {
     @ApiOperation(value = "Create repair request for vacation for master")
     public RepairRequest getCreatedRepairRequestForVacation(@RequestBody VacationRegistrationDto vacationRegistrationDto) {
         // TODO перенсти в сервисы
-        String masterName = vacationRegistrationDto.getMasterName();
-        Date startDate = vacationRegistrationDto.getStartDate();
-        Date endDate = vacationRegistrationDto.getEndDate();
-        User master = userService.findUserByUsername(masterName);
-        if (master == null) {
-            throw new ResourceNotFoundException("Master with username " + masterName + " not found");
-        }
-
-        return vacationService.registerVacationRequest(masterName, startDate, endDate);
+        return vacationService.registerVacationRequest(vacationRegistrationDto);
     }
 
 }

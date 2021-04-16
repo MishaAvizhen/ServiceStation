@@ -1,9 +1,9 @@
-package exceptions;
+package service.exceptions;
 
 public class NotContentException extends RuntimeException {
 
     public NotContentException(String message) {
-        super(message);
+        super("Error, not content:"+ message);
     }
 
 }

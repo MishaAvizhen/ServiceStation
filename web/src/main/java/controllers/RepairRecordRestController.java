@@ -1,16 +1,12 @@
 package controllers;
 
-import converters.impl.RepairRecordFromDtoToUpdateToRegistrationDtoConverter;
-import converters.impl.RepairRecordFromRegistrationWebDtoToRegistrationDtoConverter;
-import dto.RepairRecordDtoToUpdate;
+import converters.impl.RepairRecordWebConverter;
 import dto.RepairRecordRegistrationWebDto;
 import entity.RepairRecord;
-import exceptions.ResourceNotFoundException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
-import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 import service.RepairRecordService;
 import service.dto.RepairRecordFilterDto;
@@ -32,13 +28,12 @@ import java.util.List;
 @Api(tags = " Repair record controller", description = " Operations with repair record ")
 public class RepairRecordRestController {
     private RepairRecordService repairRecordService;
-    private RepairRecordFromRegistrationWebDtoToRegistrationDtoConverter repairRecordFromRegistrationWebDtoToRegistrationDtoConverter;
-    private RepairRecordFromDtoToUpdateToRegistrationDtoConverter repairRecordFromDtoToUpdateToRegistrationDtoConverter;
+    private RepairRecordWebConverter repairRecordWebConverter;
 
-    public RepairRecordRestController(RepairRecordService repairRecordService, RepairRecordFromRegistrationWebDtoToRegistrationDtoConverter repairRecordFromRegistrationWebDtoToRegistrationDtoConverter, RepairRecordFromDtoToUpdateToRegistrationDtoConverter repairRecordFromDtoToUpdateToRegistrationDtoConverter) {
+    public RepairRecordRestController(RepairRecordService repairRecordService,
+                                      RepairRecordWebConverter repairRecordWebConverter) {
         this.repairRecordService = repairRecordService;
-        this.repairRecordFromRegistrationWebDtoToRegistrationDtoConverter = repairRecordFromRegistrationWebDtoToRegistrationDtoConverter;
-        this.repairRecordFromDtoToUpdateToRegistrationDtoConverter = repairRecordFromDtoToUpdateToRegistrationDtoConverter;
+        this.repairRecordWebConverter = repairRecordWebConverter;
     }
 
     @GetMapping
@@ -49,7 +44,6 @@ public class RepairRecordRestController {
         RepairRecordFilterDto filterDto = new RepairRecordFilterDto(id, username, carRemark);
         // TODO перенести в сервисы, обернуть параметры в Dto
         return repairRecordService.filterRepairRecord(filterDto);
-
     }
 
     // TODO переименовать username -> my/profile ...
@@ -57,12 +51,8 @@ public class RepairRecordRestController {
     @ApiOperation(value = "Get all repair records of current user")
     public List<RepairRecord> repairRecordsOfUser(Principal principal) {
         String username = principal.getName();
-        List<RepairRecord> repairRecordsOfUser = repairRecordService.findRepairRecordsByUsername(username);
         // TODO apache common - CollectionUtils.isNotEmpty()
-        if (CollectionUtils.isEmpty(repairRecordsOfUser)) {
-            throw new ResourceNotFoundException("Records of user " + username + " not found");
-        }
-        return repairRecordsOfUser;
+        return repairRecordService.findRepairRecordsByUsername(username);
     }
 
     // TODO упростить до id
@@ -75,17 +65,12 @@ public class RepairRecordRestController {
 
     @PutMapping("/{id}")
     @ApiOperation(value = "Update repair record")
-    public RepairRecord getUpdatedRepairRecord(@RequestBody RepairRecordDtoToUpdate repairRecordDtoToUpdate,
-                                               @PathVariable Long recordId) {
-        RepairRecord repairRecordToUpdate = repairRecordService.findRepairRecordById(recordId);
+    public RepairRecord getUpdatedRepairRecord(@RequestBody RepairRecordRegistrationWebDto repairRecordRegistrationWebDto,
+                                               @PathVariable Long id) {
         // TODO перенести в сервис
-        if (repairRecordToUpdate == null) {
-            throw new ResourceNotFoundException("RepairRecord to update with id " + repairRecordDtoToUpdate.getRepairRecordId() + " not found");
-        } else {
-            RepairRecordRegistrationDto repairRecordRegistrationDto =
-                    repairRecordFromDtoToUpdateToRegistrationDtoConverter.convertToServiceDto(repairRecordDtoToUpdate);
-            return repairRecordService.updateRepairRecord(repairRecordRegistrationDto, repairRecordToUpdate);
-        }
+        RepairRecordRegistrationDto repairRecordRegistrationDto =
+                repairRecordWebConverter.convertToServiceDto(repairRecordRegistrationWebDto);
+        return repairRecordService.updateRepairRecord(repairRecordRegistrationDto, id);
     }
 
     // TODO create излишен
@@ -93,7 +78,7 @@ public class RepairRecordRestController {
     @ApiOperation(value = "Create repair record")
     public RepairRecord getCreatedRepairRecord(@RequestBody RepairRecordRegistrationWebDto repairRecordRegistrationWebDto) {
         RepairRecordRegistrationDto repairRecordRegistrationDto =
-                repairRecordFromRegistrationWebDtoToRegistrationDtoConverter.convertToServiceDto(repairRecordRegistrationWebDto);
+                repairRecordWebConverter.convertToServiceDto(repairRecordRegistrationWebDto);
         return repairRecordService.registerRepairRecord(repairRecordRegistrationDto);
     }
 }

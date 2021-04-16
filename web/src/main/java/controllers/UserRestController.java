@@ -1,10 +1,8 @@
 package controllers;
 
-import converters.impl.UserWebDtoToUserRegistrationDtoConverter;
+import converters.impl.UserWebConverter;
 import dto.UserWebDto;
 import entity.User;
-import exceptions.NotContentException;
-import exceptions.ResourceNotFoundException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -31,10 +29,10 @@ import java.util.List;
 public class UserRestController {
 
     private UserService userService;
-    private UserWebDtoToUserRegistrationDtoConverter registrationDto;
+    private UserWebConverter registrationDto;
 
     @Autowired
-    public UserRestController(UserService userService, UserWebDtoToUserRegistrationDtoConverter registrationDto) {
+    public UserRestController(UserService userService, UserWebConverter registrationDto) {
         this.userService = userService;
         this.registrationDto = registrationDto;
     }
@@ -45,38 +43,24 @@ public class UserRestController {
         return userService.findAllUsers();
     }
 
-    @GetMapping("/username")
+    @GetMapping("/profile")
     @ApiOperation(value = "Get user by username")
     public User getUserByUsername(Principal principal) {
         String username = principal.getName();
-        User user = userService.findUserByUsername(username);
-        if (user == null) {
-            throw new ResourceNotFoundException(username);
-        }
-        return user;
+        return userService.findUserByUsername(username);
     }
 
     @DeleteMapping("/{userId}")
     @ApiOperation(value = "Delete user")
     public void deleteUserById(@PathVariable Long userId) {
-        User user = userService.findUserById(userId);
-        if (user == null) {
-            throw new NotContentException(userId.toString());
-        } else {
-            userService.deleteUserById(userId);
-        }
+        userService.deleteUserById(userId);
     }
 
     @PutMapping("/{userId}")
     @ApiOperation(value = "Update user")
     public User getUpdatedUser(@RequestBody UserWebDto userWebDto, @PathVariable Long userId) {
-        User userToUpdate = userService.findUserById(userId);
-        if (userToUpdate == null) {
-            throw new ResourceNotFoundException("User with id " + userWebDto.getUserId() + " not found");
-        } else {
-            UserRegistrationDto userRegistrationDto = registrationDto.convertToServiceDto(userWebDto);
-            return userService.updateUser(userRegistrationDto, userToUpdate);
-        }
+        UserRegistrationDto userRegistrationDto = registrationDto.convertToServiceDto(userWebDto);
+        return userService.updateUser(userRegistrationDto, userId);
     }
 
     @PostMapping
@@ -88,10 +72,6 @@ public class UserRestController {
     @GetMapping("/{userId}/price")
     @ApiOperation(value = "Get total work and detail price of user")
     public Long getSumPriceOfUser(@PathVariable Long userId) {
-        User user = userService.findUserById(userId);
-        if (user == null) {
-            throw new ResourceNotFoundException(userId.toString());
-        }
         return userService.getSumWorkPriceAndDetailPrice(userId);
     }
 
@@ -100,9 +80,6 @@ public class UserRestController {
     public Long getMySumWorkAndDetailPrice(Principal principal) {
         String username = principal.getName();
         User user = userService.findUserByUsername(username);
-        if (user == null) {
-            throw new ResourceNotFoundException(username);
-        }
         return userService.getSumWorkPriceAndDetailPrice(user.getId());
     }
 }

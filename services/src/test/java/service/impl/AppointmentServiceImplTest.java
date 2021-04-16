@@ -34,7 +34,7 @@ public class AppointmentServiceImplTest {
     @Test
     public void findAllAppointment() throws Exception {
         when(appointmentRepository.findAll()).thenReturn(appointmentTestData.getAllAppointments());
-        List<Appointment> actualAppointments = appointmentService.findAllAppointment();
+        List<Appointment> actualAppointments = appointmentService.findAllAppointments();
         Assert.assertEquals(appointmentTestData.getAllAppointments().size(), actualAppointments.size());
     }
 

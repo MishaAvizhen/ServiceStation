@@ -9,11 +9,13 @@ import repository.RepairRequestRepository;
 import repository.UserRepository;
 import service.AppointmentService;
 import service.AppointmentSlotService;
-import service.common.LocalDateTimeOperations;
+import service.converters.impl.AppointmentConverter;
+import service.dto.AppointmentFilterDto;
 import service.dto.AppointmentSlotDto;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class AppointmentServiceImpl implements AppointmentService {
@@ -26,12 +28,18 @@ public class AppointmentServiceImpl implements AppointmentService {
     private RepairRequestRepository repairRequestRepository;
     @Autowired
     private AppointmentSlotService appointmentSlotService;
+    @Autowired
+    private AppointmentConverter appointmentConverter;
+
 
     @Override
-    // TODO добавить в контроллер
-    public List<Appointment> findAllAppointment() {
-        log.info("Find all appointments");
-        return appointmentRepository.findAll();
+    public List<Appointment> filterAppointments(AppointmentFilterDto filterDto) {
+        List<Appointment> list = appointmentRepository.findAll();
+        return list.stream()
+                .filter(appointment -> filterDto.getUsername() == null || filterDto.getUsername().equals(appointment.getClient().getUsername()))
+                .filter(appointment -> filterDto.getMasterName() == null || filterDto.getMasterName().equals(appointment.getMaster().getUsername()))
+                .filter(appointment -> filterDto.getStatus() == null || filterDto.getStatus().equals(appointment.getSlotStatus().toString()))
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -39,24 +47,23 @@ public class AppointmentServiceImpl implements AppointmentService {
         if (!appointmentSlotService.isAppointmentSlotAvailable(appointmentSlotDto)) {
             throw new IllegalArgumentException("Appointment slot is Busy");
         }
-        Date startDate = LocalDateTimeOperations.convertLocalDateTimeToDate(appointmentSlotDto.getStartDate());
-        Date endDate = LocalDateTimeOperations.convertLocalDateTimeToDate(appointmentSlotDto.getEndDate());
-        if (startDate.before(new Date()) || endDate.before(new Date())) {
-            log.info(String.format("Appointment was not created, Date {%s} - {%s} incorrect! Date in the  past ", startDate, endDate));
+        LocalDateTime lt = LocalDateTime.now();
+        LocalDateTime startDate = appointmentSlotDto.getStartDate();
+        LocalDateTime endDate = appointmentSlotDto.getEndDate();
+        if (startDate.isBefore(lt) || endDate.isBefore(lt)) {
             throw new IllegalArgumentException("Date incorrect! Date in the  past");
         } else {
             // TODO перенести в конвертер
-            Appointment appointment = new Appointment();
-            appointment.setMaster(appointmentSlotDto.getMaster());
-            appointment.setStartDate(startDate);
-            appointment.setEndDate(endDate);
-            appointment.setSlotStatus(appointmentSlotDto.getSlotStatus());
-            appointment.setClient(userRepository.getOne(userId));
-            appointment.setNotes(" notes...");
-            appointment.setRepairRequest(repairRequestRepository.getOne(repairRequestId));
+            Appointment appointment = appointmentConverter.convertToEntity(appointmentSlotDto, userId, repairRequestId);
             log.info(String.format("Appointment with info: {%s}, {%s} was created for user with id: {%s} ",
-                    appointmentSlotDto.getStartDate(), appointmentSlotDto.getEndDate(), userId));
+                    startDate, endDate, userId));
             return appointmentRepository.save(appointment);
         }
+    }
+
+    @Override
+    public List<Appointment> findAllAppointments() {
+        log.info("Find all appointments");
+        return appointmentRepository.findAll();
     }
 }

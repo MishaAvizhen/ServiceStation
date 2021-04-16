@@ -13,7 +13,6 @@ import lombok.*;
 
 public class UserWebDto {
 
-    private Long userId;
     private String username;
     private String password;
     private String phoneNumber;
