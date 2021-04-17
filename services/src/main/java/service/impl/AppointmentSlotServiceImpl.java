@@ -100,7 +100,7 @@ public class AppointmentSlotServiceImpl implements AppointmentSlotService {
     private List<User> findAllMasters() {
         return userService.findAllUsers().stream()
                 .filter(user -> user.getRole().equals(Role.MASTER))
-                .collect(toList());
+                .collect(Collectors.toList());
     }
 
     private List<Map.Entry<LocalDateTime, LocalDateTime>> separateDayToSlots(LocalDateTime start, LocalDateTime end) {

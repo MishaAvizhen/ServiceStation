@@ -16,7 +16,7 @@ import java.util.Date;
 
 @ControllerAdvice
 // TODO разобраться что такое ResponseEntityExceptionHandler
-public class GlobalExceptionControllerAdvice extends ResponseEntityExceptionHandler {
+public class GlobalExceptionControllerAdvice  {
     private static final Logger log = Logger.getLogger(GlobalExceptionControllerAdvice.class);
 
     @ExceptionHandler(value = {ResourceNotFoundException.class, NullPointerException.class})

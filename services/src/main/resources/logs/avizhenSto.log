@@ -28708,3 +28708,5 @@ service.exceptions.ResourceNotFoundException: Resource not found: 21
 2021-04-16 17:36:08 INFO  AppointmentServiceImpl:35 - Find all appointments
 2021-04-16 17:36:43 INFO  AppointmentSlotServiceImpl:37 - get available appointment slot to date: {Thu Apr 22 00:00:00 MSK 2021}
 2021-04-16 18:02:22 INFO  RepairRecordServiceImpl:55 - Find repair record  with id= {1254}
+2021-04-17 20:44:13 INFO  RepairRecordServiceImpl:114 - Find  repair records of user: {test} 
+2021-04-17 20:44:25 INFO  RepairRecordServiceImpl:114 - Find  repair records of user: {test} 

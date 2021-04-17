@@ -31,22 +31,18 @@ import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class RepairRequestServiceImplTest {
-
     @Mock
     private RepairRequestRepository repairRequestRepository;
     @Mock
     private RepairRecordRepository repairRecordRepository;
     @Mock
     private AppointmentRepository appointmentRepository;
-
     @Mock
     private UserRepository userRepository;
     @Mock
     private AppointmentServiceImpl appointmentService;
-
     @Mock
     private AppointmentSlotServiceImpl appointmentSlotService;
-
     @InjectMocks
     private UserServiceImpl userService;
 
@@ -58,7 +54,6 @@ public class RepairRequestServiceImplTest {
     private RepairRequestTestData repairRequestTestData = RepairRequestTestData.getInstance();
     private RepairRecordTestData repairRecordTestData = RepairRecordTestData.getInstance();
 
-
     @Before
     public void setUp() throws Exception {
         repairRequestConverter = new RepairRequestConverter(userService);
@@ -67,8 +62,6 @@ public class RepairRequestServiceImplTest {
         when(repairRequestRepository.findAll()).thenReturn(repairRequestTestData.getAllTestRepairRequest());
         when(repairRecordRepository.findAll()).thenReturn(repairRecordTestData.getAllRepairRecordForTest());
         when(repairRequestRepository.save(any((RepairRequest.class)))).thenAnswer(i -> repairRequestTestData.saveTestRepairRequest((RepairRequest) i.getArguments()[0]));
-
-
     }
 
 
@@ -85,7 +78,6 @@ public class RepairRequestServiceImplTest {
         return repairRequestTestData.getAllTestRepairRequest().stream()
                 .filter(repairRequest -> repairRequest.getRepairRequestStatus().equals(RepairRequestStatus.IN_PROGRESS))
                 .collect(Collectors.toList());
-
     }
 
     private List<RepairRequest> allActiveRepairRequestsOfUser(String username) {
@@ -93,7 +85,6 @@ public class RepairRequestServiceImplTest {
                 .filter(repairRequest -> repairRequest.getRepairRequestStatus().equals(RepairRequestStatus.IN_PROGRESS)
                         && repairRequest.getUser().getUsername().equals(username))
                 .collect(Collectors.toList());
-
     }
 
 
@@ -105,7 +96,6 @@ public class RepairRequestServiceImplTest {
         List<RepairRequest> actualActiveRepairRequestList = repairRequestService.getListOfActiveRepairRequestsOfUser(username);
         List<RepairRequest> expectedActiveRepairRequestList = allActiveRepairRequestsOfUser(username);
         Assert.assertEquals(expectedActiveRepairRequestList.size(), actualActiveRepairRequestList.size());
-
     }
 
     @Test
@@ -132,8 +122,6 @@ public class RepairRequestServiceImplTest {
         RepairRequest actualRepairRequest = repairRequestService.findRepairRequestByUsernameAndCarRemark(username, carRemark);
         RepairRequest expectedRepairRequest = findRepairRequestByUsernameAndCarRemark(username, carRemark);
         Assert.assertEquals("Repair request not found ", expectedRepairRequest, actualRepairRequest);
-
-
     }
 
     @Test
@@ -146,7 +134,6 @@ public class RepairRequestServiceImplTest {
         repairRequestService.deleteRepairRequestByUsernameAndRepairRequestDescription(username, repairRequestDescription);
         RepairRequest repairRequestToDeleteAfterDelete = repairRequestTestData.getRepairRequestById(repairRequestId);
         Assert.assertNull(" repair request was not delete", repairRequestToDeleteAfterDelete);
-
     }
 
     @Test
@@ -187,7 +174,5 @@ public class RepairRequestServiceImplTest {
         RepairRequest updatedRepairRequest = repairRequestTestData.getRepairRequestById(repairRequestId);
         Assert.assertNotEquals("car remark wasn't update", carRemark, updatedRepairRequest.getCarRemark());
         Assert.assertNotEquals("repair request description wasn't update", repairRequestDescription, updatedRepairRequest.getRepairRequestDescription());
-
     }
-
 }

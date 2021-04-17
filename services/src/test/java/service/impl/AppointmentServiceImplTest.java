@@ -28,7 +28,6 @@ public class AppointmentServiceImplTest {
 
     @Before
     public void setUp() throws Exception {
-
     }
 
     @Test
@@ -37,5 +36,4 @@ public class AppointmentServiceImplTest {
         List<Appointment> actualAppointments = appointmentService.findAllAppointments();
         Assert.assertEquals(appointmentTestData.getAllAppointments().size(), actualAppointments.size());
     }
-
 }

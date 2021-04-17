@@ -5,8 +5,6 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import repository.AppointmentRepository;
-import repository.RepairRequestRepository;
-import repository.UserRepository;
 import service.AppointmentService;
 import service.AppointmentSlotService;
 import service.converters.impl.AppointmentConverter;
@@ -23,14 +21,9 @@ public class AppointmentServiceImpl implements AppointmentService {
     @Autowired
     private AppointmentRepository appointmentRepository;
     @Autowired
-    private UserRepository userRepository;
-    @Autowired
-    private RepairRequestRepository repairRequestRepository;
-    @Autowired
     private AppointmentSlotService appointmentSlotService;
     @Autowired
     private AppointmentConverter appointmentConverter;
-
 
     @Override
     public List<Appointment> filterAppointments(AppointmentFilterDto filterDto) {

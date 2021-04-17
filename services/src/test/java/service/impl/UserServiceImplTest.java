@@ -46,7 +46,6 @@ public class UserServiceImplTest {
     public void findAllUsers() throws Exception {
         List<User> actualAllUsers = userService.findAllUsers();
         Assert.assertEquals(userTestData.getAllTestUsers().size(), actualAllUsers.size());
-
     }
 
     @Test
@@ -97,7 +96,6 @@ public class UserServiceImplTest {
         User updatedUser = userTestData.getTestUserByUsername(usernameToUpdate);
         Assert.assertNotEquals("email wasn't update", email, updatedUser.getEmail());
         Assert.assertNotEquals("phoneNumber wasn't update", phoneNumber, updatedUser.getPhoneNumber());
-
     }
 
     @Test
@@ -108,5 +106,4 @@ public class UserServiceImplTest {
         User userToDeleteAfterDelete = userTestData.getTestUserByUsername("userToDelete");
         Assert.assertNull("user was not delete", userToDeleteAfterDelete);
     }
-
 }

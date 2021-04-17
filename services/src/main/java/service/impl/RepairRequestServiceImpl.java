@@ -66,7 +66,7 @@ public class RepairRequestServiceImpl implements RepairRequestService {
         log.info("Find list of active repair request");
         return repairRequestRepository.findAll().stream()
                 .filter(request -> request.getRepairRequestStatus().equals(RepairRequestStatus.IN_PROGRESS))
-                .collect(toList());
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -80,11 +80,11 @@ public class RepairRequestServiceImpl implements RepairRequestService {
         log.info(String.format("Find  repair requests of user: {%s} ", username));
         User allRepairRequestsOfUser = userService.findUserByUsername(username);
         if (allRepairRequestsOfUser == null) {
-            throw new ResourceNotFoundException("Requests of user " + username + " not found");
+            throw new ResourceNotFoundException(username );
         }
         return repairRequestRepository.findAll().stream()
                 .filter(request -> request.getUser().getUsername().equals(username))
-                .collect(toList());
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -92,7 +92,7 @@ public class RepairRequestServiceImpl implements RepairRequestService {
         log.info(String.format("Find  repair request of user: {%s} with car: {%s}", username, carRemark));
         return repairRequestRepository.findAll().stream()
                 .filter(request -> request.getUser().getUsername().equals(username) && request.getCarRemark().equals(carRemark))
-                .findAny().orElse(null);
+                .findAny().orElseThrow(() -> new ResourceNotFoundException(username));
     }
 
     @Override
@@ -101,7 +101,7 @@ public class RepairRequestServiceImpl implements RepairRequestService {
         RepairRequest repairRequest = repairRequestRepository.findAll().stream()
                 .filter(request -> request.getUser().getUsername().equals(username) &&
                         request.getRepairRequestDescription().equals(repairRequestDescription))
-                .findFirst().orElse(null);
+                .findFirst().orElseThrow(() -> new ResourceNotFoundException(username));
         if (repairRequest != null) {
             repairRequestRepository.delete(repairRequest);
         }

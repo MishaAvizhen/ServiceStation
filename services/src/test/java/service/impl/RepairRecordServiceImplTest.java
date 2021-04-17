@@ -58,7 +58,6 @@ public class RepairRecordServiceImplTest {
 
     @Test
     public void deleteRepairRecordByUsernameAndRepairRecordDescription() throws Exception {
-
         doAnswer(i -> repairRecordTestData.deleteRepairRecordById((Long) i.getArguments()[0])).when(repairRecordRepository).deleteById(any(Long.class));
         long repairRecordId = 1L;
         RepairRecord repairRecordToDelete = repairRecordTestData.deleteRepairRecordById(repairRecordId);
@@ -74,7 +73,6 @@ public class RepairRecordServiceImplTest {
         when(repairRecordRepository.save(any((RepairRecord.class)))).thenAnswer(i -> repairRecordTestData.saveTestRepairRecord((RepairRecord) i.getArguments()[0]));
         when(repairRequestRepository.save(any((RepairRequest.class)))).thenAnswer(i -> repairRequestTestData.saveTestRepairRequest((RepairRequest) i.getArguments()[0]));
         when(repairRequestRepository.getOne(any(Long.class))).thenAnswer(i -> repairRequestTestData.getRepairRequestById((Long) i.getArguments()[0]));
-
         String repairRecordDescription = "test record description new";
         Long workPrice = 323L;
         Long detailPrice = 101L;
@@ -125,7 +123,6 @@ public class RepairRecordServiceImplTest {
                 .setRepairRequest(repairRequestId)
                 .build(), repairRecordId);
         RepairRecord repairRecordAfterUpdate = repairRecordTestData.getRepairRecordById(repairRecordId);
-
         RepairRequestStatus status = repairRecordAfterUpdate.getRepairRequest().getRepairRequestStatus();
 
         Assert.assertNotEquals("work price wasn't update", detailPrice, repairRecordAfterUpdate.getWorkPrice());
