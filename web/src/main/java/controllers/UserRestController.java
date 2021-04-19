@@ -50,17 +50,17 @@ public class UserRestController {
         return userService.findUserByUsername(username);
     }
 
-    @DeleteMapping("/{userId}")
+    @DeleteMapping("/{id}")
     @ApiOperation(value = "Delete user")
-    public void deleteUserById(@PathVariable Long userId) {
-        userService.deleteUserById(userId);
+    public void deleteUserById(@PathVariable Long id) {
+        userService.deleteUserById(id);
     }
 
-    @PutMapping("/{userId}")
+    @PutMapping("/{id}")
     @ApiOperation(value = "Update user")
-    public User getUpdatedUser(@RequestBody UserWebDto userWebDto, @PathVariable Long userId) {
+    public User getUpdatedUser(@RequestBody UserWebDto userWebDto, @PathVariable Long id) {
         UserRegistrationDto userRegistrationDto = registrationDto.convertToServiceDto(userWebDto);
-        return userService.updateUser(userRegistrationDto, userId);
+        return userService.updateUser(userRegistrationDto, id);
     }
 
     @PostMapping
@@ -69,10 +69,10 @@ public class UserRestController {
         return userService.registerUser(userRegistrationDto);
     }
 
-    @GetMapping("/{userId}/price")
+    @GetMapping("/{id}/price")
     @ApiOperation(value = "Get total work and detail price of user")
-    public Long getSumPriceOfUser(@PathVariable Long userId) {
-        return userService.getSumWorkPriceAndDetailPrice(userId);
+    public Long getSumPriceOfUser(@PathVariable Long id) {
+        return userService.getSumWorkPriceAndDetailPrice(id);
     }
 
     @GetMapping("/price")

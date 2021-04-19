@@ -2,7 +2,7 @@ package service.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import entity.User;
-import entity.consts.SlotStatus;
+import entity.enums.SlotStatus;
 import io.swagger.annotations.ApiModel;
 
 import java.time.LocalDateTime;

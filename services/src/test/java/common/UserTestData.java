@@ -1,7 +1,7 @@
 package common;
 
 import entity.User;
-import entity.consts.Role;
+import entity.enums.Role;
 
 import java.util.*;
 

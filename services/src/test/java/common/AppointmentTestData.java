@@ -2,8 +2,8 @@ package common;
 
 import entity.Appointment;
 import entity.User;
-import entity.consts.Role;
-import entity.consts.SlotStatus;
+import entity.enums.Role;
+import entity.enums.SlotStatus;
 
 import java.util.*;
 

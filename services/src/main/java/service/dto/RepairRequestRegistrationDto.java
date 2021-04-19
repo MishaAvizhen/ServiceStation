@@ -1,7 +1,7 @@
 package service.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import entity.consts.RepairRequestStatus;
+import entity.enums.RepairRequestStatus;
 import io.swagger.annotations.ApiModel;
 
 import java.util.Date;

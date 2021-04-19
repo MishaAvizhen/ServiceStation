@@ -1,7 +1,6 @@
 package dto;
 
-import entity.consts.Role;
-import io.swagger.annotations.Api;
+import entity.enums.Role;
 import io.swagger.annotations.ApiModel;
 import lombok.*;
 

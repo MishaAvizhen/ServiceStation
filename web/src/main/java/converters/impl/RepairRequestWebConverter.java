@@ -2,7 +2,7 @@ package converters.impl;
 
 import converters.Converter;
 import dto.RepairRequestRegistrationWebDto;
-import entity.consts.RepairRequestStatus;
+import entity.enums.RepairRequestStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import service.dto.AppointmentSlotDto;
@@ -14,16 +14,16 @@ import java.util.Date;
 public class RepairRequestWebConverter implements
         Converter<RepairRequestRegistrationWebDto, RepairRequestRegistrationDto> {
 
-    private AppointmentSlotWebConverter appointmentSlotWebDtoToAppointmentSlotDtoConverter;
+    private AppointmentSlotWebConverter slotWebConverter;
 
     @Autowired
-    public RepairRequestWebConverter(AppointmentSlotWebConverter appointmentSlotWebDtoToAppointmentSlotDtoConverter) {
-        this.appointmentSlotWebDtoToAppointmentSlotDtoConverter = appointmentSlotWebDtoToAppointmentSlotDtoConverter;
+    public RepairRequestWebConverter(AppointmentSlotWebConverter slotWebConverter) {
+        this.slotWebConverter = slotWebConverter;
     }
 
     @Override
     public RepairRequestRegistrationDto convertToServiceDto(RepairRequestRegistrationWebDto webDto) {
-        AppointmentSlotDto appointmentSlotDto = appointmentSlotWebDtoToAppointmentSlotDtoConverter
+        AppointmentSlotDto appointmentSlotDto = slotWebConverter
                 .convertToWebDto(webDto.getAppointmentSlotWebDto());
         return new RepairRequestRegistrationDto.Builder()
                 .setDateOfRequest(new Date())

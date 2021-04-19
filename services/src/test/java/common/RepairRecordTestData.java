@@ -2,7 +2,7 @@ package common;
 
 import entity.RepairRecord;
 import entity.RepairRequest;
-import entity.consts.RepairRequestStatus;
+import entity.enums.RepairRequestStatus;
 
 import java.util.ArrayList;
 import java.util.HashMap;

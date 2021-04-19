@@ -1,22 +1,21 @@
 package controllers;
 
 
-import service.dto.ExceptionResponse;
-import service.exceptions.NotContentException;
-import service.exceptions.ResourceAlreadyExists;
-import service.exceptions.ResourceNotFoundException;
 import org.apache.log4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+import service.dto.ExceptionResponse;
+import service.exceptions.NotContentException;
+import service.exceptions.ResourceAlreadyExists;
+import service.exceptions.ResourceNotFoundException;
 
 import java.util.Date;
 
 @ControllerAdvice
 // TODO разобраться что такое ResponseEntityExceptionHandler
-public class GlobalExceptionControllerAdvice  {
+public class GlobalExceptionControllerAdvice {
     private static final Logger log = Logger.getLogger(GlobalExceptionControllerAdvice.class);
 
     @ExceptionHandler(value = {ResourceNotFoundException.class, NullPointerException.class})

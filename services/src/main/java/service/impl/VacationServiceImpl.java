@@ -2,8 +2,8 @@ package service.impl;
 
 import entity.RepairRequest;
 import entity.User;
-import entity.consts.RepairRequestStatus;
-import entity.consts.SlotStatus;
+import entity.enums.RepairRequestStatus;
+import entity.enums.SlotStatus;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

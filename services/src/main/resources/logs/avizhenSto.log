@@ -28710,3 +28710,22 @@ service.exceptions.ResourceNotFoundException: Resource not found: 21
 2021-04-16 18:02:22 INFO  RepairRecordServiceImpl:55 - Find repair record  with id= {1254}
 2021-04-17 20:44:13 INFO  RepairRecordServiceImpl:114 - Find  repair records of user: {test} 
 2021-04-17 20:44:25 INFO  RepairRecordServiceImpl:114 - Find  repair records of user: {test} 
+2021-04-19 11:15:15 INFO  RepairRequestServiceImpl:78 - Find  repair requests of user: {admin} 
+2021-04-19 11:15:34 INFO  RepairRequestServiceImpl:78 - Find  repair requests of user: {misha} 
+2021-04-19 11:20:06 INFO  RepairRequestServiceImpl:155 - Find repair request  with id= {69}
+2021-04-19 11:20:20 INFO  RepairRequestServiceImpl:155 - Find repair request  with id= {69}
+2021-04-19 11:20:22 INFO  RepairRequestServiceImpl:148 - repair request for {misha} with info : {Tayota} was updated 
+2021-04-19 11:25:23 INFO  RepairRequestServiceImpl:155 - Find repair request  with id= {70}
+2021-04-19 11:25:24 INFO  RepairRequestServiceImpl:148 - repair request for {misha} with info : {Tayota} was updated 
+2021-04-19 11:25:47 INFO  RepairRequestServiceImpl:155 - Find repair request  with id= {70}
+2021-04-19 11:26:00 INFO  RepairRequestServiceImpl:155 - Find repair request  with id= {70}
+2021-04-19 11:26:00 INFO  RepairRequestServiceImpl:148 - repair request for {test} with info : {Tesla} was updated 
+2021-04-19 11:29:40 INFO  RepairRequestServiceImpl:155 - Find repair request  with id= {70}
+2021-04-19 11:29:41 INFO  RepairRequestServiceImpl:148 - repair request for {test} with info : {Tesla} was updated 
+2021-04-19 11:29:55 INFO  RepairRecordServiceImpl:114 - Find  repair records of user: {test} 
+2021-04-19 13:39:45 INFO  AppointmentServiceImpl:50 -  Find master with name  {masterBob} 
+2021-04-19 13:40:24 INFO  AppointmentServiceImpl:50 -  Find master with name  {masterBobj} 
+2021-04-19 13:56:34 INFO  AppointmentServiceImpl:46 -  Find master with name  {master} 
+2021-04-19 13:57:01 INFO  AppointmentSlotServiceImpl:36 - get available appointment slot to date: {Wed Apr 14 00:00:00 MSK 2021}
+2021-04-19 13:57:19 INFO  AppointmentSlotServiceImpl:36 - get available appointment slot to date: {Sun Apr 25 00:00:00 MSK 2021}
+2021-04-19 14:02:34 INFO  AppointmentServiceImpl:46 -  Find master with name  {master} 

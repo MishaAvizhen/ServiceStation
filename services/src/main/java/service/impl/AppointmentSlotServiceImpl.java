@@ -2,7 +2,7 @@ package service.impl;
 
 import entity.Appointment;
 import entity.User;
-import entity.consts.Role;
+import entity.enums.Role;
 import org.apache.commons.lang3.time.DateUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +17,6 @@ import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static java.util.stream.Collectors.toList;
 import static service.common.LocalDateTimeOperations.convertDateToLocalDateTime;
 import static service.common.LocalDateTimeOperations.convertLocalDateTimeToDate;
 

@@ -2,9 +2,8 @@ package entity;
 
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import entity.consts.SlotStatus;
+import entity.enums.SlotStatus;
 import io.swagger.annotations.ApiModel;
 import lombok.*;
 

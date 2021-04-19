@@ -4,7 +4,7 @@ import com.google.common.base.Preconditions;
 import entity.Appointment;
 import entity.RepairRequest;
 import entity.User;
-import entity.consts.RepairRequestStatus;
+import entity.enums.RepairRequestStatus;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,8 +23,6 @@ import service.exceptions.ResourceNotFoundException;
 
 import java.util.*;
 import java.util.stream.Collectors;
-
-import static java.util.stream.Collectors.toList;
 
 @Service
 public class RepairRequestServiceImpl implements RepairRequestService {
@@ -125,7 +123,8 @@ public class RepairRequestServiceImpl implements RepairRequestService {
             createdAppointments.add(createdAppointment);
         }
         createdRequest.setAppointments(createdAppointments);
-        log.info(String.format("repair request with info : {%s} was created ", repairRequestRegistrationDtoWOSlots.getUsername()));
+        log.info(String.format("repair request for: {%s} with info : {%s} was created ", repairRequestRegistrationDtoWOSlots.getUsername(),
+                createdRequest.toString()));
         return createdRequest;
     }
 
@@ -148,7 +147,7 @@ public class RepairRequestServiceImpl implements RepairRequestService {
                 repairRequestToUpdate);
         validateAppointmentSlotDateNotInPast(repairRequestRegistrationDto.getAppointmentSlotDto());
         log.info(String.format("repair request for {%s} with info : {%s} was updated ",
-                repairRequestRegistrationDto.getUsername(), repairRequestRegistrationDto.getCarRemark()));
+                repairRequestRegistrationDto.getUsername(), repairRequestRegistrationDto.toString()));
         return repairRequestRepository.save(repairRequest);
     }
 

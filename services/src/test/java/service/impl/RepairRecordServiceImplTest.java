@@ -5,7 +5,7 @@ import common.RepairRequestTestData;
 import common.UserTestData;
 import entity.RepairRecord;
 import entity.RepairRequest;
-import entity.consts.RepairRequestStatus;
+import entity.enums.RepairRequestStatus;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

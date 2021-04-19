@@ -1,7 +1,7 @@
 package common;
 
 import entity.RepairRequest;
-import entity.consts.RepairRequestStatus;
+import entity.enums.RepairRequestStatus;
 
 import java.util.*;
 

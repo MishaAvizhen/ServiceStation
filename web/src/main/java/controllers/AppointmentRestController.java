@@ -9,14 +9,12 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import service.AppointmentService;
 import service.AppointmentSlotService;
 import service.dto.AppointmentFilterDto;
 import service.dto.AppointmentSlotDto;
+import service.dto.MasterWorkInDetails;
 
 import java.util.Date;
 import java.util.List;
@@ -64,5 +62,11 @@ public class AppointmentRestController {
         return availableAppointmentSlotsByDate.stream()
                 .map(appointmentSlotDto -> appointmentSlotWebConverter.convertToServiceDto(appointmentSlotDto))
                 .collect(Collectors.toList());
+    }
+
+    @GetMapping("/master")
+    @ApiOperation(value = "Get all master repair records")
+    public List<MasterWorkInDetails> getAllMasterRecords(@RequestParam(value = "name") String masterName){
+        return appointmentService.getMasterRecords(masterName);
     }
 }

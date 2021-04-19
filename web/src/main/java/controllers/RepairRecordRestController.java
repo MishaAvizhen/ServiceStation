@@ -37,7 +37,7 @@ public class RepairRecordRestController {
     }
 
     @GetMapping
-    @ApiOperation(value = "Get all repair records. Filter by username, carRemark, id")
+    @ApiOperation(value = "Get all repair records. Filter by username, masterName, carRemark, id")
     public List<RepairRecord> getAllRepairRecords(@RequestParam(value = "username", required = false) String username,
                                                   @RequestParam(value = "carRemark", required = false) String carRemark,
                                                   @RequestParam(value = "id", required = false) String id) {
@@ -81,4 +81,5 @@ public class RepairRecordRestController {
                 repairRecordWebConverter.convertToServiceDto(repairRecordRegistrationWebDto);
         return repairRecordService.registerRepairRecord(repairRecordRegistrationDto);
     }
+
 }
