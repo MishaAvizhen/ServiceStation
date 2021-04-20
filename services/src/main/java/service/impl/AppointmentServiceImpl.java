@@ -60,7 +60,6 @@ public class AppointmentServiceImpl implements AppointmentService {
         if (startDate.isBefore(lt) || endDate.isBefore(lt)) {
             throw new IllegalArgumentException("Date incorrect! Date in the  past");
         } else {
-            // TODO перенести в конвертер
             Appointment appointment = appointmentConverter.convertToEntity(appointmentSlotDto, userId, repairRequestId);
             log.info(String.format("Appointment with info: {%s}, {%s} was created for user with id: {%s} ",
                     startDate, endDate, userId));

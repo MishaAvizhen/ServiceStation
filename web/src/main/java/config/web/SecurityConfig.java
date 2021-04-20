@@ -13,11 +13,11 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import service.impl.CustomUserDetailsServiceImpl;
+import service.security.impl.CustomUserDetailsServiceImpl;
 
 @Configuration
 @EnableWebSecurity
-@ComponentScan("service")
+@ComponentScan("service.security")
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired

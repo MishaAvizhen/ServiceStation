@@ -8,9 +8,8 @@ import java.util.Date;
 
 @Getter
 @Setter
-// TODO перенести в dto
+
 public class ExceptionResponse {
-    // TODO описание ошибки должно быть понятным и полным
     private String errorMessage;
     private String errorCode;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss")

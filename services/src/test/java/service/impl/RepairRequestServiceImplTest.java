@@ -8,20 +8,24 @@ import entity.User;
 import entity.enums.RepairRequestStatus;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
-import repository.AppointmentRepository;
+import org.mockito.Spy;
+import org.mockito.junit.MockitoJUnitRunner;
 import repository.RepairRecordRepository;
 import repository.RepairRequestRepository;
 import repository.UserRepository;
 import service.converters.impl.RepairRequestConverter;
+import service.dto.AppointmentSlotDto;
 import service.dto.RepairRequestRegistrationDto;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static org.mockito.Matchers.any;
@@ -29,19 +33,17 @@ import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.when;
 
 
-@RunWith(MockitoJUnitRunner.class)
+@RunWith(MockitoJUnitRunner.Silent.class)
 public class RepairRequestServiceImplTest {
     @Mock
     private RepairRequestRepository repairRequestRepository;
     @Mock
     private RepairRecordRepository repairRecordRepository;
     @Mock
-    private AppointmentRepository appointmentRepository;
-    @Mock
     private UserRepository userRepository;
     @Mock
     private AppointmentServiceImpl appointmentService;
-    @Mock
+    @Spy
     private AppointmentSlotServiceImpl appointmentSlotService;
     @InjectMocks
     private UserServiceImpl userService;
@@ -50,18 +52,24 @@ public class RepairRequestServiceImplTest {
 
     private RepairRequestServiceImpl repairRequestService;
 
+
     private UserTestData userTestData = UserTestData.getInstance();
     private RepairRequestTestData repairRequestTestData = RepairRequestTestData.getInstance();
     private RepairRecordTestData repairRecordTestData = RepairRecordTestData.getInstance();
+    @Spy
+    private AppointmentSlotDto appointmentSlotDto = new AppointmentSlotDto(userTestData.getTestUserById(1L),
+            LocalDateTime.of(2021, 4, 25, 14, 0), LocalDateTime.of(2021, 4, 25, 15, 0));
 
     @Before
     public void setUp() throws Exception {
         repairRequestConverter = new RepairRequestConverter(userService);
-        repairRequestService = new RepairRequestServiceImpl(repairRequestRepository, userService, repairRequestConverter, appointmentService, appointmentSlotService);
+        repairRequestService = new RepairRequestServiceImpl(repairRequestRepository, userService, repairRequestConverter,
+                appointmentService, appointmentSlotService);
         when(userRepository.findByUsername("user")).thenReturn(userTestData.getTestUserByUsername("user"));
         when(repairRequestRepository.findAll()).thenReturn(repairRequestTestData.getAllTestRepairRequest());
         when(repairRecordRepository.findAll()).thenReturn(repairRecordTestData.getAllRepairRecordForTest());
-        when(repairRequestRepository.save(any((RepairRequest.class)))).thenAnswer(i -> repairRequestTestData.saveTestRepairRequest((RepairRequest) i.getArguments()[0]));
+        when(repairRequestRepository.save(any((RepairRequest.class)))).thenAnswer(i ->
+                repairRequestTestData.saveTestRepairRequest((RepairRequest) i.getArguments()[0]));
     }
 
 
@@ -126,7 +134,8 @@ public class RepairRequestServiceImplTest {
 
     @Test
     public void deleteRepairRequestByUsernameAndRepairRequestDescription() throws Exception {
-        doAnswer(i -> repairRequestTestData.deleteRepairRequestById((Long) i.getArguments()[0])).when(repairRequestRepository).deleteById(any(Long.class));
+        doAnswer(i -> repairRequestTestData.deleteRepairRequestById((Long) i.getArguments()[0]))
+                .when(repairRequestRepository).deleteById(any(Long.class));
         long repairRequestId = 3L;
         RepairRequest repairRequestToDelete = repairRequestTestData.deleteRepairRequestById(repairRequestId);
         String username = repairRequestToDelete.getUser().getUsername();
@@ -137,25 +146,8 @@ public class RepairRequestServiceImplTest {
     }
 
     @Test
-    public void registerRepairRequest() throws Exception {
-        String registerRepairRequestCarRemark = "testCar2";
-        Long repairRequestId = repairRequestTestData.getNextId();
-        String username = "user";
-        RepairRequestRegistrationDto repairRequestRegistrationDto = new RepairRequestRegistrationDto.Builder()
-                .setCarRemark(registerRepairRequestCarRemark)
-                .setUsername(username)
-                .build();
-
-        repairRequestService.registerRepairRequest(repairRequestRegistrationDto);
-        RepairRequest expectedRepairRequest = repairRequestTestData.getRepairRequestById(repairRequestId);
-
-        Assert.assertNotNull(expectedRepairRequest);
-        Assert.assertEquals(expectedRepairRequest.getCarRemark(), registerRepairRequestCarRemark);
-        Assert.assertEquals(expectedRepairRequest.getUser().getUsername(), username);
-    }
-
-    @Test
     public void updateRepairRequest() throws Exception {
+        when(repairRequestRepository.findById(any(Long.class))).thenAnswer(i -> Optional.of(repairRequestTestData.getRepairRequestById((Long) i.getArguments()[0])));
         String usernameToUpdate = "userToUpdate";
         when(userRepository.findByUsername(usernameToUpdate)).thenReturn(userTestData.getTestUserByUsername(usernameToUpdate));
         long repairRequestId = 2L;
@@ -170,6 +162,7 @@ public class RepairRequestServiceImplTest {
                 .setDateOfRequest(new Date())
                 .setCarRemark(newCarRemark)
                 .setUsername(usernameToUpdate)
+                .setAppointmentSlotDto(appointmentSlotDto)
                 .build(), repairRequestId);
         RepairRequest updatedRepairRequest = repairRequestTestData.getRepairRequestById(repairRequestId);
         Assert.assertNotEquals("car remark wasn't update", carRemark, updatedRepairRequest.getCarRemark());

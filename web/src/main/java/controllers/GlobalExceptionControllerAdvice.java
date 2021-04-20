@@ -14,7 +14,6 @@ import service.exceptions.ResourceNotFoundException;
 import java.util.Date;
 
 @ControllerAdvice
-// TODO разобраться что такое ResponseEntityExceptionHandler
 public class GlobalExceptionControllerAdvice {
     private static final Logger log = Logger.getLogger(GlobalExceptionControllerAdvice.class);
 
@@ -26,14 +25,14 @@ public class GlobalExceptionControllerAdvice {
     }
 
     @ExceptionHandler(value = {ResourceAlreadyExists.class, IllegalArgumentException.class})
-    public ResponseEntity<ExceptionResponse> resourceAlreadyExists(Exception ex) {
+    public ResponseEntity<ExceptionResponse> resourceAlreadyExists(RuntimeException ex) {
         logException(ex);
         ExceptionResponse response = buildExceptionResponse(ex, "CONFLICT");
         return new ResponseEntity<>(response, HttpStatus.CONFLICT);
     }
 
     @ExceptionHandler(NotContentException.class)
-    public ResponseEntity<ExceptionResponse> customException(NotContentException ex) {
+    public ResponseEntity<ExceptionResponse> noContentException(RuntimeException ex) {
         logException(ex);
         ExceptionResponse response = buildExceptionResponse(ex, "NO_CONTENT");
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);

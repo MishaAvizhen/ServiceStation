@@ -18,11 +18,14 @@ import service.converters.impl.RepairRequestConverter;
 import service.dto.AppointmentSlotDto;
 import service.dto.RepairRequestFilterDto;
 import service.dto.RepairRequestRegistrationDto;
+import service.dto.UserRegistrationDto;
 import service.exceptions.NotContentException;
 import service.exceptions.ResourceNotFoundException;
 
 import java.util.*;
 import java.util.stream.Collectors;
+
+import static service.common.LocalDateTimeOperations.convertLocalDateTimeToDate;
 
 @Service
 public class RepairRequestServiceImpl implements RepairRequestService {
@@ -130,6 +133,7 @@ public class RepairRequestServiceImpl implements RepairRequestService {
 
     @Override
     public RepairRequest registerRepairRequest(RepairRequestRegistrationDto repairRequestRegistrationDto) {
+        validateInputParamsForUserRegistration(repairRequestRegistrationDto);
         String clientUsername = repairRequestRegistrationDto.getUsername();
         User client = userService.findUserByUsername(clientUsername);
         if (client == null) {
@@ -141,6 +145,7 @@ public class RepairRequestServiceImpl implements RepairRequestService {
 
     @Override
     public RepairRequest updateRepairRequest(RepairRequestRegistrationDto repairRequestRegistrationDto, Long id) {
+        validateInputParamsForUserRegistration(repairRequestRegistrationDto);
         RepairRequest repairRequestToUpdate = findRepairRequestById(id);
         Preconditions.checkNotNull(repairRequestToUpdate, "RepairRequest to update with id " + id + " not found");
         RepairRequest repairRequest = repairRequestConverter.convertToExistingEntity(repairRequestRegistrationDto,
@@ -180,8 +185,8 @@ public class RepairRequestServiceImpl implements RepairRequestService {
     }
 
     private void validateAppointmentSlotDateNotInPast(AppointmentSlotDto appointmentSlotDto) {
-        Date startDate = LocalDateTimeOperations.convertLocalDateTimeToDate(appointmentSlotDto.getStartDate());
-        Date endDate = LocalDateTimeOperations.convertLocalDateTimeToDate(appointmentSlotDto.getEndDate());
+        Date startDate = convertLocalDateTimeToDate(appointmentSlotDto.getStartDate());
+        Date endDate = convertLocalDateTimeToDate(appointmentSlotDto.getEndDate());
         if (startDate.before(new Date()) || endDate.before(new Date())) {
             throw new IllegalArgumentException("Date incorrect! Date in the past");
         }
@@ -204,5 +209,10 @@ public class RepairRequestServiceImpl implements RepairRequestService {
         for (AppointmentSlotDto appointmentSlotDto : appointmentSlotDtos) {
             validateIsAvailableAppointmentSlot(appointmentSlotDto);
         }
+    }
+
+    private void validateInputParamsForUserRegistration(RepairRequestRegistrationDto repairRequestRegistrationDto) {
+        Preconditions.checkNotNull(repairRequestRegistrationDto.getUsername(), "Username is mandatory");
+        Preconditions.checkNotNull(repairRequestRegistrationDto.getCarRemark(), "Car remark is mandatory");
     }
 }

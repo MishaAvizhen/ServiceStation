@@ -36,7 +36,6 @@ public class VacationServiceImpl implements VacationService {
     }
 
     @Override
-    // TODO так делать не стоит
     public RepairRequest registerVacationRequest(VacationRegistrationDto vacationRegistrationDto) {
         String masterName = vacationRegistrationDto.getMasterName();
         Date startDate = vacationRegistrationDto.getStartDate();

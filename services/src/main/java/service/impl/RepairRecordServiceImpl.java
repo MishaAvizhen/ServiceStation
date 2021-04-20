@@ -2,7 +2,6 @@ package service.impl;
 
 
 import com.google.common.base.Preconditions;
-import entity.Appointment;
 import entity.RepairRecord;
 import entity.RepairRequest;
 import entity.enums.RepairRequestStatus;
@@ -38,7 +37,8 @@ public class RepairRecordServiceImpl implements RepairRecordService {
     @Autowired
     public RepairRecordServiceImpl(RepairRecordRepository repairRecordRepository,
                                    RepairRequestRepository repairRequestRepository,
-                                   RepairRecordConverter repairRecordConverter, RepairRequestService repairRequestService) {
+                                   RepairRecordConverter repairRecordConverter,
+                                   RepairRequestService repairRequestService) {
         this.repairRecordRepository = repairRecordRepository;
         this.repairRequestRepository = repairRequestRepository;
         this.repairRecordConverter = repairRecordConverter;
@@ -59,19 +59,8 @@ public class RepairRecordServiceImpl implements RepairRecordService {
     }
 
     @Override
-    public void deleteRepairRecordByUsernameAndRepairRecordDescription(String username, String repairRecordDescription) {
-        log.info(String.format("delete  repair record of user: {%s} with repair record description: {%s}", username, repairRecordDescription));
-        RepairRecord repairRecord = repairRecordRepository.findAll().stream()
-                .filter(record -> record.getRepairRequest().getUser().getUsername().equals(username) &&
-                        record.getRepairRecordDescription().equals(repairRecordDescription))
-                .findFirst().orElse(null);
-        if (repairRecord != null) {
-            repairRecordRepository.delete(repairRecord);
-        }
-    }
-
-    @Override
     public RepairRecord registerRepairRecord(RepairRecordRegistrationDto repairRecordRegistrationDto) {
+        validateInputParamsForUserRegistration(repairRecordRegistrationDto);
         RepairRequest repairRequestToCompare = repairRequestRepository.findById(repairRecordRegistrationDto.getRepairRequestId()).orElse(null);
         Preconditions.checkNotNull(repairRequestToCompare, "Error!!!  RepairRequest with id " +
                 repairRecordRegistrationDto.getRepairRequestId() + " not found");
@@ -91,7 +80,7 @@ public class RepairRecordServiceImpl implements RepairRecordService {
 
     @Override
     public RepairRecord updateRepairRecord(RepairRecordRegistrationDto repairRecordRegistrationDto, Long id) {
-
+        validateInputParamsForUserRegistration(repairRecordRegistrationDto);
         RepairRecord repairRecordToUpdate = findRepairRecordById(id);
         Long repairRequestToCompare = repairRecordRegistrationDto.getRepairRequestId();
         RepairRequest repairRequest = repairRequestService.findRepairRequestById(repairRequestToCompare);
@@ -99,7 +88,6 @@ public class RepairRecordServiceImpl implements RepairRecordService {
 
         Preconditions.checkNotNull(repairRecordToUpdate, "RepairRecord to update with id " + repairRecordToUpdate.getId() + " not found");
         Preconditions.checkNotNull(repairRequest, "RepairRequest to update with id " + repairRequestToCompare + " not found");
-        // TODO перенести в сервис
         if (!requestIdToCompareInDb.equals(repairRequestToCompare)) {
             log.info(String.format("Requests id are not equals, {%s} != {%s}", requestIdToCompareInDb, repairRequestToCompare));
             throw new IllegalArgumentException(String.format("Requests id {%s} != {%s} ", requestIdToCompareInDb, repairRequestToCompare));
@@ -114,12 +102,10 @@ public class RepairRecordServiceImpl implements RepairRecordService {
     public List<RepairRecord> findRepairRecordsByUsername(String username) {
         log.info(String.format("Find  repair records of user: {%s} ", username));
         List<RepairRecord> repairRecordsOfUser = repairRecordRepository.findByUsername(username);
-        // TODO apache common - CollectionUtils.isNotEmpty()
         if (CollectionUtils.isEmpty(repairRecordsOfUser)) {
             throw new ResourceNotFoundException(username);
         }
         return repairRecordRepository.findByUsername(username);
-        // TODO перенести на уровень sql
     }
 
     @Override
@@ -140,5 +126,10 @@ public class RepairRecordServiceImpl implements RepairRecordService {
                         filterDto.getCarRemark().equals(repairRecord.getRepairRequest().getCarRemark()))
                 .filter(repairRecord -> filterDto.getId() == null || filterDto.getId().equals(repairRecord.getId().toString()))
                 .collect(Collectors.toList());
+    }
+
+    private void validateInputParamsForUserRegistration(RepairRecordRegistrationDto repairRecordRegistrationDto) {
+        Preconditions.checkNotNull(repairRecordRegistrationDto.getRepairRecordDescription(), "Record description is mandatory");
+        Preconditions.checkNotNull(repairRecordRegistrationDto.getWorkPrice(), "Work  price is mandatory");
     }
 }

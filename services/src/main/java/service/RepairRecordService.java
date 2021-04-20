@@ -13,8 +13,6 @@ public interface RepairRecordService {
 
     RepairRecord findRepairRecordById(Long repairRecordId);
 
-    void deleteRepairRecordByUsernameAndRepairRecordDescription(String username, String repairRecordDescription);
-
     RepairRecord registerRepairRecord(RepairRecordRegistrationDto repairRecordRegistrationDto);
 
     RepairRecord updateRepairRecord(RepairRecordRegistrationDto repairRecordRegistrationDto, Long id);

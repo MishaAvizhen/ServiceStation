@@ -42,24 +42,19 @@ public class RepairRecordRestController {
                                                   @RequestParam(value = "carRemark", required = false) String carRemark,
                                                   @RequestParam(value = "id", required = false) String id) {
         RepairRecordFilterDto filterDto = new RepairRecordFilterDto(id, username, carRemark);
-        // TODO перенести в сервисы, обернуть параметры в Dto
         return repairRecordService.filterRepairRecord(filterDto);
     }
 
-    // TODO переименовать username -> my/profile ...
     @GetMapping("/profile")
     @ApiOperation(value = "Get all repair records of current user")
     public List<RepairRecord> repairRecordsOfUser(Principal principal) {
         String username = principal.getName();
-        // TODO apache common - CollectionUtils.isNotEmpty()
         return repairRecordService.findRepairRecordsByUsername(username);
     }
 
-    // TODO упростить до id
     @DeleteMapping("/{id}")
     @ApiOperation(value = "Delete repair record")
     public void deleteById(@PathVariable Long id) {
-        // TODO аналогично убрать дублирование
         repairRecordService.deleteById(id);
     }
 
@@ -67,13 +62,11 @@ public class RepairRecordRestController {
     @ApiOperation(value = "Update repair record")
     public RepairRecord getUpdatedRepairRecord(@RequestBody RepairRecordRegistrationWebDto repairRecordRegistrationWebDto,
                                                @PathVariable Long id) {
-        // TODO перенести в сервис
         RepairRecordRegistrationDto repairRecordRegistrationDto =
                 repairRecordWebConverter.convertToServiceDto(repairRecordRegistrationWebDto);
         return repairRecordService.updateRepairRecord(repairRecordRegistrationDto, id);
     }
 
-    // TODO create излишен
     @PostMapping
     @ApiOperation(value = "Create repair record")
     public RepairRecord getCreatedRepairRecord(@RequestBody RepairRecordRegistrationWebDto repairRecordRegistrationWebDto) {

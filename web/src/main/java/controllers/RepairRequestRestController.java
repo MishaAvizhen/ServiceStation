@@ -88,8 +88,6 @@ public class RepairRequestRestController {
     @PostMapping("/vacation")
     @ApiOperation(value = "Create repair request for vacation for master")
     public RepairRequest getCreatedRepairRequestForVacation(@RequestBody VacationRegistrationDto vacationRegistrationDto) {
-        // TODO перенсти в сервисы
         return vacationService.registerVacationRequest(vacationRegistrationDto);
     }
-
 }

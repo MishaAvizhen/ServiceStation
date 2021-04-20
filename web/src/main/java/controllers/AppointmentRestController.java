@@ -58,7 +58,6 @@ public class AppointmentRestController {
     public List<AppointmentSlotWebDto> getAvailableSlotsOnTargetDate(@RequestParam(value = "targetDate")
                                                                      @DateTimeFormat(pattern = "yyyy-MM-dd") Date targetDate) {
         List<AppointmentSlotDto> availableAppointmentSlotsByDate = appointmentSlotService.getAvailableAppointmentSlotsByDate(targetDate);
-        // TODO переписать на стрим
         return availableAppointmentSlotsByDate.stream()
                 .map(appointmentSlotDto -> appointmentSlotWebConverter.convertToServiceDto(appointmentSlotDto))
                 .collect(Collectors.toList());

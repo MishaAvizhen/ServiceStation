@@ -6,7 +6,6 @@ import org.springframework.stereotype.Component;
 import service.dto.RepairRecordRegistrationDto;
 
 @Component
-// TODO сделать название короче
 public class RepairRecordWebConverter implements
         Converter<RepairRecordRegistrationWebDto, RepairRecordRegistrationDto> {
 

@@ -7,7 +7,6 @@ import org.springframework.stereotype.Component;
 import repository.AppointmentRepository;
 import repository.RepairRequestRepository;
 import repository.UserRepository;
-import service.common.LocalDateTimeOperations;
 import service.dto.AppointmentSlotDto;
 import service.dto.MasterWorkInDetails;
 
@@ -15,7 +14,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import static service.common.LocalDateTimeOperations.convertDateToLocalDateTime;
 import static service.common.LocalDateTimeOperations.convertLocalDateTimeToDate;
 
 @Component
@@ -49,7 +47,7 @@ public class AppointmentConverter {
         List<MasterWorkInDetails> result = new ArrayList<>();
         List<Appointment> list = appointmentRepository.findAll();
         for (Appointment appointment : list) {
-            if (appointment.getMaster().getUsername().equals(masterName)&&
+            if (appointment.getMaster().getUsername().equals(masterName) &&
                     appointment.getRepairRequest().getRepairRequestStatus().equals(RepairRequestStatus.PROCESSED)) {
                 MasterWorkInDetails details = new MasterWorkInDetails();
                 Date startDate = appointment.getStartDate();
@@ -59,8 +57,8 @@ public class AppointmentConverter {
                 Long workPrice = appointment.getRepairRequest().getRepairRecord().getWorkPrice();
                 String repairRecordDescription = appointment.getRepairRequest().getRepairRecord().getRepairRecordDescription();
 
-                details.setStartDate(convertDateToLocalDateTime(startDate));
-                details.setEndDate(convertDateToLocalDateTime(endDate));
+                details.setStartDate(startDate);
+                details.setEndDate(endDate);
                 details.setCarRemark(carRemark);
                 details.setDetailPrice(detailPrice);
                 details.setWorkPrice(workPrice);
@@ -70,6 +68,4 @@ public class AppointmentConverter {
         }
         return result;
     }
-
-
 }

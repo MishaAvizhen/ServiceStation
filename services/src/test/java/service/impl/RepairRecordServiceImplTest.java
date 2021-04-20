@@ -8,11 +8,12 @@ import entity.RepairRequest;
 import entity.enums.RepairRequestStatus;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 import repository.RepairRecordRepository;
 import repository.RepairRequestRepository;
 import repository.UserRepository;
@@ -20,12 +21,12 @@ import service.converters.impl.RepairRecordConverter;
 import service.dto.RepairRecordRegistrationDto;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
+@RunWith(MockitoJUnitRunner.Silent.class)
 public class RepairRecordServiceImplTest {
     private UserTestData userTestData = UserTestData.getInstance();
     private RepairRecordTestData repairRecordTestData = RepairRecordTestData.getInstance();
@@ -46,7 +47,8 @@ public class RepairRecordServiceImplTest {
     @Before
     public void setUp() throws Exception {
         repairRecordConverter = new RepairRecordConverter(repairRequestRepository);
-        repairRecordService = new RepairRecordServiceImpl(repairRecordRepository, repairRequestRepository, repairRecordConverter, repairRequestService);
+        repairRecordService = new RepairRecordServiceImpl(repairRecordRepository, repairRequestRepository,
+                repairRecordConverter, repairRequestService);
     }
 
     @Test
@@ -57,53 +59,11 @@ public class RepairRecordServiceImplTest {
     }
 
     @Test
-    public void deleteRepairRecordByUsernameAndRepairRecordDescription() throws Exception {
-        doAnswer(i -> repairRecordTestData.deleteRepairRecordById((Long) i.getArguments()[0])).when(repairRecordRepository).deleteById(any(Long.class));
-        long repairRecordId = 1L;
-        RepairRecord repairRecordToDelete = repairRecordTestData.deleteRepairRecordById(repairRecordId);
-        String username = repairRecordToDelete.getRepairRequest().getUser().getUsername();
-        String repairRecordDescription = repairRecordToDelete.getRepairRecordDescription();
-        repairRecordService.deleteRepairRecordByUsernameAndRepairRecordDescription(username, repairRecordDescription);
-        RepairRecord repairRecordToDeleteAfterDelete = repairRecordTestData.getRepairRecordById(repairRecordId);
-        Assert.assertNull(" repair record was not delete", repairRecordToDeleteAfterDelete);
-    }
-
-    @Test
-    public void registerRepairRecord() throws Exception {
-        when(repairRecordRepository.save(any((RepairRecord.class)))).thenAnswer(i -> repairRecordTestData.saveTestRepairRecord((RepairRecord) i.getArguments()[0]));
-        when(repairRequestRepository.save(any((RepairRequest.class)))).thenAnswer(i -> repairRequestTestData.saveTestRepairRequest((RepairRequest) i.getArguments()[0]));
-        when(repairRequestRepository.getOne(any(Long.class))).thenAnswer(i -> repairRequestTestData.getRepairRequestById((Long) i.getArguments()[0]));
-        String repairRecordDescription = "test record description new";
-        Long workPrice = 323L;
-        Long detailPrice = 101L;
-        long nextRepairRecordId = repairRecordTestData.getNextId();
-        long repairRequestId = 1L;
-        String username = "user";
-        String otherNotes = "test other notes";
-        RepairRecordRegistrationDto repairRecordRegistrationDto = new RepairRecordRegistrationDto.Builder()
-                .setRepairRecordDescription(repairRecordDescription)
-                .setWorkPrice(workPrice)
-                .setDetailPrice(detailPrice)
-                .setRepairRequest(repairRequestId)
-                .setOtherNotes(otherNotes)
-                .build();
-
-        repairRecordService.registerRepairRecord(repairRecordRegistrationDto);
-        RepairRecord actualRepairRecord = repairRecordTestData.getRepairRecordById(nextRepairRecordId);
-
-        Assert.assertNotNull(actualRepairRecord);
-        Assert.assertEquals(actualRepairRecord.getRepairRequest().getRepairRequestStatus(), RepairRequestStatus.PROCESSED);
-        Assert.assertEquals(actualRepairRecord.getRepairRecordDescription(), repairRecordDescription);
-        Assert.assertEquals(actualRepairRecord.getDetailPrice(), detailPrice);
-        Assert.assertEquals(actualRepairRecord.getWorkPrice(), workPrice);
-        Assert.assertEquals(actualRepairRecord.getRepairRequest().getUser().getUsername(), username);
-    }
-
-    @Test
     public void updateRepairRecord() throws Exception {
-
+        when(repairRequestRepository.findById(any(Long.class))).thenAnswer(i -> Optional.of(repairRequestTestData.getRepairRequestById((Long) i.getArguments()[0])));
+        when(repairRecordRepository.findById(any(Long.class))).thenAnswer(i -> Optional.of(repairRecordTestData.getRepairRecordById((Long) i.getArguments()[0])));
         String usernameToUpdate = "user";
-        when(repairRequestRepository.getOne(any(Long.class))).thenAnswer(i -> repairRequestTestData.getRepairRequestById((Long) i.getArguments()[0]));
+        when(repairRecordRepository.getOne(any(Long.class))).thenAnswer(i -> repairRecordTestData.getRepairRecordById((Long) i.getArguments()[0]));
         when(userRepository.findByUsername(usernameToUpdate)).thenReturn(userTestData.getTestUserByUsername(usernameToUpdate));
         long repairRecordId = 1L;
         RepairRecord repairRecordByIdToUpdate = repairRecordTestData.getRepairRecordById(repairRecordId);

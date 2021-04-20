@@ -1,5 +1,6 @@
 package config.web;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableSet;
 import config.ServiceConfig;
 import org.springframework.context.annotation.Bean;
@@ -15,6 +16,7 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 
 import java.util.Set;
+import java.util.TimeZone;
 
 @Configuration
 @Import(ServiceConfig.class)
@@ -23,6 +25,13 @@ public class WebConfig {
     private static final Set<String> DEFAULT_PRODUCES_AND_CONSUMES = ImmutableSet.of(
             "application/json"
     );
+
+    @Bean
+    public ObjectMapper objectMapper() {
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.setTimeZone(TimeZone.getDefault());
+        return objectMapper;
+    }
 
     @Bean
     public Docket productApi() {

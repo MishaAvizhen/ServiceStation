@@ -56,13 +56,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void deleteUserById(Long userId) {
-        log.info(String.format("Delete user with id=  {%s}", userId));
         User user = findUserById(userId);
         if (user == null) {
             throw new NotContentException(userId.toString());
         }
+        log.info(String.format("Delete user with id=  {%s}", userId));
         userRepository.deleteById(userId);
-
     }
 
     @Override
@@ -83,13 +82,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User registerUser(UserRegistrationDto userRegistrationDto) {
-
+        validateInputParamsForUserRegistration(userRegistrationDto);
         User existUser = userRepository.findByUsername(userRegistrationDto.getUsername());
         if (existUser != null) {
             log.info(String.format("user with info:{%s} already exist ", userRegistrationDto.toString()));
             throw new IllegalArgumentException("User " + userRegistrationDto.getUsername() + " already exist");
         }
-        // TODO создавать классы через спринг
         userRegistrationDto.setPassword(encodePassword(userRegistrationDto.getPassword()));
         User user = userConverter.convertToEntity(userRegistrationDto);
         log.info(String.format("user with info:{%s} was created ", userRegistrationDto.toString()));
@@ -98,6 +96,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User updateUser(UserRegistrationDto userRegistrationDto, Long userId) {
+        validateInputParamsForUserRegistration(userRegistrationDto);
+        Preconditions.checkNotNull(userRegistrationDto.getUsername(), "User to update with id " + userId + " not found");
         userRegistrationDto.setPassword(encodePassword(userRegistrationDto.getPassword()));
         User userToUpdate = findUserById(userId);
         Preconditions.checkNotNull(userToUpdate, "User to update with id " + userId + " not found");
@@ -113,5 +113,11 @@ public class UserServiceImpl implements UserService {
 
     private String encodePassword(String password) {
         return passwordEncoder.encode(password);
+    }
+
+    private void validateInputParamsForUserRegistration(UserRegistrationDto userRegistrationDto) {
+        Preconditions.checkNotNull(userRegistrationDto.getUsername(), "Username is mandatory");
+        Preconditions.checkNotNull(userRegistrationDto.getPassword(), "Password is mandatory");
+        Preconditions.checkNotNull(userRegistrationDto.getPhoneNumber(), "PhoneNumber is mandatory");
     }
 }
